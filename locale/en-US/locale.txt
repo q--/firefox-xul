@@ -1,0 +1,7 @@
+	IDS_LANG						"en-US"
+	IDS_BAR_CHECKED					"VIPRE Search Guard checked this website"
+	IDS_BAR_WARNING					"WARNING This site might be harmful"
+	IDS_BAR_UNAVAILABLE				"VIPRE Search Guard service is not available"
+	IDS_MENU_REFRESH				"&Refresh"
+	IDS_MENU_CHECKUPDATES			"&Check for updates…"
+	IDS_MENU_ENABLED				"&Enabled"

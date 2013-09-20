@@ -27,14 +27,15 @@ var wot_search =
 			WOT_SEARCH_URLIGN,
 			WOT_SEARCH_PRESTYLE,
 			WOT_SEARCH_SCRIPT,
-			WOT_SEARCH_STYLE,
-			WOT_SEARCH_NINJA
-		],
+			WOT_SEARCH_STYLE
+    ],
 
 	attrint: [
 			WOT_SEARCH_DYNAMIC,
 			WOT_SEARCH_SEARCHLEVEL
 		],
+
+    VIPRE_VERDICT_ATTR: "vipre_status",
 
 	load_delayed: function()
 	{
@@ -533,18 +534,11 @@ var wot_search =
 	addrating: function(target, content, link, rule)
 	{
 		try {
-			// ninja - is experimental feature to make donuts on the SERP hidden
-			var is_ninja = this.is_ninja(rule);
 			var elem = content.createElement("div");
 
 			if (elem) {
 
-				var link_parent = link.parentNode;
-
 				elem.setAttribute(this.attribute, target);
-
-				if(is_ninja) elem.setAttribute("class", "invisible");
-
 				elem.setAttribute("style", "cursor: pointer; " +
 					"width: 16px; " +
 					"height: 16px;" +
@@ -552,39 +546,6 @@ var wot_search =
 
 				elem.innerHTML = "&nbsp;";
 				elem.addEventListener("click", this.onclick, false);
-
-				if(is_ninja) {
-
-					var ninja_timer = null,
-						visibility = null;
-
-					// clojure
-					function set_visibility() {
-						elem.setAttribute("class", visibility);
-					}
-
-					function do_ninja(event) {
-						// It needs to be called as clojure to access "elem"
-
-						if (ninja_timer) clearTimeout(ninja_timer);
-
-						if(event.type == "mouseout") {
-
-							visibility = "invisible";
-							// delay, to prevent premature hiding causes by bubled events from element's children
-							ninja_timer = setTimeout(set_visibility, 100);
-							return;
-						} else {
-							visibility = "visible";
-						}
-
-						set_visibility();
-					}
-
-					// use parent to avoid hiding donut when cursor moves to it but goes out of the link
-					link_parent.addEventListener("mouseover", do_ninja, false);
-					link_parent.addEventListener("mouseout", do_ninja, false);
-				}
 
 				if (link.nextSibling) {
 					link.parentNode.insertBefore(elem, link.nextSibling);
@@ -1182,21 +1143,7 @@ var wot_search =
 				return -1;
 			}
 
-			if (wot_cache.get(name, "excluded_0")) {
-				return -2;
-			}
-
-			var r = wot_cache.get(name, "reputation_0");
-
-            // respect "Parental control" setting and use the worst reputation between app0 and app4
-            if (wot_prefs.warning_level_4 > 0) {
-                var r_app4 = wot_cache.get(name, "reputation_4");
-                if (r_app4 >= 0 && r_app4 < r) {
-                    r = r_app4;
-                }
-			}
-
-			return r;
+			return wot_cache.get(name, "reputation_0");
 		} catch (e) {
 			dump("wot_search.getreputation: failed with " + e + "\n");
 		}
@@ -1232,9 +1179,11 @@ var wot_search =
 	onclick: function(event)
 	{
 		try {
-			var target = event.originalTarget.getAttribute(wot_search.attribute);
-			if (target) {
-				wot_browser.openscorecard(target, null, WOT_URL_POPUPDONUTS);
+			var target = event.originalTarget.getAttribute(wot_search.attribute),
+                r0 = wot_search.getreputation(target),
+                verdict = wot_util.get_level(WOT_REPUTATIONLEVELS, r0).name;
+			if (target && verdict) {
+				wot_browser.open_link(verdict, target);
 				event.stopPropagation();
 			}
 		} catch (e) {

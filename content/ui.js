@@ -32,13 +32,13 @@ var wot_status = {
 			/* Set tooltip and status */
 			var mainwnd = document.getElementById("main-window");
 			if (mainwnd) {
-				mainwnd.setAttribute("wot-status", status);
+				mainwnd.setAttribute("vipre-status", status);
 			}
 
-			var tooltip = document.getElementById("wot-tooltip-text");
-			if (tooltip) {
-				tooltip.value = description;
-			}
+//			var tooltip = document.getElementById("wot-tooltip-text");
+//			if (tooltip) {
+//				tooltip.value = description;
+//			}
 
 			/* Update display */
 			if (wot_prefs.updateui) {
@@ -104,7 +104,6 @@ var wot_status = {
 				if(type != WOT_WARNING_BLOCK) wot_warning.hide(content);
 			}
 
-            wot_rw.update();
 		} catch (e) {
 			wdump("wot_status.update: failed with " + e);
 		}
@@ -113,94 +112,68 @@ var wot_status = {
 
 var wot_ui = {
 
-    SLIDER_WIDTH: 194,  // make sure there is same value as in wot.css for .wot-rating-slider selector.
-
     getElem: function (id) {
         // just a shortcut
         return document.getElementById(id);
     },
 
-    show_accessible: function()
-	{
-		try {
-			var mainwnd = this.getElem("main-window");
-			if (mainwnd) {
-				var mode = "normal";
-
-				if (wot_prefs.accessible) {
-					mode = "accessible";
-				}
-
-				if (mainwnd.getAttribute("wot-mode") != mode) {
-					mainwnd.setAttribute("wot-mode", mode);
-					wot_my_session.update(false); /* Update cookies */
-				}
-			}
-		} catch (e) {
-			wdump("wot_ui.show_accessible: failed with " + e);
-		}
-	},
-
-	show_toolbar_button: function(id, after) {
-		try {
-			var nbr = this.getElem("nav-bar");
-
-			if (!nbr || nbr.currentSet.indexOf(id) != -1) {
-				return;
-			}
-
-			var box = this.getElem("navigator-toolbox");
-
-			if (!box) {
-				return;
-			}
-
-			var bar = box.firstChild;
-
-			while (bar) {
-				if (bar.currentSet && bar.currentSet.indexOf(id) != -1) {
-					return;
-				}
-				bar = bar.nextSibling;
-			}
-
-			var target = this.getElem(after);
-
-			if (target) {
-				target = target.nextSibling;
-			}
-		
-			nbr.insertItem(id, target);
-			nbr.setAttribute("currentset", nbr.currentSet);
-			document.persist("nav-bar", "currentset");
-		} catch (e) {
-			wdump("wot_ui.show_toolbar_button: failed with " + e);
-		}
-	},
+//	show_toolbar_button: function(id, after) {
+//		try {
+//			var nbr = this.getElem("nav-bar");
+//
+//			if (!nbr || nbr.currentSet.indexOf(id) != -1) {
+//				return;
+//			}
+//
+//			var box = this.getElem("navigator-toolbox");
+//
+//			if (!box) {
+//				return;
+//			}
+//
+//			var bar = box.firstChild;
+//
+//			while (bar) {
+//				if (bar.currentSet && bar.currentSet.indexOf(id) != -1) {
+//					return;
+//				}
+//				bar = bar.nextSibling;
+//			}
+//
+//			var target = this.getElem(after);
+//
+//			if (target) {
+//				target = target.nextSibling;
+//			}
+//
+//			nbr.insertItem(id, target);
+//			nbr.setAttribute("currentset", nbr.currentSet);
+//			document.persist("nav-bar", "currentset");
+//		} catch (e) {
+//			wdump("wot_ui.show_toolbar_button: failed with " + e);
+//		}
+//	},
 
 	/* Shows or hides user interface elements based on preferences */
-	show_elements: function()
-	{
-		try {
-			/* Toolbar */
-			if (!wot_prefs.button_created || wot_prefs.create_button) {
-				wot_prefs.setBool("button_created", true);
-				this.show_toolbar_button("wot-button", "stop-button");
-			}
-
-			/* Accessibility */
-			this.show_accessible();
-
-		} catch (e) {
-			dump("wot_ui.show_elements: failed with " + e + "\n");
-		}
-	},
+//	show_elements: function()
+//	{
+//		try {
+//			/* Toolbar */
+//			if (!wot_prefs.button_created || wot_prefs.create_button) {
+//				wot_prefs.setBool("button_created", true);
+//				this.show_toolbar_button("vipre-button", "stop-button");
+//			}
+//
+//		} catch (e) {
+//			dump("wot_ui.show_elements: failed with " + e + "\n");
+//		}
+//	},
 
 	update: function()
 	{
 		try {
 			wot_commands.update();
-			this.show_elements();
+//			this.show_elements();
 		} catch (e) {
 			dump("wot_ui.update: failed with " + e + "\n");
 		}
@@ -209,13 +182,8 @@ var wot_ui = {
 	geticonurl: function(r, size, plain)
 	{
         var image = wot_util.get_level(WOT_REPUTATIONLEVELS, r).name,
-		    base = "chrome://wot/skin/fusion/";
+		    base = "chrome://vipre/skin/vipre/";
 
-		if (r >= -1 && wot_prefs.accessible) {
-			base += "accessible/";
-		}
-
-		return base + size + "_" + size +
-					((plain) ? "/plain/" : "/") + image + ".png";
+		return base + size + "_" + size + "/" + image + ".png";
 	}
 };

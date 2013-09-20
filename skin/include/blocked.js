@@ -48,7 +48,7 @@ function load_l10n(callback) {
 	// loads locale stings for add-on, parse them and store in l10n object
 	try {
 		xhr = new XMLHttpRequest();
-		xhr.open("GET", "chrome://wot/locale/wot.properties", true);
+		xhr.open("GET", "chrome://vipre/locale/wot.properties", true);
 
 		xhr.onload = function(e) {
 			var text = xhr.responseText;

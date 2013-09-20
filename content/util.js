@@ -363,12 +363,6 @@ var wot_url =
 			var params = "&lang=" +
 				(wot_util.getstring("lang") || "en-US");
 
-			var partner = wot_partner.getpartner();
-
-			if (partner) {
-				params += "&partner=" + partner;
-			}
-
 			params += "&version=" + WOT_PLATFORM + "-" + WOT_VERSION;
 			return params;
 		} catch (e) {
@@ -448,7 +442,7 @@ var wot_browser =
 	show_warning: function(hostname, message, known)
 	{
 		try {
-			var icon = "chrome://wot/skin/fusion/";
+			var icon = "chrome://vipre/skin/fusion/";
 
 			if (wot_prefs.accessible) {
 				icon += "accessible/";
@@ -533,6 +527,24 @@ var wot_browser =
 		}
 	},
 
+    open_link: function (verdict, target) {
+        var browser = getBrowser(),
+            url = "";
+
+        switch (verdict) {
+            case "good":
+                url = VIPRE_URL_GOOD + target;
+                break;
+            case "bad":
+                url = VIPRE_URL_BAD + target;
+                break;
+            default:
+                url = VIPRE_URL_UNAVAILABLE;
+        }
+
+        browser.selectedTab = browser.addTab(url);
+    },
+
     open_wotsite: function (page, target, action, context, new_tab, has_base) {
         try {
             new_tab = new_tab === null ? true : new_tab;
@@ -569,26 +581,26 @@ var wot_browser =
 		return false;
 	},
 
-	installsearch: function()
-	{
-		try {
-			wot_prefs.setBool("install_search", false);
-
-			var bss = Components.classes["@mozilla.org/browser/search-service;1"]
-						.getService(Components.interfaces.nsIBrowserSearchService);
-
-			var url = WOT_SAFESEARCH_OSD_URL;
-			var lang = wot_util.getstring("lang");
-
-			if (lang) {
-				url = url.replace("/en-US", "/" + lang);
-			}
-
-			bss.addEngine(url, 1, null, false);
-		} catch (e) {
-			dump("wot_browser.installsearch: failed with " + e + "\n");
-		}
-	},
+//	installsearch: function()
+//	{
+//		try {
+//			wot_prefs.setBool("install_search", false);
+//
+//			var bss = Components.classes["@mozilla.org/browser/search-service;1"]
+//						.getService(Components.interfaces.nsIBrowserSearchService);
+//
+//			var url = WOT_SAFESEARCH_OSD_URL;
+//			var lang = wot_util.getstring("lang");
+//
+//			if (lang) {
+//				url = url.replace("/en-US", "/" + lang);
+//			}
+//
+//			bss.addEngine(url, 1, null, false);
+//		} catch (e) {
+//			dump("wot_browser.installsearch: failed with " + e + "\n");
+//		}
+//	},
 
 	get_document: function (frame)
 	{

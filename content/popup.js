@@ -1,21 +1,6 @@
 /*
 	popup.js
-	Copyright © 2006 - 2013  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
 const WOT_POPUP_HTML =
@@ -50,7 +35,7 @@ const WOT_POPUP_HTML =
         '<div id="wot-pp-cs" class="wot-pp-cs"></div>' +
         '</div>';
 
-const WOT_POPUP_STYLE = "@import \"chrome://wot/skin/include/popup.css\";";
+const WOT_POPUP_STYLE = "@import \"chrome://vipre/skin/include/popup.css\";";
 
 var wot_popup =
 {
@@ -230,25 +215,7 @@ var wot_popup =
             }
 
             // Update categories in the popup
-            var target_cats = wot_categories.target_categories(target),
-                cats = wot_categories.select_identified(target_cats),
-                cat_list = content.getElementById("wot-cat-list"),
-                cat_text = content.getElementById("wot-cat-text");
-
-            if (cats && !wot_util.isEmpty(cats) && cat_list) {
-                var ordered_cats = wot_categories.rearrange_categories(cats);
-                cat_text.style.display = "none";
-                if (wot_popup.update_categories(cat_list, ordered_cats.all, content) > 0) {
-                    wot_popup.toggle_categories(true, content); // show categories
-                } else {
-                    wot_popup.toggle_categories(false, content);
-                }
-
-            } else {
-                wot_popup.toggle_categories(false, content); // hide categories list
-            }
-
-
+            wot_popup.toggle_categories(false, content); // hide categories list
 
 			return true;
 
@@ -271,41 +238,6 @@ var wot_popup =
                 cat_list.style.display = "none";
             }
         }
-    },
-
-    update_categories: function (list_node, categories, content) {
-        var cnt = 0;
-
-        // remove all list items
-        while(list_node.firstChild) {
-            list_node.removeChild(list_node.firstChild);
-        }
-
-        for (var k in categories) {
-            if (cnt >= this.MAX_CATEGORIES) break;
-
-            var cat = categories[k],
-                cid = cat.id,
-                li = content.createElement("li"),
-                cls = ["cat-item"],
-                cat_name = wot_categories.get_category_name(cid, true); // name is already htmlescaped
-
-            if (!cat_name) {
-                continue;   // skip undefined categories, don't take them into account
-            }
-
-            cls.push(wot_categories.get_category_css(cid)); // css type is already htmlescaped
-            var cl = wot_util.get_level(WOT_CONFIDENCELEVELS, cat.c).name;
-            cls.push(cl);
-
-            li.textContent = cat_name;
-            li.setAttribute("class", cls.join(" "));
-
-            cnt++;
-            list_node.appendChild(li);
-        }
-
-        return cnt;
     },
 
 	hidelayer: function(content, appearance)

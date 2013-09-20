@@ -35,7 +35,7 @@
 }
 
 #wot-logo {
-    background: url("chrome://wot/skin/fusion/logo.png") top left no-repeat;
+    background: url("chrome://vipre/skin/fusion/logo.png") top left no-repeat;
     margin: 0;
     text-align: right;
     color: #A5A4A4;
@@ -93,7 +93,7 @@
 }
 
 .wot-rep {
-    background-image: url("chrome://wot/skin/b/donuts_150.png");
+    background-image: url("chrome://vipre/skin/b/donuts_150.png");
     background-repeat: no-repeat;
     background-position: 0 -165px;
     background-size: 35px 198px;
@@ -106,7 +106,7 @@
 }
 
 .wot-popup-layer-accessible .wot-rep {
-    background-image: url("chrome://wot/skin/b/accessible/donuts_150.png");
+    background-image: url("chrome://vipre/skin/b/accessible/donuts_150.png");
 }
 
 .wot-rep[reputation="r1"] {
@@ -134,7 +134,7 @@
     margin-left: -2px;
     margin-top: -5px;
     width: 34px;
-    background: url("chrome://wot/skin/b/confidence_150dpi.png") top left no-repeat;
+    background: url("chrome://vipre/skin/b/confidence_150dpi.png") top left no-repeat;
     background-size: 33px auto;
     background-position: 0 -168px;
     padding: 0;
@@ -163,7 +163,7 @@
 
 .wot-popup-layer .rating-legend-wrapper {
     /*position: absolute;*/
-    background: url("chrome://wot/skin/b/bubl_speech_c_150.png")  top left repeat-x;
+    background: url("chrome://vipre/skin/b/bubl_speech_c_150.png")  top left repeat-x;
     background-size: 1px 24px;
     height: 24px;
     margin: 1px 0 auto 14px;
@@ -179,7 +179,7 @@
     height: 24px;
     width: 17px;
     margin-left: -17px;
-    background: url("chrome://wot/skin/b/bubl_speech_l_150.png") top left no-repeat;
+    background: url("chrome://vipre/skin/b/bubl_speech_l_150.png") top left no-repeat;
     background-size: 17px 24px;
 }
 
@@ -189,7 +189,7 @@
     height: 24px;
     width: 17px;
     right: -17px;
-    background: url("chrome://wot/skin/b/bubl_speech_r_150.png") top left no-repeat;
+    background: url("chrome://vipre/skin/b/bubl_speech_r_150.png") top left no-repeat;
     background-size: 10px 24px;
     top: 0px;
 }

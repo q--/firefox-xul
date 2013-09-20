@@ -108,7 +108,7 @@
     left: 12px !important;
     width: 42px !important;
     height: 17px !important;
-    background: url("chrome://wot/skin/fusion/logo.png") top left no-repeat !important;
+    background: url("chrome://vipre/skin/fusion/logo.png") top left no-repeat !important;
 }
 
 .wot-warning {
@@ -200,7 +200,7 @@
 /* Donuts icons */
 .wot-comp-icon {
     position: absolute !important;
-    background-image: url("chrome://wot/skin/b/donuts_150.png") !important;
+    background-image: url("chrome://vipre/skin/b/donuts_150.png") !important;
     background-repeat: no-repeat !important;
     background-position: 0 -165px !important;
     background-size: 35px 198px !important;
@@ -211,7 +211,7 @@
 }
 
 #wotcontainer.accessible .wot-comp-icon {
-    background-image: url("chrome://wot/skin/b/accessible/donuts_150.png") !important;
+    background-image: url("chrome://vipre/skin/b/accessible/donuts_150.png") !important;
 }
 
 .wot-comp-icon[r="r1"] {
@@ -240,7 +240,7 @@
     margin-left: 26px !important;
     margin-top: -2px !important;
     width: 34px !important;
-    background: url("chrome://wot/skin/b/confidence_150dpi.png") top left no-repeat !important;
+    background: url("chrome://vipre/skin/b/confidence_150dpi.png") top left no-repeat !important;
     background-size: 33px auto !important;
     background-position: 0 -168px !important;
 }
@@ -264,7 +264,7 @@
 .rating-legend-wrapper {
     position: relative !important;
     margin: 3px 18px auto 74px !important;
-    background: url("chrome://wot/skin/b/bubl_speech_c_150.png")  top left repeat-x !important;
+    background: url("chrome://vipre/skin/b/bubl_speech_c_150.png")  top left repeat-x !important;
     background-size: 1px 23px !important;
     height: 23px !important;
     left: 1px;
@@ -277,7 +277,7 @@
     content: "" !important;
     height: 23px !important;
     width: 17px !important;
-    background: url("chrome://wot/skin/b/bubl_speech_l_150.png") top left no-repeat !important;
+    background: url("chrome://vipre/skin/b/bubl_speech_l_150.png") top left no-repeat !important;
     background-size: 17px 23px !important;
     left: -17px;
     top: 0;
@@ -289,7 +289,7 @@
     height: 23px !important;
     width: 17px !important;
     right: -17px !important;
-    background: url("chrome://wot/skin/b/bubl_speech_r_150.png") top left no-repeat !important;
+    background: url("chrome://vipre/skin/b/bubl_speech_r_150.png") top left no-repeat !important;
     background-size: 10px 23px !important;
     top: 0 !important;
 }
@@ -575,7 +575,7 @@
 
 .wot-wt-warning-content:before {
     content: "";
-    background-image: url("chrome://wot/skin/b/welcometips/wt_left_corner_2.png");
+    background-image: url("chrome://vipre/skin/b/welcometips/wt_left_corner_2.png");
     width: 20px;
     height: 26px;
     position: relative !important;
@@ -611,7 +611,7 @@
 }
 
 .wot-wt-logo {
-    background-image: url("chrome://wot/skin/fusion/logo.png");
+    background-image: url("chrome://vipre/skin/fusion/logo.png");
     background-repeat: no-repeat;
     background-position: center;
     height: 15px !important;
@@ -689,7 +689,7 @@
 
 .wot-bl-decoration {
     position: relative !important;
-    background: url("chrome://wot/skin/b/ws/robot.png") no-repeat !important;
+    background: url("chrome://vipre/skin/b/ws/robot.png") no-repeat !important;
     background-size: auto 72px !important;
     height: 72px !important;
     margin-left: -52px !important;
@@ -705,7 +705,7 @@
 
 .wot-blacklist {
     background: transparent !important;
-    background: url("chrome://wot/skin/b/ws/list_c.png") repeat-x !important;
+    background: url("chrome://vipre/skin/b/ws/list_c.png") repeat-x !important;
     display: inline-block !important;
     padding-top: 18px !important;
     background-size: 1px 164px !important;
@@ -715,7 +715,7 @@
 
 .wot-blacklist:before {
     content: "";
-    background: url("chrome://wot/skin/b/ws/list_l.png") no-repeat !important;
+    background: url("chrome://vipre/skin/b/ws/list_l.png") no-repeat !important;
     background-size: 36px auto !important;
     width: 36px !important;
     height: 164px !important;
@@ -726,7 +726,7 @@
 
 .wot-blacklist:after {
     content: "";
-    background: url("chrome://wot/skin/b/ws/list_r.png") no-repeat !important;
+    background: url("chrome://vipre/skin/b/ws/list_r.png") no-repeat !important;
     background-size: auto 164px !important;
     width: 30px !important;
     height: 164px !important;

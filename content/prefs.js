@@ -285,9 +285,9 @@ var wot_prefs =
 					wot_core.update();
 				}
 
-				if (this.install_search) {
-					wot_browser.installsearch();
-				}
+//				if (this.install_search) {
+//					wot_browser.installsearch();
+//				}
 
 				/* Always use prefetching when blocking is enabled */
 				if (wot_warning.isblocking()) {

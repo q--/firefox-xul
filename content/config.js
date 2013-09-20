@@ -1,21 +1,6 @@
 /*
 	config.js
-	Copyright © 2005 - 2013  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
 const WOT_PLATFORM = "firefox";
@@ -25,7 +10,11 @@ const WOT_VERSION  = "20130917";
  * Constants
  */
 
-const WOT_GUID = "{a0d7ccb3-214d-498b-b4aa-0e8fda9a7bf7}";
+const WOT_GUID = "vipre@threattrack.com";
+
+const VIPRE_URL_BAD = "http://go.threattracksecurity.com/?linkid=1569&URL=";
+const VIPRE_URL_GOOD = "http://go.threattracksecurity.com/?linkid=1570&URL=";
+const VIPRE_URL_UNAVAILABLE = "http://go.threattracksecurity.com/?linkid=1571";
 
 /* Reputation values */
 const WOT_MAX_REPUTATION   = 100;
@@ -36,12 +25,12 @@ const WOT_MIN_REPUTATION_2 = 20;
 
 const WOT_REPUTATIONLEVELS = [
         { level: "x", name: "rx", min: -2 },
-        { level: "0", name: "r0", min: -1 },
-        { level: "1", name: "r1", min:  0 },
-        { level: "2", name: "r2", min: WOT_MIN_REPUTATION_2 },
-        { level: "3", name: "r3", min: WOT_MIN_REPUTATION_3 },
-        { level: "4", name: "r4", min: WOT_MIN_REPUTATION_4 },
-        { level: "5", name: "r5", min: WOT_MIN_REPUTATION_5 }
+        { level: "0", name: "good", min: -1 },
+        { level: "1", name: "bad", min:  0 },
+        { level: "2", name: "bad", min: WOT_MIN_REPUTATION_2 },
+        { level: "3", name: "bad", min: WOT_MIN_REPUTATION_3 },
+        { level: "4", name: "good", min: WOT_MIN_REPUTATION_4 },
+        { level: "5", name: "good", min: WOT_MIN_REPUTATION_5 }
     ];
 
 /* Confidence values */
@@ -62,28 +51,11 @@ const WOT_CONFIDENCELEVELS = [
         { level: "5", name: "c5", min: WOT_MIN_CONFIDENCE_5 }
     ];
 
-// reference: http://www.mywot.com/wiki/Activity_scores
-const WOT_ACTIVITYSCORE_LEVELS = [
-        { name: "rookie", min: 0 },
-        { name: "bronze", min: 1500 },
-        { name: "silver", min: 3000 },
-        { name: "gold",     min: 6000 },
-        { name: "platinum", min: 10000 }
-    ];
-
-const WOT_AS_LEVELS = {
-        ROOKIE: 0,
-        BRONZE: 1500,
-        SILVER: 3000,
-        GOLD: 6000,
-        PLATINUM: 10000
-    };
-
 /* Applications */
-const WOT_COMPONENTS = [0, 4];
+const WOT_COMPONENTS = [0];
 
 /* Search */
-const WOT_SAFESEARCH_OSD_URL = "https://search.mywot.com/osd/en-US.xml";
+//const WOT_SAFESEARCH_OSD_URL = "https://search.mywot.com/osd/en-US.xml";
 
 /* API */
 const WOT_SERVICE_NORMAL		= "http://api.mywot.com";
@@ -142,12 +114,6 @@ const WOT_SERVICE_XML_QUERY_MSG_VERSION_LE		= "le";
 const WOT_SERVICE_XML_QUERY_MSG_VERSION_GE		= "ge";
 const WOT_SERVICE_XML_QUERY_MSG_THAN			= "than";
 const WOT_SERVICE_XML_QUERY_USER				= "user";
-//const WOT_SERVICE_XML_QUERY_USER_ICON			= "icon";
-//const WOT_SERVICE_XML_QUERY_USER_BAR			= "bar";
-//const WOT_SERVICE_XML_QUERY_USER_LENGTH			= "length";
-//const WOT_SERVICE_XML_QUERY_USER_URL			= "url";
-//const WOT_SERVICE_XML_QUERY_USER_TEXT			= "text";
-//const WOT_SERVICE_XML_QUERY_USER_NOTICE			= "notice";
 const WOT_SERVICE_XML_QUERY_STATUS				= "status";
 const WOT_SERVICE_XML_REGISTER					= "register";
 const WOT_SERVICE_XML_REGISTER_ID				= "id";
@@ -173,7 +139,6 @@ const WOT_MY_SESSION_LENGTH = 86340 * 1000; /* < 1d */
 
 /* Scorecard */
 const WOT_SCORECARD_PATH = "scorecard/";
-const WOT_SCORECARD_COMMENT = "/comment";
 const WOT_SCORECARD_RATE = "/rate";
 
 /* Operation intervals (in ms) */
@@ -211,8 +176,8 @@ const WOT_MAX_WARNINGS = 100;
 const WOT_DEFAULT_WARNING_LEVEL = 39;
 const WOT_DEFAULT_MIN_CONFIDENCE_LEVEL = 8;
 
-const WOT_BLOCK_LOADING = "chrome://wot/locale/loading.html";
-const WOT_BLOCK_BLOCKED = "chrome://wot/locale/blocked.html";
+const WOT_BLOCK_LOADING = "chrome://vipre/locale/loading.html";
+const WOT_BLOCK_BLOCKED = "chrome://vipre/locale/blocked.html";
 
 
 /*
@@ -226,7 +191,7 @@ const WOT_PREF_FORWARD = /^(http(s)?\:\/\/(.+\.)?mywot\.com)\/([^\/]{2}(-[^\/]+)
 const WOT_PREF_TRIGGER = /^(http(s)?\:\/\/(.+\.)?mywot\.com)\/([^\/]{2}(-[^\/]+)?\/)?(settings)\/.+/;
 
 
-const WOT_PREF = "weboftrust.";
+const WOT_PREF = "vipre.";
 
 /* Values */
 const WOT_WARNING_NONE			= 0;
@@ -250,36 +215,20 @@ const WOT_UPDATE_PATH = "update";
 
 /* Preferences and defaults */
 const wot_prefs_bool = [
+	[ "show_welcome_page",		    false ],
 	[ "accessible",					false ],
 	[ "button_created",				false ],
 	[ "create_button",				false ],
 	[ "enabled",					true  ],
 	[ "install_search",				false ],
-	[ "my_cookies",					true  ],
-	[ "prefetch",					false ],
+	[ "prefetch",					true ],
 	[ "private_disable",			false ],
 	[ "search_ignore_0",			false ],
-	[ "search_ignore_4",			true  ],
-	[ "search_scripts",				true  ],
+	[ "search_scripts",				false ],
 	[ "show_application_0",			true  ],
-	[ "show_application_1",			false ],
-	[ "show_application_2",			false ],
-	[ "show_application_3",			false ],
-	[ "show_application_4",			true  ],
-	[ "show_search_popup",			true  ],
+	[ "show_search_popup",			false ],
 	[ "use_search_level",			false ],
-	[ "ninja_donuts",   			false ],
-	[ "warning_unknown_0",			false ],
-	[ "warning_unknown_1",			false ],
-	[ "warning_unknown_2",			false ],
-	[ "warning_unknown_3",			false ],
-	[ "warning_unknown_4",			false ],
-	[ "feedback_enabled",			true  ],
-	[ "feedback_optedout",			false ],
-	[ "show_fulllist",			    false ],
-	[ "wt_rw_ok",			        false ],
-	[ "super_showtestimonies",	    false ], // show my rating on the search popup at bottom corners of the popup
-    [ "settingsui_parental",        false ]  // this is should not be considered by the add-on. Only to render prefs on the settings page
+	[ "warning_unknown_0",			false ]
 ];
 
 const wot_prefs_char = [
@@ -290,39 +239,23 @@ const wot_prefs_char = [
 	[ "last_message",				""	],
 	[ "last_version",				""	],
 	[ "norepsfor",					""	],
-	[ "partner",					""	],
 	[ "status_level",				""	],
 	[ "update_checked",				"0"	],
 	[ "warning_opacity",			"0.7" ],
 	[ "witness_id",					""	],
-	[ "witness_key",				""	],
-	[ "feedback_lasttimeasked",  	""	],
-    [ "wt_rw_shown_dt",			    "" ],    // timestamp when RW WelcomeTip was shown last time
-	[ "settingsui_warnlevel",  	    "normal" ], // this is should not be considered by the add-on. Only to render prefs on the settings page
-	[ "settingsui_searchlevel",  	"normal" ]
+	[ "witness_key",				""	]
 ];
 
 const wot_prefs_int = [
 	[ "min_confidence_level",		WOT_DEFAULT_MIN_CONFIDENCE_LEVEL ],
 	[ "popup_hide_delay",			1000 ],
 	[ "popup_show_delay",			200 ],
-	[ "ratingwindow_shown",			0 ],
 	[ "activity_score",			    0 ],
-	[ "wt_rw_shown",			    0 ],    // How many times RW WT was shown
 	[ "search_level",				WOT_MIN_REPUTATION_4 ],
 	[ "search_type",				WOT_SEARCH_TYPE_OPTIMIZED ],
 	[ "update_interval",			WOT_INTERVAL_UPDATE_CHECK ],
 	[ "warning_level_0",			WOT_DEFAULT_WARNING_LEVEL ],
-	[ "warning_level_1",			WOT_DEFAULT_WARNING_LEVEL ],
-	[ "warning_level_2",			WOT_DEFAULT_WARNING_LEVEL ],
-	[ "warning_level_3",			WOT_DEFAULT_WARNING_LEVEL ],
-	[ "warning_level_4",			0 ],
-	[ "warning_type_0",				WOT_WARNING_DOM ],
-	[ "warning_type_1",				WOT_WARNING_DOM ],
-	[ "warning_type_2",				WOT_WARNING_DOM ],
-	[ "warning_type_3",				WOT_WARNING_NONE ],
-	[ "warning_type_4",				WOT_WARNING_NONE ],
-	[ "settingsui_warntype",		WOT_WARNING_DOM ] // just for UI, other value is WOT_WARNING_BLOCK
+	[ "warning_type_0",				WOT_WARNING_BLOCK ]
 ];
 
 /* Search rules */
@@ -355,12 +288,6 @@ const WOT_SEARCH_POPUP			= "popup";
 const WOT_SEARCH_NINJA			= "ninja";
 
 /* contexts for opening WOT links */
-const WOT_URL_RWLOGO =       "rw-logo";
-const WOT_URL_RWSETTINGS =   "rw-settings";
-const WOT_URL_RWGUIDE =      "rw-guide";
-const WOT_URL_RWVIEWSC =     "rw-viewsc";
-const WOT_URL_RWPROFILE =    "rw-profile";
-const WOT_URL_RWMSG =        "rw-msg";  // unused
 const WOT_URL_WARNVIEWSC =   "warn-viewsc";
 const WOT_URL_WARNRATE =     "warn-rate";
 const WOT_URL_POPUPVIEWSC =  "popup";

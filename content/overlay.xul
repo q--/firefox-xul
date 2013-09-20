@@ -1,54 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://wot/skin/wot.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://wot/locale/wot.dtd">
+<?xml-stylesheet href="chrome://vipre/skin/wot.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://vipre/locale/wot.dtd">
 
 <!--
 	overlay.xul
-	Copyright © 2005 - 2013  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013  WOT Services Oy <info@mywot.com>
 -->
 
 <overlay id="wot-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    <script type="application/x-javascript" src="chrome://wot/content/config.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/categories.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/cache.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/commands.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/shared.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/util.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/ratingwindow.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/ui.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/prefs.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/my.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/warning.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/surveys.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/update.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/popup.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/search.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/settings.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/cookies.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/api.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/firstrun.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/partner.js"/>
-    <script type="application/x-javascript" src="chrome://wot/content/core.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/config.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/cache.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/commands.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/shared.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/util.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/ui.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/prefs.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/my.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/warning.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/update.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/popup.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/search.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/settings.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/cookies.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/api.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/firstrun.js"/>
+    <script type="application/x-javascript" src="chrome://vipre/content/core.js"/>
 
     <stringbundleset id="stringbundleset">
-        <stringbundle id="wot-strings" src="chrome://wot/locale/wot.properties"/>
+        <stringbundle id="wot-strings" src="chrome://vipre/locale/wot.properties"/>
     </stringbundleset>
 
     <commandset id="mainCommandSet">
@@ -61,15 +42,6 @@
     </commandset>
 
     <popupset id="mainPopupSet">
-        <!-- Testimony window -->
-        <panel id="wot-popup" position="bottomcenter bottomcenter"
-                   onpopupshowing="wot_rw.on_rw_open(event);"
-                   onpopuphiding="wot_rw.on_hide_popup();" noautofocus="false">
-
-            <iframe id="wot-rwframe" src="chrome://wot/content/rw/ratingwindow.html" type="content"
-                    width="576px" height="422px"/>
-        </panel>
-
         <!-- Indicator tooltip -->
         <tooltip id="wot-tooltip"
                  onpopupshowing="return wot_commands.tooltip_update(document.tooltipNode);">
@@ -102,15 +74,6 @@
                       command="wot-command-enabled"/>
         </menupopup>
     </popupset>
-
-    <!-- Browser content area menu -->
-    <popup id="contentAreaContextMenu">
-        <menuitem id="wot-content-openlinkscorecard"
-                  label="&wotLinkScorecard.label;"
-                  accesskey="&wotLinkScorecard.accesskey;"
-                  command="wot-command-openlinkscorecard"
-                  insertbefore="context-bookmarkpage"/>
-    </popup>
 
     <!-- Tools menu -->
     <menupopup id="menu_ToolsPopup">

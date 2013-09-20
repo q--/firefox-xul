@@ -44,7 +44,7 @@ body {
 }
 
 .wot-wt-introtip:before {
-    background-image: url("chrome://wot/skin/b/welcometips/wt_intro_top.png");
+    background-image: url("chrome://vipre/skin/b/welcometips/wt_intro_top.png");
     background-repeat: no-repeat;
     height: 11px;
     width: 218px;
@@ -122,7 +122,7 @@ body {
 }
 
 #wot-wt-intro-image1 {
-    background-image: url("chrome://wot/skin/fusion/16_16/plain/r5.png");
+    background-image: url("chrome://vipre/skin/fusion/16_16/plain/r5.png");
     background-repeat: no-repeat;
     padding: 0 0 0 16px;
 }
@@ -147,7 +147,7 @@ body {
     width: 45px;
     height: 44px;
     content: "";
-    background-image: url("chrome://wot/skin/b/welcometips/orange_badge.png");
+    background-image: url("chrome://vipre/skin/b/welcometips/orange_badge.png");
     background-repeat: no-repeat;
 }
 
@@ -178,7 +178,7 @@ body {
     position: absolute;
     right: 10px;
     top: 8px;
-    background-image: url("chrome://wot/skin/b/welcometips/close_icon.png");
+    background-image: url("chrome://vipre/skin/b/welcometips/close_icon.png");
     background-position: 0 0;
     cursor: pointer;
 }
@@ -196,7 +196,7 @@ body {
 
 .wot-wt-dtip:before {
     content: "";
-    background-image: url("chrome://wot/skin/b/welcometips/wt_left_corner_2.png");
+    background-image: url("chrome://vipre/skin/b/welcometips/wt_left_corner_2.png");
     width: 17px;
     height: 26px;
     position: relative !important;
@@ -206,7 +206,7 @@ body {
 }
 
 .wot-wt-logo {
-    background-image: url("chrome://wot/skin/fusion/logo.png");
+    background-image: url("chrome://vipre/skin/fusion/logo.png");
     background-repeat: no-repeat;
     background-position: center;
     height: 18px !important;

@@ -18,7 +18,7 @@
 	along with WOT. If not, see <http://www.gnu.org/licenses/>.
 */
 
-const WOT_WARNING_CSS = "@import \"chrome://wot/skin/include/warning.css\";";
+const WOT_WARNING_CSS = "@import \"chrome://vipre/skin/include/warning.css\";";
 
 var wot_warning =
 {
@@ -28,32 +28,7 @@ var wot_warning =
     warned: {},
 
     make_categories_block: function (categories, options) {
-
-        var tmpl = '';
-//        console.log("make_categories_block", categories);
-
-        if (!wot_util.isEmpty(categories)) {
-            var lst = [],
-                ordered_cats = wot_categories.rearrange_categories(categories).all;
-            for (var k in ordered_cats) {
-                var cat = ordered_cats[k], cid = cat.id,
-                    cconf = wot_util.get_level(WOT_CONFIDENCELEVELS, cat.c).name,
-                    css = wot_categories.get_category_css(cid),
-                    cat_name = wot_categories.get_category_name(cid),
-                    li = "<li class='cat-item " + css + " " + cconf + "'>" + cat_name + "</li>";
-                if (cat_name) {
-                    lst.push(li);
-                }
-            }
-
-            tmpl = "<div class='ws-categories-title'>{REASONTITLE}</div>" +
-                "<ul id='ws-categories-list'>" +
-                lst.join("") +
-                "</ul>";
-        }
-
-        return tmpl;
-
+        return "";
     },
 
     make_blacklists: function(blacklists, options) {
@@ -381,8 +356,8 @@ var wot_warning =
                 normalized_target = wot_cache.get(hostname, "normalized", hostname),
                 accessible = wot_prefs.accessible ? " accessible" : "";
 
-            var categories = wot_categories.target_categories(hostname),
-                blacklists = wot_categories.target_blacklists(hostname),
+            var categories = [],
+                blacklists = [],
                 warning_options = {};
 
             var is_blacklisted = blacklists && blacklists.length > 0;
@@ -416,7 +391,7 @@ var wot_warning =
                 [ "ACCESSIBLE", accessible ]
 			];
 
-            var warning_template = this.make_warning(wot_categories.select_identified(categories), blacklists, warning_options);
+            var warning_template = this.make_warning({}, blacklists, warning_options);
 
 			for (var j = 0; j < WOT_COMPONENTS.length; ++j) {
 

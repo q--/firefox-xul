@@ -57,13 +57,8 @@ var wot_firstrun =
 			}
 
 			var tab = "welcome";
-			var partner = wot_partner.getpartner();
 
-			if (partner) {
-				tab = partner + "/" + tab;
-			}
-
-			if (this.opentab(WOT_FIRSTRUN_WELCOME, wot_url.getprefurl(tab))) {
+			if (wot_prefs.show_welcome_page && this.opentab(WOT_FIRSTRUN_WELCOME, wot_url.getprefurl(tab))) {
 
 				// not a first time launch, but...
 				// check whether the date of first time is set, otherwise set it to 2 weeks ago date

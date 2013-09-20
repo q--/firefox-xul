@@ -626,12 +626,7 @@ var wot_core =
 			wot_pending.submit();
             wot_api_comments.processpending();
 
-			/* Check for updates (force update if no categories are loaded yet) */
-            var forced_update = wot_util.isEmpty(wot_categories.categories) ||
-                !wot_categories.grouping ||
-                wot_categories.grouping.length == 0;
-
-			wot_api_update.send(forced_update);
+			wot_api_update.send(false);
 
 			if (!wot_core.hostname || wot_url.isprivate(wot_core.hostname) ||
 					wot_url.isexcluded(wot_core.hostname)) {

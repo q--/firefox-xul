@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>{a0d7ccb3-214d-498b-b4aa-0e8fda9a7bf7}</em:id>
+		<em:id>vipre@threattrack.com</em:id>
 		<em:unpack>true</em:unpack>
-		<em:name>WOT</em:name>
+		<em:name>VIPRE Search Guard</em:name>
 		<em:version>%WOT_VERSION%</em:version>
-		<em:description>Web of trust.</em:description>
-		<em:creator>WOT Services Oy</em:creator>
-		<em:homepageURL>http://www.mywot.com/</em:homepageURL>
-		<em:iconURL>chrome://wot/skin/fusion/32_32/new_r5.png</em:iconURL>
-		<em:optionsURL>chrome://wot/content/settings.xul</em:optionsURL>
+		<em:description>VIPRE Search Guard</em:description>
+		<em:creator>ThreatTrack Security</em:creator>
+		<em:homepageURL>http://www.threattracksecurity.com/</em:homepageURL>
+		<em:iconURL>chrome://vipre/skin/fusion/32_32/new_r5.png</em:iconURL>
+		<!--<em:optionsURL>chrome://vipre/content/settings.xul</em:optionsURL>-->
 
 		<!-- Firefox -->
 		<em:targetApplication>

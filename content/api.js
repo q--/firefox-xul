@@ -907,10 +907,6 @@ var wot_api_update =
 				wot_prefs.setInt("update_interval", interval * 1000);
 			}
 
-            /* Categories */
-            var cats = response.getElementsByTagName(WOT_SERVICE_XML_UPDATE_CATEGORIES);
-            if (cats && cats[0]) wot_categories.parse(cats[0]);
-
 			/* Search rules */
 			var search = response.getElementsByTagName(WOT_SERVICE_XML_UPDATE_SEARCH);
 			if (search) wot_search.parse(search);
@@ -918,7 +914,6 @@ var wot_api_update =
 			/* Shared domains */
 			var shared = response.getElementsByTagName(WOT_SERVICE_XML_UPDATE_SHARED);
 			if (shared) wot_shared.parse(shared);
-
 
 			wot_prefs.flush();
 		} catch (e) {
@@ -1528,8 +1523,6 @@ var wot_api_comments = {
         }
 
         wot_cache.set_captcha(!!data.captcha);
-
-        wot_rw.update_ratingwindow_comment();
     },
 
     on_submit_comment_response: function (data) {
@@ -1562,8 +1555,6 @@ var wot_api_comments = {
         }
 
         wot_cache.set_captcha(!!data.captcha);
-
-        wot_rw.update_ratingwindow_comment(); // to update status "the website is commented by the user"
     },
 
     on_remove_comment_response: function (data) {
@@ -1593,7 +1584,5 @@ var wot_api_comments = {
                 wot_cache.update_comment(target, { status: WOT_QUERY_ERROR, error_code: error_code });
                 wot_prefs.clear(_this.PENDING_REMOVAL_SID + target);
         }
-
-        wot_rw.update_ratingwindow_comment(); // to update status "the website is commented by the user"
     }
 };

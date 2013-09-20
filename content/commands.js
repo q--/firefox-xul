@@ -91,7 +91,7 @@ var wot_commands =
 	tooltip_update: function(element)
 	{
 		try {
-			return (element == document.getElementById("wot-button") ||
+			return (element == document.getElementById("vipre-button") ||
 					element == document.getElementById("wot-bar") ||
 					element == document.getElementById("wot-bar-image"));
 		} catch (e) {
