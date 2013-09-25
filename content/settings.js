@@ -89,14 +89,14 @@ var wot_settings =
 						}, false);
 			}
 
-			var level = content.getElementById("wotlevel");
-
-			if (level) {
-				if (wot_crypto.islevel("registered")) {
-					level.setAttribute("level", "registered");
-				}
-				/* Other levels? */
-			}
+//			var level = content.getElementById("wotlevel");
+//
+//			if (level) {
+//				if (wot_crypto.islevel("registered")) {
+//					level.setAttribute("level", "registered");
+//				}
+//				/* Other levels? */
+//			}
 
 			wot_settings.addscript(content, "wotsettings_ready();");
 		} catch (e) {

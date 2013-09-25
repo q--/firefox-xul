@@ -29,7 +29,6 @@ var wot_util =
 	{
 		try {
 			return (wot_prefs.enabled &&
-					wot_api_register.ready &&
 						(!wot_prefs.private_disable ||
 						 !wot_browser.isprivatemode()));
 		} catch (e) {
@@ -909,9 +908,9 @@ var wot_crypto =
 				Number(counter) + 1);
 
 			return wot_hash.bintohex(wot_hash.sha1str(
-						wot_prefs.witness_id +
+//						wot_prefs.witness_id +
 						wot_prefs.update_checked +
-						wot_prefs.cookie_updated +
+//						wot_prefs.cookie_updated +
 						WOT_VERSION +
 						wot_browser.geturl() +
 						wot_browser.getreferrer() +
@@ -941,87 +940,87 @@ var wot_crypto =
 		}
 
 		return null;
-	},
+	}
 
-	authenticate: function(str)
-	{
-		try {
-			return wot_hash.bintohex(
-				wot_hash.hmac_sha1hex(wot_prefs.witness_key, str));
-		} catch (e) {
-			dump("wot_crypto.authenticate: failed with " + e + "\n");
-		}
-		return null;
-	},
+//	authenticate: function(str)
+//	{
+//		try {
+//			return wot_hash.bintohex(
+//				wot_hash.hmac_sha1hex(wot_prefs.witness_key, str));
+//		} catch (e) {
+//			dump("wot_crypto.authenticate: failed with " + e + "\n");
+//		}
+//		return null;
+//	},
 
-	authenticate_query: function(str)
-	{
-		return str + "&auth=" + this.authenticate(str);
-	},
+//	authenticate_query: function(str)
+//	{
+//		return str + "&auth=" + this.authenticate(str);
+//	},
 
-	islevel: function(level)
-	{
-		try {
-			var l = wot_prefs.status_level;
+//	islevel: function(level)
+//	{
+//		try {
+//			var l = wot_prefs.status_level;
+//
+//			if (!l || l.length != 40) {
+//				return false;
+//			}
+//
+//			var h = wot_hash.bintohex(wot_hash.hmac_sha1hex(
+//						wot_prefs.witness_key, "level=" + level));
+//
+//			return (l == h);
+//		} catch (e) {
+//			wdump("wot_crypto.islevel: failed with " + e);
+//		}
+//		return false;
+//	},
 
-			if (!l || l.length != 40) {
-				return false;
-			}
+//    encrypt: function(data, nonce)
+//    {
+//        try {
+//            if (data && nonce) {
+//                var key = wot_prefs.witness_key;
+//
+//                if (key) {
+//                    return btoa(wot_hash.bintostr(wot_arc4.crypt(
+//                        wot_arc4.create(wot_hash.hmac_sha1hex(key, nonce)),
+//                        wot_hash.strtobin(data))));
+//                }
+//            }
+//        } catch (e) {
+//            wdump("crypto.encrypt: failed with " + e);
+//        }
+//
+//        return null;
+//    },
 
-			var h = wot_hash.bintohex(wot_hash.hmac_sha1hex(
-						wot_prefs.witness_key, "level=" + level));
-
-			return (l == h);
-		} catch (e) {
-			wdump("wot_crypto.islevel: failed with " + e);
-		}
-		return false;
-	},
-
-    encrypt: function(data, nonce)
-    {
-        try {
-            if (data && nonce) {
-                var key = wot_prefs.witness_key;
-
-                if (key) {
-                    return btoa(wot_hash.bintostr(wot_arc4.crypt(
-                        wot_arc4.create(wot_hash.hmac_sha1hex(key, nonce)),
-                        wot_hash.strtobin(data))));
-                }
-            }
-        } catch (e) {
-            wdump("crypto.encrypt: failed with " + e);
-        }
-
-        return null;
-    },
-
-    decrypt: function(data, nonce, index)
-    {
-        try {
-            if (data && nonce) {
-                var key = wot_prefs.witness_key;
-
-                if (index == null || index < 0) {
-                    index = "";
-                } else {
-                    index = "-" + index;
-                }
-
-                if (key) {
-                    return wot_hash.bintostr(wot_arc4.crypt(
-                        wot_arc4.create(wot_hash.hmac_sha1hex(key,
-                            "response-" + nonce + index)),
-                        wot_hash.strtobin(atob(data))));
-                }
-            }
-        } catch (e) {
-            wdump("wot_crypto.decrypt(): failed with " + e);
-        }
-
-        return null;
-    }
+//    decrypt: function(data, nonce, index)
+//    {
+//        try {
+//            if (data && nonce) {
+//                var key = wot_prefs.witness_key;
+//
+//                if (index == null || index < 0) {
+//                    index = "";
+//                } else {
+//                    index = "-" + index;
+//                }
+//
+//                if (key) {
+//                    return wot_hash.bintostr(wot_arc4.crypt(
+//                        wot_arc4.create(wot_hash.hmac_sha1hex(key,
+//                            "response-" + nonce + index)),
+//                        wot_hash.strtobin(atob(data))));
+//                }
+//            }
+//        } catch (e) {
+//            wdump("wot_crypto.decrypt(): failed with " + e);
+//        }
+//
+//        return null;
+//    }
 };
 
 wot_modules.push({ name: "wot_crypto", obj: wot_crypto });
@@ -1192,94 +1191,94 @@ var wot_css =
 	}
 };
 
-var wot_file = {
-
-	wot_dir: "WOT",
-
-	import_libs: function()
-	{
-		Components.utils.import("resource://gre/modules/NetUtil.jsm");
-		Components.utils.import("resource://gre/modules/FileUtils.jsm");
-	},
-
-	read_json: function (filename, callback) {
-
-		try {
-
-			wot_file.import_libs();
-
-			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
-			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
-
-			NetUtil.asyncFetch(file, function(inputStream, status) {
-
-				if (!Components.isSuccessCode(status)) {
-					// Handle error!
-					callback({});
-					return;
-				}
-
-				try {
-					var data = NetUtil.readInputStreamToString(inputStream, inputStream.available());
-
-					if (data) {
-						var res = JSON.parse(data);
-						if (res instanceof Object) {
-							callback(res);
-						}
-					}
-					callback({});   // whether no data is loaded call it anyway to finish the load process
-
-				} catch (e) {
-					dump("utils.wot_file.read_json() is failed with " + e + "\n");
-					callback({});   // anyway, provide empty object
-					return;
-				}
-
-			});
-
-		} catch (e) {
-			dump("wot_file.read_json() failed with " + e + "\n");
-			callback({});   // anyway, provide empty object
-		}
-
-	},
-
-	save_json: function (filename, obj, callback) {
-
-		callback = callback || function(status){};
-
-		try {
-			wot_file.import_libs();
-
-			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
-			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
-
-			// You can also optionally pass a flags parameter here. It defaults to
-			// FileUtils.MODE_WRONLY | FileUtils.MODE_CREATE | FileUtils.MODE_TRUNCATE;
-			var ostream = FileUtils.openSafeFileOutputStream(file);
-
-			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
-				createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-			converter.charset = "UTF-8";
-
-			var data = JSON.stringify(obj);
-			var istream = converter.convertToInputStream(data);
-
-			NetUtil.asyncCopy(istream, ostream, function(status) {
-				if (!Components.isSuccessCode(status)) {
-					// Handle error!
-					callback(false);
-					return;
-				}
-
-				// Data has been written to the file.
-				callback(true);
-			});
-
-		} catch (e) {
-			dump("wot_file.save_json() failed with " + e + "\n");
-			callback(false);   // report about failed attempt to save
-		}
-	}
-};
+//var wot_file = {
+//
+//	wot_dir: "WOT",
+//
+//	import_libs: function()
+//	{
+//		Components.utils.import("resource://gre/modules/NetUtil.jsm");
+//		Components.utils.import("resource://gre/modules/FileUtils.jsm");
+//	},
+//
+//	read_json: function (filename, callback) {
+//
+//		try {
+//
+//			wot_file.import_libs();
+//
+//			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
+//			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
+//
+//			NetUtil.asyncFetch(file, function(inputStream, status) {
+//
+//				if (!Components.isSuccessCode(status)) {
+//					// Handle error!
+//					callback({});
+//					return;
+//				}
+//
+//				try {
+//					var data = NetUtil.readInputStreamToString(inputStream, inputStream.available());
+//
+//					if (data) {
+//						var res = JSON.parse(data);
+//						if (res instanceof Object) {
+//							callback(res);
+//						}
+//					}
+//					callback({});   // whether no data is loaded call it anyway to finish the load process
+//
+//				} catch (e) {
+//					dump("utils.wot_file.read_json() is failed with " + e + "\n");
+//					callback({});   // anyway, provide empty object
+//					return;
+//				}
+//
+//			});
+//
+//		} catch (e) {
+//			dump("wot_file.read_json() failed with " + e + "\n");
+//			callback({});   // anyway, provide empty object
+//		}
+//
+//	},
+//
+//	save_json: function (filename, obj, callback) {
+//
+//		callback = callback || function(status){};
+//
+//		try {
+//			wot_file.import_libs();
+//
+//			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
+//			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
+//
+//			// You can also optionally pass a flags parameter here. It defaults to
+//			// FileUtils.MODE_WRONLY | FileUtils.MODE_CREATE | FileUtils.MODE_TRUNCATE;
+//			var ostream = FileUtils.openSafeFileOutputStream(file);
+//
+//			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+//				createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+//			converter.charset = "UTF-8";
+//
+//			var data = JSON.stringify(obj);
+//			var istream = converter.convertToInputStream(data);
+//
+//			NetUtil.asyncCopy(istream, ostream, function(status) {
+//				if (!Components.isSuccessCode(status)) {
+//					// Handle error!
+//					callback(false);
+//					return;
+//				}
+//
+//				// Data has been written to the file.
+//				callback(true);
+//			});
+//
+//		} catch (e) {
+//			dump("wot_file.save_json() failed with " + e + "\n");
+//			callback(false);   // report about failed attempt to save
+//		}
+//	}
+//};

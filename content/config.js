@@ -16,6 +16,8 @@ const VIPRE_URL_BAD = "http://go.threattracksecurity.com/?linkid=1569&URL=";
 const VIPRE_URL_GOOD = "http://go.threattracksecurity.com/?linkid=1570&URL=";
 const VIPRE_URL_UNAVAILABLE = "http://go.threattracksecurity.com/?linkid=1571";
 
+const REAL_WOT_API_URL = "http://api.mywot.com";
+
 /* Reputation values */
 const WOT_MAX_REPUTATION   = 100;
 const WOT_MIN_REPUTATION_5 = 80;
@@ -58,7 +60,9 @@ const WOT_COMPONENTS = [0];
 //const WOT_SAFESEARCH_OSD_URL = "https://search.mywot.com/osd/en-US.xml";
 
 /* API */
-const WOT_SERVICE_NORMAL		= "http://api.mywot.com";
+//const WOT_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/bad.txt?target=";
+const WOT_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/good.txt?target=";
+//const WOT_SERVICE_NORMAL		= "http://localhost/WOT/Query?target=";
 const WOT_SERVICE_SECURE		= "https://api.mywot.com";
 
 const WOT_SERVICE_API_VERSION	= "/0.4/";
@@ -70,7 +74,6 @@ const WOT_SERVICE_API_REGISTER	= WOT_SERVICE_API_VERSION + "register";
 const WOT_SERVICE_API_RELOAD	= WOT_SERVICE_API_VERSION + "reload";
 const WOT_SERVICE_API_SUBMIT	= WOT_SERVICE_API_VERSION + "submit";
 const WOT_SERVICE_API_UPDATE    = WOT_SERVICE_API_VERSION + "update";
-const WOT_SERVICE_API_FEEDBACK    = WOT_SERVICE_API_VERSION + "feedback";
 
 /* API XML tags and attributes */
 const WOT_SERVICE_XML_LINK						= "link";
@@ -133,9 +136,6 @@ const WOT_SERVICE_XML_UPDATE_CATEGORIES			= "categories";
 
 /* My */
 const WOT_MY_URL = "http://www.mywot.com/";
-const WOT_MY_COOKIE_DOMAIN = ".mywot.com";
-const WOT_MY_TRIGGER = /^(.+\.)?mywot.com$/;
-const WOT_MY_SESSION_LENGTH = 86340 * 1000; /* < 1d */
 
 /* Scorecard */
 const WOT_SCORECARD_PATH = "scorecard/";
@@ -168,8 +168,8 @@ const WOT_MAX_LINK_PARAMS = 100;
 const WOT_MAX_LINK_HOSTSLEN = 4096; /* Characters */
 
 /* Parameters */
-const WOT_LENGTH_WITNESS_ID   = 40;	/* Characters */
-const WOT_LENGTH_WITNESS_KEY  = 40;
+//const WOT_LENGTH_WITNESS_ID   = 40;	/* Characters */
+//const WOT_LENGTH_WITNESS_KEY  = 40;
 
 /* Warnings */
 const WOT_MAX_WARNINGS = 100;
@@ -241,9 +241,9 @@ const wot_prefs_char = [
 	[ "norepsfor",					""	],
 	[ "status_level",				""	],
 	[ "update_checked",				"0"	],
-	[ "warning_opacity",			"0.7" ],
-	[ "witness_id",					""	],
-	[ "witness_key",				""	]
+	[ "warning_opacity",			"0.7" ]
+//	[ "witness_id",					""	],
+//	[ "witness_key",				""	]
 ];
 
 const wot_prefs_int = [

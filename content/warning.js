@@ -194,33 +194,13 @@ var wot_warning =
 				return WOT_WARNING_NONE;
 			}
 
-			var min_confidence = wot_prefs.min_confidence_level;
-			var level = wot_prefs["warning_level_" + app];
 			var r = wot_cache.get(hostname, "reputation_" + app);
-			var c = wot_cache.get(hostname, "confidence_" + app);
-			var x = wot_cache.get(hostname, "excluded_" + app);
-			var t = -1;
 
-			if (wot_cache.get(hostname, "status") == WOT_QUERY_OK) {
-				t = wot_cache.get(hostname, "testimony_" + app);
-			}
-
-			var unknown = wot_prefs["warning_unknown_" + app];
-
-			var rr = x ? 0 : r;
-			var cc = x ? level : c;
-
-			if (((rr >= 0 && r <= level && (cc >= min_confidence || unknown)) ||
-					(rr < 0 && unknown)) &&
-				  (t < 0 || t <= level)) {
-				if (r < 0) {
-					return (reason) ? WOT_REASON_UNKNOWN : type;
-				} else {
+			if (r < 100 && r >= 0) {
 					return (reason) ? WOT_REASON_RATING : type;
-				}
-			} else if (t >= 0 && t <= level) {
-				return (reason) ? WOT_REASON_TESTIMONY : type;
-			}
+            } else {
+                return WOT_WARNING_NONE;
+            }
 		} catch (e) {
 			dump("wot_warning.getwarningtype: failed with " + e + "\n");
 		}
@@ -236,18 +216,15 @@ var wot_warning =
 				return result;
 			}
 
-			for (var i = 0, a = 0; i < WOT_COMPONENTS.length; ++i) {
-                a = WOT_COMPONENTS[i];
-				var type = wot_warning.getwarningtype(hostname, a, false);
+            var type = wot_warning.getwarningtype(hostname, 0, false);
 
-				if (type > result) {
-					result = type;
-				}
+            if (type > result) {
+                result = type;
+            }
 
-				if (result == WOT_WARNING_BLOCK) {
-					break;
-				}
-			}
+            if (result == WOT_WARNING_BLOCK) {
+                return result;
+            }
 
 			if (result == WOT_WARNING_NOTIFICATION ||
 					result == WOT_WARNING_DOM) {

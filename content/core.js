@@ -160,8 +160,6 @@ var wot_core =
 				}
 
 				wot_prefs.setupdateui();
-				wot_api_register.send();
-				wot_my_session.update(true);
 
 				wot_core.loaded = true;
 				wot_core.update();
@@ -240,7 +238,7 @@ var wot_core =
 
 			// do past-cleaning on uninstall
 			if (wot_core.is_beingUninstalled) {
-				wot_core.clean_profile_dir();
+//				wot_core.clean_profile_dir();
 			}
 
 		} catch (e) {
@@ -552,53 +550,42 @@ var wot_core =
 		try {
 			wot_core.hostname = null;
 
-			if (!wot_api_register.ready || !wot_core.loaded) {
-				wot_status.set("notready",
-					wot_util.getstring("messages_notready"));
-				return;
-			}
+//			if (!wot_api_register.ready || !wot_core.loaded) {
+//				wot_status.set("notready",
+//					wot_util.getstring("messages_notready"));
+//				return;
+//			}
 
-			if (!wot_prefs.witness_id || !wot_prefs.witness_key ||
-					wot_prefs.witness_id.length  != WOT_LENGTH_WITNESS_ID ||
-					wot_prefs.witness_key.length != WOT_LENGTH_WITNESS_KEY) {
-				wot_api_register.ready = false;
-				wot_status.set("error",
-					wot_util.getstring("description_restart"));
-				return;
-			}
+//			if (!wot_prefs.witness_id || !wot_prefs.witness_key ||
+//					wot_prefs.witness_id.length  != WOT_LENGTH_WITNESS_ID ||
+//					wot_prefs.witness_key.length != WOT_LENGTH_WITNESS_KEY) {
+//				wot_api_register.ready = false;
+//				wot_status.set("error",
+//					wot_util.getstring("description_restart"));
+//				return;
+//			}
 
 			wot_core.hostname = wot_browser.gethostname();
 
-			/* Update session */
-			if (wot_core.hostname && WOT_MY_TRIGGER.test(wot_core.hostname)) {
-				wot_my_session.update(false);
-				wot_my_session.reload();
-
-				var url = wot_browser.geturl();
-				var match = url.match(WOT_PREF_FORWARD);
-
-				if (match) {
-					var section = match[WOT_PREF_FORWARD_TAB_MATCH];
-                    var base = (match[WOT_PREF_FORWARD_TAB_BASE] + "/settings/") || WOT_PREF_PATH;
-
-                        getBrowser().loadURIWithFlags(wot_url.getprefurl(section, false, base),
-						Components.interfaces.nsIWebNavigation
-							.LOAD_FLAGS_BYPASS_HISTORY, null, null);
-				}
-			}
+//			if (wot_core.hostname && WOT_MY_TRIGGER.test(wot_core.hostname)) {
+//
+//				var url = wot_browser.geturl();
+//				var match = url.match(WOT_PREF_FORWARD);
+//
+//				if (match) {
+//					var section = match[WOT_PREF_FORWARD_TAB_MATCH];
+//                    var base = (match[WOT_PREF_FORWARD_TAB_BASE] + "/settings/") || WOT_PREF_PATH;
+//
+//                        getBrowser().loadURIWithFlags(wot_url.getprefurl(section, false, base),
+//						Components.interfaces.nsIWebNavigation
+//							.LOAD_FLAGS_BYPASS_HISTORY, null, null);
+//				}
+//			}
 
 			if (!wot_util.isenabled()) {
 				wot_status.set("disabled",
 					wot_util.getstring("messages_disabled"));
 				return;
-			}
-
-			/* Store any pending testimonies (from this window) */
-			for (var i in wot_core.pending)  {
-				if (wot_pending.store(i)) {
-					wot_cache.set(i, "pending", false);
-					delete wot_core.pending[i];
-				}
 			}
 
 			/* Update any tabs waiting for reputations */
@@ -622,17 +609,12 @@ var wot_core =
 				return;
 			}
 
-			/* Submit any pending testimonies, comments and comments' removals */
-			wot_pending.submit();
-            wot_api_comments.processpending();
-
 			wot_api_update.send(false);
 
 			if (!wot_core.hostname || wot_url.isprivate(wot_core.hostname) ||
 					wot_url.isexcluded(wot_core.hostname)) {
 				/* Invalid or excluded hostname */
-				if (wot_cache.iscached(wot_core.hostname) &&
-						!wot_cache.get(wot_core.hostname, "pending")) {
+				if (wot_cache.iscached(wot_core.hostname)) {
 					wot_cache.destroy(wot_core.hostname);
 				}
 				wot_status.set("nohost",
@@ -673,7 +655,7 @@ var wot_core =
 					wot_status.update();
 				}
 				return;
-			} else if (!wot_cache.get(wot_core.hostname, "pending")) {
+			} else  {
 				if (status == WOT_QUERY_RETRY || status == WOT_QUERY_LINK) {
 					/* Retry immediately */
 					wot_status.set("inprogress",
@@ -701,26 +683,26 @@ var wot_core =
 	},
 
 	wot_service_url: function() {
-		return this.force_https ? WOT_SERVICE_SECURE : WOT_SERVICE_NORMAL;
+		return WOT_SERVICE_NORMAL;
 	},
 
 	clean_search_rules: function () {
 		// removes search rules from preferences
 		wot_prefs.deleteBranch(WOT_SEARCH);
 		wot_prefs.clear("update_checked");
-	},
-
-	clean_profile_dir: function () {
-		// removes only WOT dir in the profile folder
-		try {
-			var nsiDir = FileUtils.getDir("ProfD", [wot_file.wot_dir], false);
-			if (nsiDir && nsiDir.exists()) {
-				nsiDir.remove(true);    // 'true' for recursive removal
-			}
-		} catch (e) {
-			dump("wot_core.clean_profile_dir() failed with " + e + "\n");
-		}
 	}
+
+//	clean_profile_dir: function () {
+//		// removes only WOT dir in the profile folder
+//		try {
+//			var nsiDir = FileUtils.getDir("ProfD", [wot_file.wot_dir], false);
+//			if (nsiDir && nsiDir.exists()) {
+//				nsiDir.remove(true);    // 'true' for recursive removal
+//			}
+//		} catch (e) {
+//			dump("wot_core.clean_profile_dir() failed with " + e + "\n");
+//		}
+//	}
 };
 
 wot_core.init();

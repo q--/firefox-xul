@@ -48,13 +48,13 @@ var wot_firstrun =
 
 	load_delayed: function() {
 		try {
-			if (!wot_api_register.ready) {
-				window.setTimeout(function() {
-					wot_firstrun.load_delayed();
-				}, 500);
-
-				return;
-			}
+//			if (!wot_api_register.ready) {
+//				window.setTimeout(function() {
+//					wot_firstrun.load_delayed();
+//				}, 500);
+//
+//				return;
+//			}
 
 			var tab = "welcome";
 
