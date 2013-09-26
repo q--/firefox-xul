@@ -62,47 +62,21 @@ var wot_status = {
 				reputation = wot_cache.get(wot_core.hostname, "reputation_0");
 			}
 			
-			if (reputation > WOT_MAX_REPUTATION) {
-				reputation = WOT_MAX_REPUTATION;
-			}
-
-			var excluded = wot_cache.get(wot_core.hostname, "excluded_0");
-
 			/* Set status and description */
-			var rep_l, rep, r_level, description, testimonies = false;
+			var rep_l, rep, r_level, description;
 
-			for (var i = 0, a = 0; i < WOT_COMPONENTS.length; ++i) {
-                a = WOT_COMPONENTS[i];
-				if (wot_cache.get(wot_core.hostname, "testimony_" + a) >= 0) {
-					testimonies = true;
-					break;
-				}
-			}
-
-			if (excluded) {
-				r_level = "0";  // should be "excluded" maybe?
-				description = "";
-			} else {
-                rep_l = wot_util.get_level(WOT_REPUTATIONLEVELS, reputation);
-                r_level = rep_l.level;
-                rep = rep_l.name;
-				description = wot_util.getstring("reputationlevels_" + rep);
-			}
-
-			if (testimonies) {
-				r_level += "-testimony";
-			}
+            rep_l = wot_util.get_level(VIPRE_REPUTATIONLEVELS, reputation);
+            r_level = rep_l.level;
+            rep = rep_l.name;
+            description = wot_util.getstring("reputationlevels_" + rep);
 
 			this.set(r_level, description);
 
 			var type = wot_warning.isdangerous(wot_core.hostname, true);
-			var content = getBrowser().selectedBrowser.contentDocument;
-
-			if (type == WOT_WARNING_NOTIFICATION || type == WOT_WARNING_DOM) {
-				wot_warning.add(wot_core.hostname, content, type);
-			} else {
-				if(type != WOT_WARNING_BLOCK) wot_warning.hide(content);
-			}
+            if(type != WOT_WARNING_BLOCK) {
+                var content = getBrowser().selectedBrowser.contentDocument;
+                wot_warning.hide(content);
+            }
 
 		} catch (e) {
 			wdump("wot_status.update: failed with " + e);
@@ -181,7 +155,7 @@ var wot_ui = {
 
 	geticonurl: function(r, size, plain)
 	{
-        var image = wot_util.get_level(WOT_REPUTATIONLEVELS, r).name,
+        var image = wot_util.get_level(VIPRE_REPUTATIONLEVELS, r).name,
 		    base = "chrome://vipre/skin/vipre/";
 
 		return base + size + "_" + size + "/" + image + ".png";

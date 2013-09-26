@@ -23,12 +23,10 @@ var wot_api_link =
     get_status: function (response) {
         var res = response.trim();
         switch (res) {
-            case "good":
-                return -1;  // no info about a threat
             case "bad":
-                return 1;   // low level = there is a threat
-            default:
-                return -1;
+                return VIPRE_BAD_REPUTATION;   // low level = there is a threat
+            default:    // don't care about other states than "bad"
+                return VIPRE_REPUTATION_UKNOWN;
         }
     },
 
@@ -68,13 +66,10 @@ var wot_api_link =
 	{
 		try {
             for (var i = 0; i < batch.length; i++) {
-                wdump("fetching state for " + batch[i]);
                 var target = batch[i],
                     request = this._get_request(target, function (target, status) {
                         wdump("api_link: " + target);
                         if (rule) {
-                            wdump("rule = true; ");
-                            wdump(target + " r0 = " + wot_search.getreputation(target));
                             var obj = {};
                             obj[target] = true;
                             wot_search.update(rule, content, obj, true);
@@ -210,7 +205,7 @@ var wot_api_update =
 
 			var last = Date.now() - interval;
 
-			if (!force && WOT_VERSION == wot_prefs.last_version &&
+			if (!force && VIPRE_VERSION == wot_prefs.last_version &&
 					last < Number(wot_prefs.update_checked)) {
 				return;
 			}
@@ -218,7 +213,7 @@ var wot_api_update =
 			/* Increase the last check time a notch */
 			var next = last + WOT_INTERVAL_UPDATE_ERROR;
 
-			if (!wot_prefs.setChar("last_version", WOT_VERSION) ||
+			if (!wot_prefs.setChar("last_version", VIPRE_VERSION) ||
 					!wot_prefs.setChar("update_checked", next)) {
 				return;
 			}
@@ -261,7 +256,7 @@ var wot_api_update =
 			wot_prefs.setChar("update_checked", Date.now());
 
 			var update = null;
-			var tags = response.getElementsByTagName(WOT_PLATFORM);
+			var tags = response.getElementsByTagName(VIPRE_PLATFORM);
 
 			if (tags) {
 				update = tags.item(0);

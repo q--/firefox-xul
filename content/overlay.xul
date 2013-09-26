@@ -94,15 +94,4 @@
         </menu>
     </menupopup>
 
-    <!-- Toolbar indicator -->
-    <toolbarpalette id="BrowserToolbarPalette">
-        <toolbarbutton id="wot-button"
-                       class="toolbarbutton-1"
-                       label="&wot.label;"
-                       popup="wot-popup"
-                       context="wot-context-indicator"
-                       tooltip="wot-tooltip"
-                       insertbefore="urlbar-container"
-                       onclick="wot_events.click_button(event);"/>
-    </toolbarpalette>
 </overlay>

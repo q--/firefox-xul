@@ -189,12 +189,12 @@ var wot_core =
 
 	install_listener: {
 		onUninstalling: function(addon) {
-			if (addon.id == WOT_GUID) {
+			if (addon.id == VIPRE_GUID) {
 				wot_core.is_beingUninstalled = true;
 			}
 		},
 		onOperationCancelled: function(addon) {
-			if (addon.id == WOT_GUID) {
+			if (addon.id == VIPRE_GUID) {
 				wot_core.is_beingUninstalled = (addon.pendingOperations & AddonManager.PENDING_UNINSTALL) != 0;
 			}
 		}
@@ -350,8 +350,8 @@ var wot_core =
 
 			var blocked = "target=" + encodeURIComponent(hostname);
 
-			for (var i = 0, a = 0; i < WOT_COMPONENTS.length; ++i) {
-                a = WOT_COMPONENTS[i];
+			for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
+                a = VIPRE_COMPONENTS[i];
 				if (!wot_prefs["show_application_" + a]) {
 					continue;
 				}
@@ -370,7 +370,7 @@ var wot_core =
 
                 r = x ? -2 : r; // if excluded, then set level to -2
 
-				param += wot_util.get_level(WOT_REPUTATIONLEVELS, r).level;
+				param += wot_util.get_level(VIPRE_REPUTATIONLEVELS, r).level;
 
 				if (wot_prefs.accessible) {
 					param += "a";
@@ -683,7 +683,7 @@ var wot_core =
 	},
 
 	wot_service_url: function() {
-		return WOT_SERVICE_NORMAL;
+		return VIPRE_SERVICE_NORMAL;
 	},
 
 	clean_search_rules: function () {

@@ -3,136 +3,53 @@
 	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
-const WOT_PLATFORM = "firefox";
-const WOT_VERSION  = "20130917";
+const VIPRE_PLATFORM = "firefox";
+const VIPRE_VERSION  = "20130917";
 
 /*
  * Constants
  */
 
-const WOT_GUID = "vipre@threattrack.com";
+const VIPRE_GUID = "vipre@threattrack.com";
 
 const VIPRE_URL_BAD = "http://go.threattracksecurity.com/?linkid=1569&URL=";
 const VIPRE_URL_GOOD = "http://go.threattracksecurity.com/?linkid=1570&URL=";
 const VIPRE_URL_UNAVAILABLE = "http://go.threattracksecurity.com/?linkid=1571";
 
-const REAL_WOT_API_URL = "http://api.mywot.com";
-
 /* Reputation values */
-const WOT_MAX_REPUTATION   = 100;
-const WOT_MIN_REPUTATION_5 = 80;
-const WOT_MIN_REPUTATION_4 = 60;
-const WOT_MIN_REPUTATION_3 = 40;
-const WOT_MIN_REPUTATION_2 = 20;
+const VIPRE_BAD_REPUTATION = 0;
+const VIPRE_REPUTATION_UKNOWN   = -1;
 
-const WOT_REPUTATIONLEVELS = [
-        { level: "x", name: "rx", min: -2 },
-        { level: "0", name: "good", min: -1 },
-        { level: "1", name: "bad", min:  0 },
-        { level: "2", name: "bad", min: WOT_MIN_REPUTATION_2 },
-        { level: "3", name: "bad", min: WOT_MIN_REPUTATION_3 },
-        { level: "4", name: "good", min: WOT_MIN_REPUTATION_4 },
-        { level: "5", name: "good", min: WOT_MIN_REPUTATION_5 }
-    ];
-
-/* Confidence values */
-const WOT_MAX_CONFIDENCE   = 100;
-const WOT_MIN_CONFIDENCE_5 = 45;
-const WOT_MIN_CONFIDENCE_4 = 34;
-const WOT_MIN_CONFIDENCE_3 = 23;
-const WOT_MIN_CONFIDENCE_2 = 12;
-const WOT_MIN_CONFIDENCE_1 = 6;
-
-const WOT_CONFIDENCELEVELS = [
-        { level: "x", name: "cx", min: -2 },
-        { level: "0", name: "c0", min: -1 },
-        { level: "1", name: "c1", min: WOT_MIN_CONFIDENCE_1 },
-        { level: "2", name: "c2", min: WOT_MIN_CONFIDENCE_2 },
-        { level: "3", name: "c3", min: WOT_MIN_CONFIDENCE_3 },
-        { level: "4", name: "c4", min: WOT_MIN_CONFIDENCE_4 },
-        { level: "5", name: "c5", min: WOT_MIN_CONFIDENCE_5 }
+const VIPRE_REPUTATIONLEVELS = [
+        { level: "0", name: "good", min: VIPRE_REPUTATION_UKNOWN },
+        { level: "1", name: "bad", min:  VIPRE_BAD_REPUTATION }
     ];
 
 /* Applications */
-const WOT_COMPONENTS = [0];
+const VIPRE_COMPONENTS = [0];
 
 /* Search */
 //const WOT_SAFESEARCH_OSD_URL = "https://search.mywot.com/osd/en-US.xml";
 
 /* API */
-//const WOT_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/bad.txt?target=";
-const WOT_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/good.txt?target=";
-//const WOT_SERVICE_NORMAL		= "http://localhost/WOT/Query?target=";
-const WOT_SERVICE_SECURE		= "https://api.mywot.com";
+const REAL_WOT_API_URL = "http://api.mywot.com"; // this is used for receiving search rules from WOT
+
+//const VIPRE_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/bad.txt?target=";
+//const VIPRE_SERVICE_NORMAL		= "http://people.mywot.com/sami/vipre/good.txt?target=";
+const VIPRE_SERVICE_NORMAL		= "http://localhost:53911/WOT/Query?target="; // local webservice by VIPRE that provides websites' statuses
 
 const WOT_SERVICE_API_VERSION	= "/0.4/";
 const WOT_SERVICE_UPDATE_FORMAT	= 4;
-
-const WOT_SERVICE_API_LINK		= WOT_SERVICE_API_VERSION + "link";
-const WOT_SERVICE_API_QUERY		= WOT_SERVICE_API_VERSION + "query";
-const WOT_SERVICE_API_REGISTER	= WOT_SERVICE_API_VERSION + "register";
-const WOT_SERVICE_API_RELOAD	= WOT_SERVICE_API_VERSION + "reload";
-const WOT_SERVICE_API_SUBMIT	= WOT_SERVICE_API_VERSION + "submit";
 const WOT_SERVICE_API_UPDATE    = WOT_SERVICE_API_VERSION + "update";
 
 /* API XML tags and attributes */
-const WOT_SERVICE_XML_LINK						= "link";
-const WOT_SERVICE_XML_QUERY						= "query";
-const WOT_SERVICE_XML_QUERY_NONCE				= "nonce";
-const WOT_SERVICE_XML_QUERY_TARGET				= "target";
-const WOT_SERVICE_XML_QUERY_TARGET_INDEX		= "index";
-const WOT_SERVICE_XML_QUERY_TARGET_NORMAL		= "normalized";
-const WOT_SERVICE_XML_QUERY_APPLICATION			= "application";
-const WOT_SERVICE_XML_QUERY_APPLICATION_NAME	= "name";
-const WOT_SERVICE_XML_QUERY_APPLICATION_R		= "r";
-const WOT_SERVICE_XML_QUERY_APPLICATION_C		= "c";
-const WOT_SERVICE_XML_QUERY_APPLICATION_I		= "inherited";
-const WOT_SERVICE_XML_QUERY_APPLICATION_L		= "lowered";
-const WOT_SERVICE_XML_QUERY_APPLICATION_E		= "excluded";
-const WOT_SERVICE_XML_QUERY_APPLICATION_T		= "t";
-const WOT_SERVICE_XML_QUERY_CATEGORY		    = "category";
-const WOT_SERVICE_XML_QUERY_CATEGORY_NAME	    = "name";
-const WOT_SERVICE_XML_QUERY_CATEGORY_GROUP	    = "group";
-const WOT_SERVICE_XML_QUERY_CATEGORY_C		    = "c";
-const WOT_SERVICE_XML_QUERY_CATEGORY_I		    = "inherited";
-const WOT_SERVICE_XML_QUERY_CATEGORY_VOTE	    = "vote";
-const WOT_SERVICE_XML_QUERY_BLACKLIST		    = "bl";
-const WOT_SERVICE_XML_QUERY_BLACKLIST_TYPE	    = "type";
-const WOT_SERVICE_XML_QUERY_BLACKLIST_TIME	    = "time";
-const WOT_SERVICE_XML_QUERY_QUESTION			= "question";
-const WOT_SERVICE_XML_QUERY_QUESTION_ID			= "questionId";
-const WOT_SERVICE_XML_QUERY_QUESTION_TEXT		= "questionText";
-const WOT_SERVICE_XML_QUERY_CHOICE_TEXT 		= "choiceText";
-const WOT_SERVICE_XML_QUERY_DISMISS_TEXT 		= "dismiss";
-const WOT_SERVICE_XML_QUERY_MSG					= "message";
-const WOT_SERVICE_XML_QUERY_MSG_ID				= "id";
 const WOT_SERVICE_XML_QUERY_MSG_ID_MAINT		= "downtime";
-const WOT_SERVICE_XML_QUERY_MSG_TYPE			= "type";
-const WOT_SERVICE_XML_QUERY_MSG_URL				= "url";
-const WOT_SERVICE_XML_QUERY_MSG_TARGET			= "target";
-const WOT_SERVICE_XML_QUERY_MSG_TARGET_ALL		= "all";
-const WOT_SERVICE_XML_QUERY_MSG_VERSION			= "version";
-const WOT_SERVICE_XML_QUERY_MSG_VERSION_EQ		= "eq";
-const WOT_SERVICE_XML_QUERY_MSG_VERSION_LE		= "le";
-const WOT_SERVICE_XML_QUERY_MSG_VERSION_GE		= "ge";
-const WOT_SERVICE_XML_QUERY_MSG_THAN			= "than";
-const WOT_SERVICE_XML_QUERY_USER				= "user";
-const WOT_SERVICE_XML_QUERY_STATUS				= "status";
-const WOT_SERVICE_XML_REGISTER					= "register";
-const WOT_SERVICE_XML_REGISTER_ID				= "id";
-const WOT_SERVICE_XML_REGISTER_KEY				= "key";
-const WOT_SERVICE_XML_RELOAD					= "reload";
-const WOT_SERVICE_XML_RELOAD_ID					= WOT_SERVICE_XML_REGISTER_ID;
-const WOT_SERVICE_XML_RELOAD_KEY				= WOT_SERVICE_XML_REGISTER_KEY;
-const WOT_SERVICE_XML_SUBMIT					= "submit";
-const WOT_SERVICE_XML_SUBMIT_RESULT				= "result";
 const WOT_SERVICE_XML_UPDATE_INTERVAL			= "interval";
 const WOT_SERVICE_XML_UPDATE_SEARCH				= "search";
 const WOT_SERVICE_XML_UPDATE_SEARCH_NAME		= "name";
 const WOT_SERVICE_XML_UPDATE_SHARED				= "shared";
 const WOT_SERVICE_XML_UPDATE_SHARED_DOMAINS		= "domains";
 const WOT_SERVICE_XML_UPDATE_SHARED_LEVEL		= "level";
-const WOT_SERVICE_XML_UPDATE_CATEGORIES			= "categories";
 
 /* My */
 const WOT_MY_URL = "http://www.mywot.com/";
@@ -143,38 +60,24 @@ const WOT_SCORECARD_RATE = "/rate";
 
 /* Operation intervals (in ms) */
 const WOT_DELAY_WARNING					= 1000;				/* 1 s */
-const WOT_INTERVAL_BLOCK_ERROR			= 15 * 1000;		/* 15 s */
+const WOT_INTERVAL_BLOCK_ERROR			= 3 * 1000;		/* 3 s */
 const WOT_INTERVAL_CACHE_REFRESH 	  	= 30 * 60 * 1000;	/* 30 min */
 const WOT_INTERVAL_CACHE_REFRESH_BLOCK 	= 18000 * 1000;		/* 5 h */
 const WOT_INTERVAL_CACHE_REFRESH_ERROR	= 30 * 1000;		/* 30 s */
 const WOT_INTERVAL_LINK_RETRY			= 2 * 1000;			/* 2 s */
-const WOT_INTERVAL_REGISTER_ERROR 	  	= 30 * 1000;		/* 30 s */
-const WOT_INTERVAL_REGISTER_OFFLINE	  	= 30 * 1000;		/* 30 s */
-const WOT_INTERVAL_RELOAD_ERROR 	  	= 5 * 60 * 1000;	/* 5 min */
-const WOT_INTERVAL_SUBMIT_ERROR 		= 5 * 60 * 1000;	/* 5 min */
 const WOT_INTERVAL_UPDATE_CHECK		  	= 10800 * 1000;		/* 3 h */
 const WOT_MIN_INTERVAL_UPDATE_CHECK		= 30 * 60 * 1000;	/* 30 min */
 const WOT_MAX_INTERVAL_UPDATE_CHECK		= 3 * 86400 * 1000;	/* 3 d */
 const WOT_INTERVAL_UPDATE_ERROR		  	= 15 * 60 * 1000;	/* 15 min */
 const WOT_INTERVAL_UPDATE_OFFLINE 	  	= 30 * 1000;		/* 30 s */
-const WOT_TIMEOUT_QUERY 				= 15 * 1000;		/* 15 s */
-
-/* Maximum number of attempts to access service */
-const WOT_MAX_TRIES_SUBMIT = 30;
-const WOT_MAX_TRIES_LINK = 3;
+const WOT_TIMEOUT_QUERY 				= 3 * 1000;		/* 3 s */
 
 /* Maximum number of hostnames in a link query */
 const WOT_MAX_LINK_PARAMS = 100;
-const WOT_MAX_LINK_HOSTSLEN = 4096; /* Characters */
-
-/* Parameters */
-//const WOT_LENGTH_WITNESS_ID   = 40;	/* Characters */
-//const WOT_LENGTH_WITNESS_KEY  = 40;
 
 /* Warnings */
 const WOT_MAX_WARNINGS = 100;
-const WOT_DEFAULT_WARNING_LEVEL = 39;
-const WOT_DEFAULT_MIN_CONFIDENCE_LEVEL = 8;
+const WOT_DEFAULT_WARNING_LEVEL = 1;
 
 const WOT_BLOCK_LOADING = "chrome://vipre/locale/loading.html";
 const WOT_BLOCK_BLOCKED = "chrome://vipre/locale/blocked.html";
@@ -185,9 +88,6 @@ const WOT_BLOCK_BLOCKED = "chrome://vipre/locale/blocked.html";
  */
 
 const WOT_PREF_PATH = "settings/";
-const WOT_PREF_FORWARD_TAB_MATCH = 8;
-const WOT_PREF_FORWARD_TAB_BASE = 1;
-const WOT_PREF_FORWARD = /^(http(s)?\:\/\/(.+\.)?mywot\.com)\/([^\/]{2}(-[^\/]+)?\/)?(settings)(\/([^\/]+))?\/?(\?.+)?$/;
 const WOT_PREF_TRIGGER = /^(http(s)?\:\/\/(.+\.)?mywot\.com)\/([^\/]{2}(-[^\/]+)?\/)?(settings)\/.+/;
 
 
@@ -242,16 +142,13 @@ const wot_prefs_char = [
 	[ "status_level",				""	],
 	[ "update_checked",				"0"	],
 	[ "warning_opacity",			"0.7" ]
-//	[ "witness_id",					""	],
-//	[ "witness_key",				""	]
 ];
 
 const wot_prefs_int = [
-	[ "min_confidence_level",		WOT_DEFAULT_MIN_CONFIDENCE_LEVEL ],
 	[ "popup_hide_delay",			1000 ],
 	[ "popup_show_delay",			200 ],
 	[ "activity_score",			    0 ],
-	[ "search_level",				WOT_MIN_REPUTATION_4 ],
+	[ "search_level",				1 ],
 	[ "search_type",				WOT_SEARCH_TYPE_OPTIMIZED ],
 	[ "update_interval",			WOT_INTERVAL_UPDATE_CHECK ],
 	[ "warning_level_0",			WOT_DEFAULT_WARNING_LEVEL ],

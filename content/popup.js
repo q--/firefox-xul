@@ -164,34 +164,6 @@ var wot_popup =
 				return false;
 			}
 
-			for (var i = 0; i < WOT_COMPONENTS.length; ++i) {
-                var app = WOT_COMPONENTS[i];
-				var rep_elem = content.getElementById("wot-r" + app + "-rep" + this.postfix);
-				var cnf_elem = content.getElementById("wot-r" + app + "-cnf" + this.postfix);
-
-				if (!rep_elem || !cnf_elem) {
-					continue;
-				}
-
-				r = wot_cache.get(target, "reputation_" + app),
-				c = wot_cache.get(target, "confidence_" + app),
-		        x = wot_cache.get(target, "excluded_" + app),
-                t = wot_util.get_level(WOT_REPUTATIONLEVELS, wot_cache.get(target, "testimony_" + app)).name;
-
-                r = x ? -2 : r; // if Excluded is set, select proper rep level (rx);
-                rep_elem.setAttribute("reputation", wot_util.get_level(WOT_REPUTATIONLEVELS, r).name);
-
-                c = x ? -2 : c;
-			    cnf_elem.setAttribute("confidence", wot_util.get_level(WOT_CONFIDENCELEVELS, c).name);
-
-                // set testimonies for TR and CS to bottom corners of the popup testimony_
-                if (app == 0) {
-                    tr_t = t;
-                } else if (app == 4) {
-                    cs_t = t;
-                }
-			}
-
             // set target name
             var normalized_target = wot_cache.get(target, "normalized") || null;
 
@@ -199,19 +171,6 @@ var wot_popup =
             if (hostname_elem) {
                 var display_target = normalized_target && normalized_target.length ? normalized_target : target;
                 hostname_elem.textContent = wot_util.htmlescape(wot_shared.decodehostname(display_target));
-            }
-
-            // show user's ratings for the site
-            if (wot_prefs.super_showtestimonies) {
-                var tr_t_corner = content.getElementById("wot-pp-tr");
-                if (tr_t_corner && tr_t) {
-                    tr_t_corner.setAttribute("r", tr_t);
-                }
-
-                var cs_t_corner = content.getElementById("wot-pp-cs");
-                if (cs_t_corner && cs_t) {
-                    cs_t_corner.setAttribute("r", cs_t);
-                }
             }
 
             // Update categories in the popup

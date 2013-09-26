@@ -168,8 +168,8 @@ var wot_warning =
 		// decides whether we must block page or just warn
 		var blocking = false;
 		try {
-			for (var i = 0, a = 0; i < WOT_COMPONENTS.length; ++i) {
-                a = WOT_COMPONENTS[i];
+			for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
+                a = VIPRE_COMPONENTS[i];
 				if (wot_prefs["warning_type_" + a] == WOT_WARNING_BLOCK) {
 					blocking = true;
 					break;
@@ -226,16 +226,6 @@ var wot_warning =
                 return result;
             }
 
-			if (result == WOT_WARNING_NOTIFICATION ||
-					result == WOT_WARNING_DOM) {
-				var warned = wot_cache.get(hostname, "warned");
-
-				if (warned >= WOT_MAX_WARNINGS) {
-					result = WOT_WARNING_NONE;
-				} else if (increase) {
-					wot_cache.set(hostname, "warned", warned + 1);
-				}
-			}
 		} catch (e) {
 			dump("wot_warning.isdangerous: failed with " + e + "\n");
 		}
@@ -244,34 +234,34 @@ var wot_warning =
 
 	domcontentloaded: function(event)
 	{
-		try {
-			if (!event || !wot_util.isenabled()) {
-				return;
-			}
-
-            try {   // Workaround to resolve "TypeError: can't access dead object" at start of the browser
-                if (!event.originalTarget) { return; }
-            } catch (e) { return; }
-
-			var content = event.originalTarget;
-
-            // Don't show warnings in frames
-            if (!content || !content.defaultView || content.defaultView != content.defaultView.top ) {
-                return;
-            }
-
-			if (!content.location || !content.location.href || wot_url.isprivate(content.location.href)) {
-				return;
-			}
-
-			var hostname = wot_url.gethostname(content.location.href);
-
-			if (wot_warning.isdangerous(hostname, false) == WOT_WARNING_DOM) {
-				wot_warning.add(hostname, content, WOT_WARNING_DOM);
-			}
-		} catch (e) {
-			dump("wot_warning.domcontentloaded: failed with " + e + "\n");
-		}
+//		try {
+//			if (!event || !wot_util.isenabled()) {
+//				return;
+//			}
+//
+//            try {   // Workaround to resolve "TypeError: can't access dead object" at start of the browser
+//                if (!event.originalTarget) { return; }
+//            } catch (e) { return; }
+//
+//			var content = event.originalTarget;
+//
+//            // Don't show warnings in frames
+//            if (!content || !content.defaultView || content.defaultView != content.defaultView.top ) {
+//                return;
+//            }
+//
+//			if (!content.location || !content.location.href || wot_url.isprivate(content.location.href)) {
+//				return;
+//			}
+//
+//			var hostname = wot_url.gethostname(content.location.href);
+//
+//			if (wot_warning.isdangerous(hostname, false) == WOT_WARNING_DOM) {
+//				wot_warning.add(hostname, content, WOT_WARNING_DOM);
+//			}
+//		} catch (e) {
+//			dump("wot_warning.domcontentloaded: failed with " + e + "\n");
+//		}
 	},
 
 	getheight: function(content)
@@ -370,9 +360,9 @@ var wot_warning =
 
             var warning_template = this.make_warning({}, blacklists, warning_options);
 
-			for (var j = 0; j < WOT_COMPONENTS.length; ++j) {
+			for (var j = 0; j < VIPRE_COMPONENTS.length; ++j) {
 
-                var i = WOT_COMPONENTS[j];
+                var i = VIPRE_COMPONENTS[j];
 				// don't call getwarningtype() if forced_reason is provided
 				var t = forced_reason ? WOT_WARNING_NONE : this.getwarningtype(hostname, i, true);
 
@@ -387,14 +377,13 @@ var wot_warning =
 				}
 
 
-				var rep_l = wot_util.get_level(WOT_REPUTATIONLEVELS, r),
+				var rep_l = wot_util.get_level(VIPRE_REPUTATIONLEVELS, r),
                     r_level = rep_l.level,
                     r_name = rep_l.name;
 
 				if (r_level >= 0) {
 					replaces.push([ "RATING" + i, r_name ]);
 					replaces.push([ "RATINGEXPL" + i, wot_util.getstring("reputationlevels_" + r_name) ]);
-                    replaces.push([ "CONFIDENCE" + i, wot_util.get_level(WOT_CONFIDENCELEVELS, c).name ]);
 
 				} else if (x) {
 					replaces.push([ "RATING" + i, "rx" ]);

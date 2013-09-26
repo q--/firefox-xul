@@ -69,7 +69,7 @@ var wot_firstrun =
 				}
 
                 var update_url = [ WOT_MY_URL.replace(/^(.+)\/$/,"$1"), WOT_UPDATE_PATH,
-                                  wot_util.getstring("lang"), WOT_PLATFORM, WOT_VERSION ].join("/");
+                                  wot_util.getstring("lang"), VIPRE_PLATFORM, VIPRE_VERSION ].join("/");
                 this.opentab(WOT_FIRSTRUN_CURRENT, update_url);
 
 			} else {

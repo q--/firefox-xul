@@ -332,7 +332,7 @@ var wot_url =
 			base = base || WOT_PREF_PATH;
 
 			var path = base + wot_util.getstring("lang") +
-						"/" + WOT_PLATFORM + "/" + WOT_VERSION;
+						"/" + VIPRE_PLATFORM + "/" + VIPRE_VERSION;
 
 			var url = path;
 
@@ -362,7 +362,7 @@ var wot_url =
 			var params = "&lang=" +
 				(wot_util.getstring("lang") || "en-US");
 
-			params += "&version=" + WOT_PLATFORM + "-" + WOT_VERSION;
+			params += "&version=" + VIPRE_PLATFORM + "-" + VIPRE_VERSION;
 			return params;
 		} catch (e) {
 			dump("wot_url.getapiparams: failed with " + e + "\n");
@@ -911,7 +911,7 @@ var wot_crypto =
 //						wot_prefs.witness_id +
 						wot_prefs.update_checked +
 //						wot_prefs.cookie_updated +
-						WOT_VERSION +
+						VIPRE_VERSION +
 						wot_browser.geturl() +
 						wot_browser.getreferrer() +
 						counter +

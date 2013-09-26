@@ -860,13 +860,12 @@ var wot_search =
 		try {
 			var style = "";
 
-			for (var i in cache) {
-                wdump("search update " + i);
-				if (wot_cache.iscached(i)) {
-					var s = wot_cache.get(i, "status");
+			for (var target in cache) {
+				if (wot_cache.iscached(target)) {
+					var s = wot_cache.get(target, "status");
 
 					if (s == WOT_QUERY_OK || s == WOT_QUERY_LINK) {
-						style += this.getcss(rule, i);
+						style += this.getcss(rule, target);
 					}
 				}
 			}
@@ -940,8 +939,8 @@ var wot_search =
 						target: target
 					};
 
-					for (var i = 0, a = 0; i < WOT_COMPONENTS.length; ++i) {
-                        a = WOT_COMPONENTS[i];
+					for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
+                        a = VIPRE_COMPONENTS[i];
 						rv["reputation_" + a] =
 							wot_cache.get(target, "reputation_" + a);
 						rv["confidence_" + a] =
@@ -1167,7 +1166,7 @@ var wot_search =
 		try {
 			var target = event.originalTarget.getAttribute(wot_search.attribute),
                 r0 = wot_search.getreputation(target),
-                verdict = wot_util.get_level(WOT_REPUTATIONLEVELS, r0).name;
+                verdict = wot_util.get_level(VIPRE_REPUTATIONLEVELS, r0).name;
 			if (target && verdict) {
 				wot_browser.open_link(verdict, target);
 				event.stopPropagation();
