@@ -330,8 +330,7 @@ var wot_core =
 
 			this.blockedstreams[url] = stream;
 
-			pl.browser.loadURIWithFlags(WOT_BLOCK_LOADING + "#" +
-				encodeURIComponent(btoa(url)),
+			pl.browser.loadURIWithFlags(WOT_BLOCK_LOADING + "#" + encodeURIComponent(btoa(url)),
 				Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY,
 				null, null);
 
@@ -341,48 +340,25 @@ var wot_core =
 		}
 	},
 
-	showblocked: function(pl, request, url, hostname)
+	showblocked: function(pl, request, url, hostname, blocked_id)
 	{
 		try {
 			if (request) {
 				pl.abort(request);
 			}
 
-			var blocked = "target=" + encodeURIComponent(hostname);
+			var blocked_urlquery = [
+                "target=" + encodeURIComponent(hostname),
+                "id="+String(blocked_id)].join("&");
 
-			for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
-                a = VIPRE_COMPONENTS[i];
-				if (!wot_prefs["show_application_" + a]) {
-					continue;
-				}
+			// TODO: remember target url in memory, assign ID and pass this ID to the blocked page
+            blocked_urlquery = "?" + encodeURIComponent(btoa(blocked_urlquery));
 
-				var param = "";
-				var reason = wot_warning.getwarningtype(hostname, a, true);
+            pl.browser.loadURIWithFlags(WOT_BLOCK_BLOCKED + blocked_urlquery,
+                Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY,
+                null, null);
 
-				if (reason == WOT_REASON_TESTIMONY) {
-					param += "y";
-				} else if (reason == WOT_REASON_RATING) {
-					param += "r";
-				}
 
-				var r = wot_cache.get(hostname, "reputation_" + a),
-                    x = wot_cache.get(hostname, "excluded_" + a);
-
-                r = x ? -2 : r; // if excluded, then set level to -2
-
-				param += wot_util.get_level(VIPRE_REPUTATIONLEVELS, r).level;
-
-				if (wot_prefs.accessible) {
-					param += "a";
-				}
-
-				blocked += "&" + a + "=" + param;
-			}
-
-			blocked = "?" + encodeURIComponent(btoa(blocked)) + "#" +
-						encodeURIComponent(btoa(url));
-
-			pl.browser.loadURI(WOT_BLOCK_BLOCKED + blocked);
 		} catch (e) {
 			dump("wot_core.showblocked: failed with " + e + "\n");
 		}
@@ -407,9 +383,9 @@ var wot_core =
 			}
 
 			if (wot_cache.isok(hostname)) {
-				if (wot_warning.isdangerous(hostname, false) ==
-						WOT_WARNING_BLOCK) {
-					this.showblocked(pl, request, url, hostname);
+				if (wot_warning.isdangerous(hostname, false) == WOT_WARNING_BLOCK && !wot_warning.warned[hostname]) {
+                    var blocked_id = wot_warning.register_blocked(url);
+					this.showblocked(pl, request, url, hostname, blocked_id);
 				}
 
 				if (this.blockedstreams[url]) {
@@ -422,6 +398,31 @@ var wot_core =
 			dump("wot_core.block: failed with " + e + "\n");
 		}
 	},
+
+    bypass_blocking: function (blocked_id, target, wnd) {
+
+        var target_url = "";
+        if (blocked_id) {
+            target_url = wot_warning.remove_blocked(blocked_id);
+            if (!target_url) {
+                target_url = target;
+            } else {
+                target = wot_url.gethostname(target_url);   // override target by computed one from url
+            }
+        } else {
+            if (target) {
+                target_url = target;
+            } else {
+                target_url = VIPRE_URL_BAD;
+            }
+        }
+
+        wot_warning.warned[target] = true;  // remember the fact that we warned user and decided to proceed anyway
+        var browser = getBrowser();
+        browser.loadURIWithFlags(target_url,
+            Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY,
+            null, null);
+    },
 
 	updateloading: function()
 	{

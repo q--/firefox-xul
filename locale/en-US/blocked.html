@@ -1,17 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<script type="text/javascript" src="chrome://vipre/content/config.js"></script>
-		<script type="text/javascript" src="chrome://vipre/skin/include/blocked.js"></script>
+		<script type="text/javascript" src="chrome://vipre/skin/blocked.js"></script>
 		<script type="text/javascript" src="chrome://vipre/content/warning.js"></script>
 	    <style type="text/css">
-	        @import "chrome://vipre/skin/include/blocked.css";
+	        @import "chrome://vipre/skin/blocked.css";
 	    </style>
-	    <title>WOT: Blocked</title>
+        <title>Blocked Website</title>
 	</head>
+
 	<body id="wotblocked" onload="blocked_load();">
+
+        <div class="header">
+            <img src="chrome://vipre/skin/vipre/header.png" /></div>
+        <div class="message">
+            <h1>Visiting this site might harm your computer!</h1>
+
+            <p>This website is potentially malicious, dangerous, or unwanted (i.e., objectionable)&nbsp; <strong>VIPRE Search Guard has blocked this potentially harmful content from displaying.</strong></p>
+            &nbsp;<p>
+            If you feel this page was incorrectly blocked please visit our <a id="block" href="http://go.threattracksecurity.com/?linkid=1561">Blocked Website</a> page and submit the URL for review.
+        </p>
+            <p>
+                <br/>
+                <a id="vipre-back" class="ActionButton">Close and go back</a>
+                <a id="vipre-bypass">Continue to site</a> (not recommended)
+            </p>
+        </div>
+
 	</body>
 </html>

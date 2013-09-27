@@ -3,7 +3,26 @@
 <head>
 	<meta charset="utf-8">
 	<style type="text/css">
-		@import "chrome://vipre/skin/include/loading.css";
+        /* This styles can't be places in external file because
+        the visibility time is so low so styles don't have time to be loaded even. */
+        body {
+            background-color: silver;
+        }
+        #loading {
+            position: fixed;
+            top: 17%;
+            width: 100%;
+            text-align: center;
+        }
+
+        #text {
+            clear: both;
+            color: #222222;
+            font-family: "Tahoma", "Arial", sans-serif;
+            font-size: 25px;
+            width: 100%;
+            padding-top: 24px;
+        }
 	</style>
 	<title>Loading website...</title>
 </head>

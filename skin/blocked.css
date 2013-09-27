@@ -1,0 +1,114 @@
+body
+{
+    background: url("vipre/bg.png") top repeat-x;
+    width: 100%;
+    font-family: "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+#container
+{
+    width: 100%;
+    vertical-align: top;
+}
+
+.header
+{
+    vertical-align: top;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.message
+{
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+    padding: 0px 0 0 0;
+}
+
+.message p
+{
+    color: #444;
+    font-size: 14px;
+    line-height: 175%;
+}
+
+.message h1
+{
+    color: #e20000;
+    font-size: 20px;
+    padding: 10px 0 0 0;
+    margin-bottom: 0px;
+}
+
+.message strong
+{
+    color: #005fa0;
+}
+
+.message em
+{
+    color: #000;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.message a {
+    cursor: pointer;
+}
+
+.message a:link
+{
+    color: #0d91cf;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.message a:visited
+{
+    color: #0d91cf;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.message a:hover
+{
+    color: #0d91cf;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.message a:active
+{
+    color: #0d91cf;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.message .ActionButton {
+    background: url("vipre/normal.png");
+    color: white;
+    cursor: pointer;
+    display: block;
+    height: 46px;
+    padding-top: 18px;
+    margin: 0 auto;
+    text-align: center;
+    width: 266px;
+}
+
+.message .ActionButton:hover {
+    background: url("vipre/hover.png");
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.message .ActionButton:active {
+    background: url("vipre/active.png");
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}

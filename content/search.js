@@ -25,14 +25,13 @@ var wot_search =
 	load_delayed: function()
 	{
 		try {
-			if (this.rules) {
+
+			if (this.rules && !wot_util.isEmpty(this.rules) && wot_search.attribute) {
 				return;
 			}
-
-			this.attribute  = wot_crypto.getrandomid();
-			this.processed  = wot_crypto.getrandomid();
-			this.prestyleid = wot_crypto.getrandomid();
-
+            this.attribute  = wot_crypto.getrandomid();
+            this.processed  = wot_crypto.getrandomid();
+            this.prestyleid = wot_crypto.getrandomid();
 			this.rules = {};
 
 			/* Prefs */
@@ -447,18 +446,21 @@ var wot_search =
 				return;
 			}
 
-			var mo = new MutationObserver(function(mutations, observer) {
-					observer.disconnect();
-					delete(observer);
+            if (content) {
+                var mo = new MutationObserver(function(mutations, observer) {
+                    observer.disconnect();
+                    delete(observer);
 
-					window.setTimeout(function() {
-							wot_search.watch(content);
-						}, 500);
-				});
+                    window.setTimeout(function() {
+                        wot_search.watch(content);
+                    }, 500);
+                });
 
-			mo.observe(content, {
-				attributes: true, childList: true, subtree: true
-			});
+                mo.observe(content, {
+                    attributes: true, childList: true, subtree: true
+                });
+            }
+
 		} catch (e) {
 			dump("wot_search.watch: failed with " + e + "\n");
 		}
@@ -511,19 +513,13 @@ var wot_search =
 		return null;
 	},
 
-	is_ninja: function(rule)
-	{
-		return rule.ninja && wot_prefs.ninja_donuts;
-	},
-
 	addrating: function(target, content, link, rule)
 	{
 		try {
 			var elem = content.createElement("div");
 
 			if (elem) {
-
-				elem.setAttribute(this.attribute, target);
+				elem.setAttribute(wot_search.attribute, target);
 				elem.setAttribute("style", "cursor: pointer; " +
 					"width: 16px; " +
 					"height: 16px;" +
@@ -706,6 +702,12 @@ var wot_search =
 
 	process: function(content)
 	{
+        try {
+            if(!content) {return null}
+        } catch(e) {
+            wdump("Dead object accessed");
+        }
+
 		try {
 			if (!wot_util.isenabled() || !content || !content.links) {
 				return null;
@@ -813,30 +815,13 @@ var wot_search =
 			}
 
 			if (rule && contentmatch) {
-				if (rule.script) {
-					this.addscript(content, rule.script);
-				}
-
-				if(this.is_ninja(rule)) {
-					/* Visibility and CSS transitions for Ninja-donuts */
-
-					var ninja_style =
-						"div[" + this.attribute + "] {" +
-						"-moz-transition: opacity 0.1s cubic-bezier(0.25,0.1,0.25,1) 0.5s;" +
-						"} " +
-						"div[" + this.attribute + "].visible {" +
-						"-moz-transition: opacity 0s;" +
-						"opacity: 1.0;" +
-						"} " +
-						"div[" + this.attribute + "].invisible {" +
-						"opacity: 0.0;" +
-						"}";
-					this.addstyle(content, ninja_style, "wotninja");
-				}
+                // Don't inject JS to VIPRE's Search Guard!
+//				if (rule.script) {
+//					this.addscript(content, rule.script);
+//				}
 
 				if (rule.prestyle) {
-					this.addstyle(content, this.formatcss(rule.prestyle),
-						this.prestyleid);
+					this.addstyle(content, this.formatcss(rule.prestyle), this.prestyleid);
 				}
 
 				/* Add styles for cached ratings */
@@ -881,43 +866,43 @@ var wot_search =
 	sandboxapi: {
 		loadscript: function(sandbox, url)
 		{
-			try {
-				if (!sandbox || typeof(url) != "string" ||
-						!/^https?\:\/\//.test(url)) {
-					return;
-				}
-
-				var request = new XMLHttpRequest();
-
-				request.open("GET", url);
-				new wot_cookie_remover(request);
-
-				request.onload = function() {
-					wot_search.sandboxapi.lastloadedscript = {
-						url: url,
-						code: request.responseText,
-						status: request.status,
-						time: Date.now()
-					};
-
-					if (request.status != 200 || !request.responseText ||
-							!request.responseText.length) {
-						return;
-					}
-
-					try {
-						Components.utils.evalInSandbox(request.responseText,
-							sandbox);
-					} catch (e) {
-						dump("wot_search.sandboxapi.loadscript: evalInSandbox " +
-							"failed with " + e + "\n");
-					}
-				};
-
-				request.send(null);
-			} catch (e) {
-				dump("wot_search.sandboxapi.loadscript: failed with " + e + "\n");
-			}
+//			try {
+//				if (!sandbox || typeof(url) != "string" ||
+//						!/^https?\:\/\//.test(url)) {
+//					return;
+//				}
+//
+//				var request = new XMLHttpRequest();
+//
+//				request.open("GET", url);
+//				new wot_cookie_remover(request);
+//
+//				request.onload = function() {
+//					wot_search.sandboxapi.lastloadedscript = {
+//						url: url,
+//						code: request.responseText,
+//						status: request.status,
+//						time: Date.now()
+//					};
+//
+//					if (request.status != 200 || !request.responseText ||
+//							!request.responseText.length) {
+//						return;
+//					}
+//
+//					try {
+//						Components.utils.evalInSandbox(request.responseText,
+//							sandbox);
+//					} catch (e) {
+//						dump("wot_search.sandboxapi.loadscript: evalInSandbox " +
+//							"failed with " + e + "\n");
+//					}
+//				};
+//
+//				request.send(null);
+//			} catch (e) {
+//				dump("wot_search.sandboxapi.loadscript: failed with " + e + "\n");
+//			}
 		},
 
 		getlastscript: function(sandbox)
@@ -927,36 +912,36 @@ var wot_search =
 
 		getratings: function(sandbox, url)
 		{
-			try {
-				if (typeof(url) != "string") {
-					return null;
-				}
-
-				var target = wot_idn.utftoidn(wot_url.gethostname(url));
-
-				if (wot_cache.isok(target)) {
-					var rv = {
-						target: target
-					};
-
-					for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
-                        a = VIPRE_COMPONENTS[i];
-						rv["reputation_" + a] =
-							wot_cache.get(target, "reputation_" + a);
-						rv["confidence_" + a] =
-							wot_cache.get(target, "confidence_" + a);
-						rv["testimony_"  + a] =
-							wot_cache.get(target, "testimony_"  + a);
-						rv["excluded_"  + a] =
-							wot_cache.get(target, "excluded_"  + a);
-					}
-
-					return rv;
-				}
-			} catch (e) {
-				dump("wot_search.sandboxapi.getratings: failed with " + e +
-					"\n");
-			}
+//			try {
+//				if (typeof(url) != "string") {
+//					return null;
+//				}
+//
+//				var target = wot_idn.utftoidn(wot_url.gethostname(url));
+//
+//				if (wot_cache.isok(target)) {
+//					var rv = {
+//						target: target
+//					};
+//
+//					for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
+//                        a = VIPRE_COMPONENTS[i];
+//						rv["reputation_" + a] =
+//							wot_cache.get(target, "reputation_" + a);
+//						rv["confidence_" + a] =
+//							wot_cache.get(target, "confidence_" + a);
+//						rv["testimony_"  + a] =
+//							wot_cache.get(target, "testimony_"  + a);
+//						rv["excluded_"  + a] =
+//							wot_cache.get(target, "excluded_"  + a);
+//					}
+//
+//					return rv;
+//				}
+//			} catch (e) {
+//				dump("wot_search.sandboxapi.getratings: failed with " + e +
+//					"\n");
+//			}
 
 			return null;
 		},
@@ -1047,46 +1032,46 @@ var wot_search =
 
 	addscript: function(content, code)
 	{
-		try {
-			if (!wot_prefs.search_scripts || !code.length) {
-				return;
-			}
-
-			var sandbox = content.wotsandbox;
-
-			if (!sandbox) {
-				var wnd = new XPCNativeWrapper(content.defaultView);
-				var sandbox = new Components.utils.Sandbox(wnd);
-
-				sandbox.window = wnd;
-				sandbox.document = sandbox.window.document;
-				sandbox.__proto__ = sandbox.window;
-
-				sandbox.wot_loadscript =
-					this.getsandboxfunc(sandbox, "loadscript");
-				sandbox.wot_getlastscript =
-					this.getsandboxfunc(sandbox, "getlastscript");
-				sandbox.wot_getratings =
-					this.getsandboxfunc(sandbox, "getratings");
-				sandbox.wot_getpreference =
-					this.getsandboxfunc(sandbox, "getpreference");
-				sandbox.wot_setpreference =
-					this.getsandboxfunc(sandbox, "setpreference");
-				sandbox.wot_getapiparams =
-					this.getsandboxfunc(sandbox, "getapiparams");
-
-				content.wotsandbox = sandbox;
-			}
-
-			try {
-				Components.utils.evalInSandbox(code, sandbox);
-			} catch (e) {
-				dump("wot_search.addscript: evalInSandbox failed with " +
-					e + "\n");
-			}
-		} catch (e) {
-			dump("wot_search.addscript: failed with " + e + "\n");
-		}
+//		try {
+//			if (!wot_prefs.search_scripts || !code.length) {
+//				return;
+//			}
+//
+//			var sandbox = content.wotsandbox;
+//
+//			if (!sandbox) {
+//				var wnd = new XPCNativeWrapper(content.defaultView);
+//				var sandbox = new Components.utils.Sandbox(wnd);
+//
+//				sandbox.window = wnd;
+//				sandbox.document = sandbox.window.document;
+//				sandbox.__proto__ = sandbox.window;
+//
+//				sandbox.wot_loadscript =
+//					this.getsandboxfunc(sandbox, "loadscript");
+//				sandbox.wot_getlastscript =
+//					this.getsandboxfunc(sandbox, "getlastscript");
+//				sandbox.wot_getratings =
+//					this.getsandboxfunc(sandbox, "getratings");
+//				sandbox.wot_getpreference =
+//					this.getsandboxfunc(sandbox, "getpreference");
+//				sandbox.wot_setpreference =
+//					this.getsandboxfunc(sandbox, "setpreference");
+//				sandbox.wot_getapiparams =
+//					this.getsandboxfunc(sandbox, "getapiparams");
+//
+//				content.wotsandbox = sandbox;
+//			}
+//
+//			try {
+//				Components.utils.evalInSandbox(code, sandbox);
+//			} catch (e) {
+//				dump("wot_search.addscript: evalInSandbox failed with " +
+//					e + "\n");
+//			}
+//		} catch (e) {
+//			dump("wot_search.addscript: failed with " + e + "\n");
+//		}
 	},
 
 	addstyle: function(content, css, id)

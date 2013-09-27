@@ -768,6 +768,7 @@ var wot_hash =
 	sha1bin: function(bin)
 	{
 		try {
+            if (!this.handle) this.load_delayed();
 			this.handle.init(Components.interfaces.nsICryptoHash.SHA1);
 			this.handle.update(bin, bin.length);
 

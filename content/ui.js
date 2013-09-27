@@ -72,12 +72,6 @@ var wot_status = {
 
 			this.set(r_level, description);
 
-			var type = wot_warning.isdangerous(wot_core.hostname, true);
-            if(type != WOT_WARNING_BLOCK) {
-                var content = getBrowser().selectedBrowser.contentDocument;
-                wot_warning.hide(content);
-            }
-
 		} catch (e) {
 			wdump("wot_status.update: failed with " + e);
 		}

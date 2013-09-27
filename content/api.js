@@ -32,9 +32,6 @@ var wot_api_link =
 
     _get_request: function (target, callback) {
         var request = new XMLHttpRequest();
-
-        wdump(wot_core.wot_service_url() + target);
-
         request.open("GET", wot_core.wot_service_url() + target);
 
         new wot_cookie_remover(request);
@@ -43,9 +40,6 @@ var wot_api_link =
         {
             try {
                 if (this.status == 200) {
-                    wdump(target);
-                    wdump(this.responseText);
-
                     var status = wot_api_link.get_status(this.responseText);
                     wot_cache.add_target(target, status);
                     wot_cache.set(target, "inprogress", false);
@@ -68,7 +62,7 @@ var wot_api_link =
             for (var i = 0; i < batch.length; i++) {
                 var target = batch[i],
                     request = this._get_request(target, function (target, status) {
-                        wdump("api_link: " + target);
+//                        wdump("api_link: " + target);
                         if (rule) {
                             var obj = {};
                             obj[target] = true;
@@ -225,7 +219,6 @@ var wot_api_update =
 
 			request.open("GET", REAL_WOT_API_URL +
 				WOT_SERVICE_API_UPDATE +
-//				"?id="		+ wot_prefs.witness_id +
 				"?nonce="	+ wot_crypto.nonce() +
 				"&format="	+ WOT_SERVICE_UPDATE_FORMAT +
 				wot_url.getapiparams());
