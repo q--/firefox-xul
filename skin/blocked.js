@@ -3,7 +3,7 @@
  Copyright © 2013  WOT Services Oy <info@mywot.com>
  */
 
-var WOT_QUERY_OK = 1;
+var VIPRE_QUERY_OK = 1;
 
 var blocked_target = null;
 
@@ -120,7 +120,7 @@ var wot_browser = {
 // copy-pasted from core.js - not a best way, I know.
 var wot_core = {
 	get_level: function(r) {
-		if (r >= WOT_MAX_REPUTATION) {
+		if (r >= VIPRE_MAX_REPUTATION) {
 			return 5;
 		} else if (r >= 0) {
 			return 1;
@@ -150,10 +150,10 @@ function blocked_action() {
 	var reasons = {
 		reputation: false,
 		userrating: false,
-		reason: WOT_REASON_RATING     // will be set to reason of showing warning
+		reason: VIPRE_REASON_RATING     // will be set to reason of showing warning
 	};
 
-    wot_prefs["warning_type_0"] = WOT_WARNING_BLOCK;
+    wot_prefs["warning_type_0"] = VIPRE_WARNING_BLOCK;
     wot_prefs["warning_level_0"] = 40;
 
     m = RegExp("id=([^&]*)").exec(query);
@@ -170,7 +170,7 @@ function blocked_action() {
 		wot_warning.is_blocked = true;
 		el_wotblocked.setAttribute("exit_mode", wot_warning.set_exitmode(document));
 		wot_warning.load_delayed(true); // init warning with blocked=true flag to hide "Goto the site" button
-		wot_warning.add(blocked_target, document, WOT_WARNING_DOM, reasons.reason);
+		wot_warning.add(blocked_target, document, VIPRE_WARNING_DOM, reasons.reason);
 	}
 }
 

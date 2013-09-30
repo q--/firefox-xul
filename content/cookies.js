@@ -18,8 +18,8 @@
 	along with WOT. If not, see <http://www.gnu.org/licenses/>.
 */
 
-const WOT_COOKIE_TIMEOUT = 10000;
-const WOT_COOKIE_TOPIC = "http-on-modify-request";
+const VIPRE_COOKIE_TIMEOUT = 10000;
+const VIPRE_COOKIE_TOPIC = "http-on-modify-request";
 
 function wot_cookie_remover(request)
 {
@@ -27,9 +27,9 @@ function wot_cookie_remover(request)
 
 	this.service = Components.classes["@mozilla.org/observer-service;1"].
 						getService(Components.interfaces.nsIObserverService);
-	this.service.addObserver(this, WOT_COOKIE_TOPIC, false);
+	this.service.addObserver(this, VIPRE_COOKIE_TOPIC, false);
 
-	this.timeout = window.setTimeout(this.stop, WOT_COOKIE_TIMEOUT);
+	this.timeout = window.setTimeout(this.stop, VIPRE_COOKIE_TIMEOUT);
 }
 
 wot_cookie_remover.prototype =
@@ -51,7 +51,7 @@ wot_cookie_remover.prototype =
 	observe: function(subject, topic, data)
 	{
 		try {
-			if (topic == WOT_COOKIE_TOPIC && subject == this.channel) {
+			if (topic == VIPRE_COOKIE_TOPIC && subject == this.channel) {
 				this.channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 				this.channel.setRequestHeader("Cookie", "", false);
 				this.stop();
@@ -70,7 +70,7 @@ wot_cookie_remover.prototype =
 			}
 
 			if (this.service) {
-				this.service.removeObserver(this, WOT_COOKIE_TOPIC);
+				this.service.removeObserver(this, VIPRE_COOKIE_TOPIC);
 				this.service = null;
 			}
 

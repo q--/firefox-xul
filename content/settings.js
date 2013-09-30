@@ -66,7 +66,7 @@ var wot_settings =
 			var content = event.originalTarget;
 
 			if (!content || !content.location || !content.location.href ||
-					!WOT_PREF_TRIGGER.test(content.location.href)) {
+					!VIPRE_PREF_TRIGGER.test(content.location.href)) {
 				return;
 			}
 
@@ -267,7 +267,7 @@ var wot_settings =
 						continue;
 					}
 				
-					var id = WOT_SEARCH + "." + item.rule + ".enabled";
+					var id = VIPRE_SEARCH + "." + item.rule + ".enabled";
 
                     search_rules.push({
                         id: id,

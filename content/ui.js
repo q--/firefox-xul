@@ -25,7 +25,7 @@ var wot_status = {
 			if (wot_api_query.message.length > 0 &&
 				wot_api_query.message_type.length > 0 &&
 				wot_api_query.message_id != wot_prefs.last_message &&
-				wot_api_query.message_id != WOT_SERVICE_XML_QUERY_MSG_ID_MAINT) {
+				wot_api_query.message_id != VIPRE_SERVICE_XML_QUERY_MSG_ID_MAINT) {
 				status += "-update";
 			}
 

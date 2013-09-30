@@ -6,18 +6,18 @@
 var wot_search =
 {
 	attrstr: [
-			WOT_SEARCH_DISPLAY,
-			WOT_SEARCH_URL,
-			WOT_SEARCH_IGN,
-			WOT_SEARCH_URLIGN,
-			WOT_SEARCH_PRESTYLE,
-			WOT_SEARCH_SCRIPT,
-			WOT_SEARCH_STYLE
+			VIPRE_SEARCH_DISPLAY,
+			VIPRE_SEARCH_URL,
+			VIPRE_SEARCH_IGN,
+			VIPRE_SEARCH_URLIGN,
+			VIPRE_SEARCH_PRESTYLE,
+			VIPRE_SEARCH_SCRIPT,
+			VIPRE_SEARCH_STYLE
     ],
 
 	attrint: [
-			WOT_SEARCH_DYNAMIC,
-			WOT_SEARCH_SEARCHLEVEL
+			VIPRE_SEARCH_DYNAMIC,
+			VIPRE_SEARCH_SEARCHLEVEL
 		],
 
     VIPRE_VERDICT_ATTR: "vipre_status",
@@ -38,7 +38,7 @@ var wot_search =
 			this.sync();
 			this.pbi = wot_prefs.pref.QueryInterface(
 							Components.interfaces.nsIPrefBranch2);
-			this.pbi.addObserver(WOT_PREF + WOT_SEARCH, this, false);
+			this.pbi.addObserver(VIPRE_PREF + VIPRE_SEARCH, this, false);
 		} catch (e) {
 			dump("wot_search.load: failed with " + e + "\n");
 		}
@@ -48,7 +48,7 @@ var wot_search =
 	{
 		try {
 			if (this.pbi) {
-				this.pbi.removeObserver(WOT_PREF + WOT_SEARCH, this);
+				this.pbi.removeObserver(VIPRE_PREF + VIPRE_SEARCH, this);
 				this.pbi = null;
 			}
 		} catch (e) {
@@ -95,34 +95,34 @@ var wot_search =
 			var node = child.firstChild;
 
 			while (node) {
-				if (node.nodeName == WOT_SEARCH_CONTENT_ATTR) {
+				if (node.nodeName == VIPRE_SEARCH_CONTENT_ATTR) {
 					/* Attribute rule */
-					var key = base + WOT_SEARCH_CONTENT_ATTR + attr + ".";
+					var key = base + VIPRE_SEARCH_CONTENT_ATTR + attr + ".";
 
 					/* Flags (optional) */
-					this.setchar(key + WOT_SEARCH_CONTENT_FLAGS,
-						node.getAttribute(WOT_SEARCH_CONTENT_FLAGS));
+					this.setchar(key + VIPRE_SEARCH_CONTENT_FLAGS,
+						node.getAttribute(VIPRE_SEARCH_CONTENT_FLAGS));
 
 					/* Attribute name and regexp */
-					if (this.setchar(key + WOT_SEARCH_CONTENT_NAME,
-							node.getAttribute(WOT_SEARCH_CONTENT_NAME)) &&
-						this.setchar(key + WOT_SEARCH_CONTENT_RE,
-							node.getAttribute(WOT_SEARCH_CONTENT_RE))) {
+					if (this.setchar(key + VIPRE_SEARCH_CONTENT_NAME,
+							node.getAttribute(VIPRE_SEARCH_CONTENT_NAME)) &&
+						this.setchar(key + VIPRE_SEARCH_CONTENT_RE,
+							node.getAttribute(VIPRE_SEARCH_CONTENT_RE))) {
 						++attr;
 					} else {
 						wot_prefs.deleteBranch(key);
 					}
-				} else if (node.nodeName == WOT_SEARCH_CONTENT_VALUE) {
+				} else if (node.nodeName == VIPRE_SEARCH_CONTENT_VALUE) {
 					/* Value rule */
-					var key = base + WOT_SEARCH_CONTENT_VALUE + value + ".";
+					var key = base + VIPRE_SEARCH_CONTENT_VALUE + value + ".";
 					
 					/* Flags (optional) */
-					this.setchar(key + WOT_SEARCH_CONTENT_FLAGS,
-						node.getAttribute(WOT_SEARCH_CONTENT_FLAGS));
+					this.setchar(key + VIPRE_SEARCH_CONTENT_FLAGS,
+						node.getAttribute(VIPRE_SEARCH_CONTENT_FLAGS));
 
 					/* Regexp */
-					if (this.setchar(key + WOT_SEARCH_CONTENT_RE,
-							node.getAttribute(WOT_SEARCH_CONTENT_RE))) {
+					if (this.setchar(key + VIPRE_SEARCH_CONTENT_RE,
+							node.getAttribute(VIPRE_SEARCH_CONTENT_RE))) {
 						++value;
 					} else {
 						wot_prefs.deleteBranch(key);
@@ -142,8 +142,8 @@ var wot_search =
 			var entry = base + child.nodeName + match + ".";
 
 			/* Condition */
-			var cond = child.getAttribute(WOT_SEARCH_MATCH_COND);
-			this.setchar(entry + WOT_SEARCH_MATCH_COND, cond);
+			var cond = child.getAttribute(VIPRE_SEARCH_MATCH_COND);
+			this.setchar(entry + VIPRE_SEARCH_MATCH_COND, cond);
 
 			if (cond) {
 				var index = 0;
@@ -151,7 +151,7 @@ var wot_search =
 
 				/* Subrules */
 				while (node) {
-					if (node.nodeName == WOT_SEARCH_MATCH) {
+					if (node.nodeName == VIPRE_SEARCH_MATCH) {
 						this.parsematchrule(entry, node, index++);
 					}
 
@@ -162,12 +162,12 @@ var wot_search =
 			}
 
 			/* Document (optional) */
-			this.setchar(entry + WOT_SEARCH_MATCH_DOC,
-				child.getAttribute(WOT_SEARCH_MATCH_DOC));
+			this.setchar(entry + VIPRE_SEARCH_MATCH_DOC,
+				child.getAttribute(VIPRE_SEARCH_MATCH_DOC));
 
 			/* Element */
-			if (!this.setchar(entry + WOT_SEARCH_MATCH_ELEM,
-					child.getAttribute(WOT_SEARCH_MATCH_ELEM))) {
+			if (!this.setchar(entry + VIPRE_SEARCH_MATCH_ELEM,
+					child.getAttribute(VIPRE_SEARCH_MATCH_ELEM))) {
 				return;
 			}
 
@@ -181,12 +181,12 @@ var wot_search =
 	parseprerule: function(base, child, pre)
 	{
 		try {
-			var entry = base + WOT_SEARCH_PRE + pre + ".";
+			var entry = base + VIPRE_SEARCH_PRE + pre + ".";
 
-			if (this.setchar(entry + WOT_SEARCH_PRE_RE,
-					child.getAttribute(WOT_SEARCH_PRE_RE)) &&
-				this.setint(entry + WOT_SEARCH_PRE_MATCH,
-					child.getAttribute(WOT_SEARCH_PRE_MATCH))) {
+			if (this.setchar(entry + VIPRE_SEARCH_PRE_RE,
+					child.getAttribute(VIPRE_SEARCH_PRE_RE)) &&
+				this.setint(entry + VIPRE_SEARCH_PRE_MATCH,
+					child.getAttribute(VIPRE_SEARCH_PRE_MATCH))) {
 				return true;
 			} else {
 				wot_prefs.deleteBranch(entry);
@@ -201,30 +201,30 @@ var wot_search =
 	parserule: function(node)
 	{
 		try {
-			var name = node.getAttribute(WOT_SERVICE_XML_UPDATE_SEARCH_NAME);
+			var name = node.getAttribute(VIPRE_SERVICE_XML_UPDATE_SEARCH_NAME);
 
 			if (!name) {
 				return;
 			}
 
-			var base = WOT_SEARCH + "." + name + ".";
-			var enabled = wot_prefs.getBool(base + WOT_SEARCH_ENABLED, true);
+			var base = VIPRE_SEARCH + "." + name + ".";
+			var enabled = wot_prefs.getBool(base + VIPRE_SEARCH_ENABLED, true);
 
 			wot_prefs.deleteBranch(base);
 
 			/* Don't forget the enabled status */
 			if (!enabled) {
-				wot_prefs.setBool(base + WOT_SEARCH_ENABLED, enabled);
+				wot_prefs.setBool(base + VIPRE_SEARCH_ENABLED, enabled);
 			}
 
-			var url = node.getAttribute(WOT_SEARCH_URL);
-			var display = node.getAttribute(WOT_SEARCH_DISPLAY);
+			var url = node.getAttribute(VIPRE_SEARCH_URL);
+			var display = node.getAttribute(VIPRE_SEARCH_DISPLAY);
 
 			if (!url || !display) {
 				return;
 			}
 
-			var remove = node.getAttribute(WOT_SEARCH_REMOVE);
+			var remove = node.getAttribute(VIPRE_SEARCH_REMOVE);
 
 			if (remove && remove.toLowerCase() == "true") {
 				return;
@@ -249,13 +249,13 @@ var wot_search =
 				if (elem) {
 					index[elem] = index[elem] || 0;
 
-					if (elem == WOT_SEARCH_PRE) {
+					if (elem == VIPRE_SEARCH_PRE) {
 						this.parseprerule(base, child, index[elem]++);
-					} else if (elem == WOT_SEARCH_MATCH ||
-							   elem == WOT_SEARCH_POPUP) {
+					} else if (elem == VIPRE_SEARCH_MATCH ||
+							   elem == VIPRE_SEARCH_POPUP) {
 						this.parsematchrule(base, child, index[elem]++);
-					} else if (elem == WOT_SEARCH_TARGET) {
-						this.parsecontentrules(base + WOT_SEARCH_TARGET + ".",
+					} else if (elem == VIPRE_SEARCH_TARGET) {
+						this.parsecontentrules(base + VIPRE_SEARCH_TARGET + ".",
 							child);
 					}
 				}
@@ -343,9 +343,9 @@ var wot_search =
 			this.rules[name].pre = this.rules[name].pre || [];
 			this.rules[name].pre[index] = this.rules[name].pre[index] || {};
 
-			if (attr == WOT_SEARCH_PRE_MATCH) {
+			if (attr == VIPRE_SEARCH_PRE_MATCH) {
 				this.rules[name].pre[index][attr] = wot_prefs.getInt(pref, 0);
-			} else if (attr == WOT_SEARCH_PRE_RE) {
+			} else if (attr == VIPRE_SEARCH_PRE_RE) {
 				this.rules[name].pre[index][attr] = wot_prefs.getChar(pref, "");
 			}
 		} catch (e) {
@@ -376,16 +376,16 @@ var wot_search =
 				};
 			}
 
-			var pref = WOT_SEARCH + "." + rule;
+			var pref = VIPRE_SEARCH + "." + rule;
 
 			if (m[5] != null && next) {
-				if (attr == WOT_SEARCH_PRE) {
+				if (attr == VIPRE_SEARCH_PRE) {
 					this.loadprerule(name, pref, index, next);
-				} else if (attr == WOT_SEARCH_MATCH ||
-						attr == WOT_SEARCH_POPUP) {
+				} else if (attr == VIPRE_SEARCH_MATCH ||
+						attr == VIPRE_SEARCH_POPUP) {
 					this.loadmatchrule(name, attr, pref, index, next);
 				}
-			} else if (attr == WOT_SEARCH_TARGET) {
+			} else if (attr == VIPRE_SEARCH_TARGET) {
 				this.rules[name].target =
 					this.loadruletree(this.rules[name].target || {},
 						pref, next);
@@ -406,7 +406,7 @@ var wot_search =
 		try {
 			this.rules = {};
 
-			var branch = wot_prefs.ps.getBranch(WOT_PREF + WOT_SEARCH + ".");
+			var branch = wot_prefs.ps.getBranch(VIPRE_PREF + VIPRE_SEARCH + ".");
 			var children = branch.getChildList("", {});
 
 			for (var i = 0; i < children.length; ++i) {
@@ -446,7 +446,7 @@ var wot_search =
 				return;
 			}
 
-            if (content) {
+            if (content && content.firstChild) {
                 var mo = new MutationObserver(function(mutations, observer) {
                     observer.disconnect();
                     delete(observer);
@@ -801,7 +801,7 @@ var wot_search =
 				}
 
 				if (wot_cache.iscached(target) &&
-						wot_cache.get(target, "status") != WOT_QUERY_RETRY) {
+						wot_cache.get(target, "status") != VIPRE_QUERY_RETRY) {
 					cache[target] = target;
 				} else {
 					fetch[target] = target;
@@ -849,7 +849,7 @@ var wot_search =
 				if (wot_cache.iscached(target)) {
 					var s = wot_cache.get(target, "status");
 
-					if (s == WOT_QUERY_OK || s == WOT_QUERY_LINK) {
+					if (s == VIPRE_QUERY_OK || s == VIPRE_QUERY_LINK) {
 						style += this.getcss(rule, target);
 					}
 				}
@@ -953,7 +953,7 @@ var wot_search =
 					return null;
 				}
 
-				var type = wot_prefs.pref.getPrefType(WOT_PREF + name);
+				var type = wot_prefs.pref.getPrefType(VIPRE_PREF + name);
 
 				switch (type) {
 				case wot_prefs.pref.PREF_STRING:
@@ -1109,7 +1109,7 @@ var wot_search =
 		try {
 			var status = wot_cache.get(name, "status");
 
-			if (status != WOT_QUERY_OK && status != WOT_QUERY_LINK) {
+			if (status != VIPRE_QUERY_OK && status != VIPRE_QUERY_LINK) {
 				return -1;
 			}
 

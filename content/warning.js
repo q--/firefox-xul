@@ -74,39 +74,39 @@ var wot_warning =
 	isblocking: function()
 	{
 		// decides whether we must block page or just warn
-		return (wot_prefs["warning_type_0"] == WOT_WARNING_BLOCK);
+		return (wot_prefs["warning_type_0"] == VIPRE_WARNING_BLOCK);
 	},
 
 	getwarningtype: function(hostname, app, reason)
 	{
 		try {
 			if (!wot_prefs["show_application_" + app]) {
-				return WOT_WARNING_NONE;
+				return VIPRE_WARNING_NONE;
 			}
 
 			var type = wot_prefs["warning_type_" + app];
 
-			if (type == WOT_WARNING_NONE) {
-				return WOT_WARNING_NONE;
+			if (type == VIPRE_WARNING_NONE) {
+				return VIPRE_WARNING_NONE;
 			}
 
 			var r = wot_cache.get(hostname, "reputation_" + app);
 
 			if (r < 100 && r >= 0) {
-					return (reason) ? WOT_REASON_RATING : type;
+					return (reason) ? VIPRE_REASON_RATING : type;
             } else {
-                return WOT_WARNING_NONE;
+                return VIPRE_WARNING_NONE;
             }
 		} catch (e) {
 			dump("wot_warning.getwarningtype: failed with " + e + "\n");
 		}
 
-		return WOT_WARNING_NONE;
+		return VIPRE_WARNING_NONE;
 	},
 
 	isdangerous: function(hostname, increase)
 	{
-		var result = WOT_WARNING_NONE;
+		var result = VIPRE_WARNING_NONE;
 		try {
 			if (!wot_cache.isok(hostname)) {
 				return result;
@@ -118,7 +118,7 @@ var wot_warning =
                 result = type;
             }
 
-            if (result == WOT_WARNING_BLOCK) {
+            if (result == VIPRE_WARNING_BLOCK) {
                 return result;
             }
 

@@ -34,10 +34,7 @@
     <commandset id="mainCommandSet">
         <command id="wot-command-enabled" oncommand="wot_commands.enabled();"/>
         <command id="wot-command-refresh" oncommand="wot_commands.refresh();"/>
-        <command id="wot-command-preferences" oncommand="wot_commands.preferences();"/>
         <command id="wot-command-checkupdates" oncommand="wot_commands.checkupdates();"/>
-        <command id="wot-command-my" oncommand="wot_commands.my();"/>
-        <command id="wot-command-openlinkscorecard" oncommand="wot_commands.open_scorecard_link();"/>
     </commandset>
 
     <popupset id="mainPopupSet">
@@ -58,13 +55,6 @@
             <menuitem label="&wotCheckUpdates.label;"
                       accesskey="&wotCheckUpdates.accesskey;"
                       command="wot-command-checkupdates"/>
-            <menuseparator/>
-            <menuitem label="&wotMy.label;"
-                      accesskey="&wotMy.accesskey;"
-                      command="wot-command-my"/>
-            <menuitem label="&wotPreferences.label;"
-                      accesskey="&wotPreferences.accesskey;"
-                      command="wot-command-preferences"/>
             <menuseparator/>
             <menuitem id="wot-indicator-enabled"
                       label="&wotEnabled.label;"

@@ -317,7 +317,7 @@ var wot_url =
 			var new_path = path;
 			new_path += ( (path.indexOf("?") > 0) ? "&" : "?" );
 			new_path += "utm_source=addon" + (context ? "&utm_content=" + context : "");
-			return has_base ? new_path : WOT_MY_URL + new_path;
+			return has_base ? new_path : VIPRE_MY_URL + new_path;
 		} catch (e) {
 			dump("wot_url.getwoturl: failed with " + e + "\n");
 		}
@@ -329,7 +329,7 @@ var wot_url =
 	{
 		try {
             var has_base = !!base;
-			base = base || WOT_PREF_PATH;
+			base = base || VIPRE_PREF_PATH;
 
 			var path = base + wot_util.getstring("lang") +
 						"/" + VIPRE_PLATFORM + "/" + VIPRE_VERSION;
@@ -571,7 +571,7 @@ var wot_browser =
 	{
 		try {
 			if (!hostname) return false;
-            return this.open_wotsite(WOT_SCORECARD_PATH, hostname, action, context, true, false);
+            return this.open_wotsite(VIPRE_SCORECARD_PATH, hostname, action, context, true, false);
 
 		} catch (e) {
 			dump("wot_browser.openscorecard: failed with " + e + "\n");
@@ -588,7 +588,7 @@ var wot_browser =
 //			var bss = Components.classes["@mozilla.org/browser/search-service;1"]
 //						.getService(Components.interfaces.nsIBrowserSearchService);
 //
-//			var url = WOT_SAFESEARCH_OSD_URL;
+//			var url = VIPRE_SAFESEARCH_OSD_URL;
 //			var lang = wot_util.getstring("lang");
 //
 //			if (lang) {
@@ -887,14 +887,14 @@ var wot_arc4 =
 	}
 };
 
-const WOT_CRYPTO_COUNTER = "wot_crypto_counter";
+const VIPRE_CRYPTO_COUNTER = "wot_crypto_counter";
 
 var wot_crypto =
 {
 	load_delayed: function()
 	{
 		try {
-			wot_hashtable.set(WOT_CRYPTO_COUNTER, Number(Date.now()));
+			wot_hashtable.set(VIPRE_CRYPTO_COUNTER, Number(Date.now()));
 		} catch (e) {
 			dump("wot_crypto.load: failed with " + e + "\n");
 		}
@@ -903,9 +903,9 @@ var wot_crypto =
 	nonce: function()
 	{
 		try {
-			var counter = wot_hashtable.get(WOT_CRYPTO_COUNTER);
+			var counter = wot_hashtable.get(VIPRE_CRYPTO_COUNTER);
 
-			wot_hashtable.set(WOT_CRYPTO_COUNTER,
+			wot_hashtable.set(VIPRE_CRYPTO_COUNTER,
 				Number(counter) + 1);
 
 			return wot_hash.bintohex(wot_hash.sha1str(

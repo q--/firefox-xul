@@ -27,7 +27,7 @@ var wot_firstrun =
 				return true;
 			}
 
-			if (!wot_prefs.setChar("firstrun_guide", WOT_FIRSTRUN_CURRENT)) {
+			if (!wot_prefs.setChar("firstrun_guide", VIPRE_FIRSTRUN_CURRENT)) {
 				return false;
 			}
 
@@ -58,7 +58,7 @@ var wot_firstrun =
 
 			var tab = "welcome";
 
-			if (wot_prefs.show_welcome_page && this.opentab(WOT_FIRSTRUN_WELCOME, wot_url.getprefurl(tab))) {
+			if (wot_prefs.show_welcome_page && this.opentab(VIPRE_FIRSTRUN_WELCOME, wot_url.getprefurl(tab))) {
 
 				// not a first time launch, but...
 				// check whether the date of first time is set, otherwise set it to 2 weeks ago date
@@ -68,9 +68,9 @@ var wot_firstrun =
 					wot_prefs.setChar("firstrun_time", past_date);
 				}
 
-                var update_url = [ WOT_MY_URL.replace(/^(.+)\/$/,"$1"), WOT_UPDATE_PATH,
+                var update_url = [ VIPRE_MY_URL.replace(/^(.+)\/$/,"$1"), VIPRE_UPDATE_PATH,
                                   wot_util.getstring("lang"), VIPRE_PLATFORM, VIPRE_VERSION ].join("/");
-                this.opentab(WOT_FIRSTRUN_CURRENT, update_url);
+                this.opentab(VIPRE_FIRSTRUN_CURRENT, update_url);
 
 			} else {
 				// the add-on is launched first time

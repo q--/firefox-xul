@@ -330,7 +330,7 @@ var wot_core =
 
 			this.blockedstreams[url] = stream;
 
-			pl.browser.loadURIWithFlags(WOT_BLOCK_LOADING + "#" + encodeURIComponent(btoa(url)),
+			pl.browser.loadURIWithFlags(VIPRE_BLOCK_LOADING + "#" + encodeURIComponent(btoa(url)),
 				Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY,
 				null, null);
 
@@ -354,7 +354,7 @@ var wot_core =
 			// TODO: remember target url in memory, assign ID and pass this ID to the blocked page
             blocked_urlquery = "?" + encodeURIComponent(btoa(blocked_urlquery));
 
-            pl.browser.loadURIWithFlags(WOT_BLOCK_BLOCKED + blocked_urlquery,
+            pl.browser.loadURIWithFlags(VIPRE_BLOCK_BLOCKED + blocked_urlquery,
                 Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY,
                 null, null);
 
@@ -383,7 +383,7 @@ var wot_core =
 			}
 
 			if (wot_cache.isok(hostname)) {
-				if (wot_warning.isdangerous(hostname, false) == WOT_WARNING_BLOCK && !wot_warning.warned[hostname]) {
+				if (wot_warning.isdangerous(hostname, false) == VIPRE_WARNING_BLOCK && !wot_warning.warned[hostname]) {
                     var blocked_id = wot_warning.register_blocked(url);
 					this.showblocked(pl, request, url, hostname, blocked_id);
 				}
@@ -438,7 +438,7 @@ var wot_core =
 				var tab = browser.getBrowserAtIndex(i);
 
 				if (!tab || !tab.currentURI ||
-						tab.currentURI.spec.indexOf(WOT_BLOCK_LOADING) != 0) {
+						tab.currentURI.spec.indexOf(VIPRE_BLOCK_LOADING) != 0) {
 					continue;
 				}
 
@@ -456,8 +456,8 @@ var wot_core =
 				
 				var age = Date.now() - wot_cache.get(hostname, "time");
 
-				if (wot_cache.get(hostname, "status") == WOT_QUERY_ERROR &&
-						age < WOT_INTERVAL_BLOCK_ERROR) {
+				if (wot_cache.get(hostname, "status") == VIPRE_QUERY_ERROR &&
+						age < VIPRE_INTERVAL_BLOCK_ERROR) {
 					continue;
 				}
 
@@ -480,7 +480,7 @@ var wot_core =
 
 	is_internal: function(url)
 	{
-		return (url.indexOf(WOT_BLOCK_LOADING) >= 0 || url.indexOf(WOT_BLOCK_BLOCKED) >= 0);
+		return (url.indexOf(VIPRE_BLOCK_LOADING) >= 0 || url.indexOf(VIPRE_BLOCK_BLOCKED) >= 0);
 	},
 
 	isredirect: function(url)
@@ -505,14 +505,14 @@ var wot_core =
 	purgecache: function()
 	{
 		try {
-			var interval = WOT_INTERVAL_CACHE_REFRESH;
+			var interval = VIPRE_INTERVAL_CACHE_REFRESH;
 
 			/* Purging cache entries while blocking is enabled causes the
 				page to be reloaded while ratings are being loaded, so we'll
 				purge the cache less often to not annoy the user... */
 
 			if (wot_warning.isblocking()) {
-				interval = WOT_INTERVAL_CACHE_REFRESH_BLOCK;
+				interval = VIPRE_INTERVAL_CACHE_REFRESH_BLOCK;
 			}
 
 			var now = Date.now();
@@ -558,8 +558,8 @@ var wot_core =
 //			}
 
 //			if (!wot_prefs.witness_id || !wot_prefs.witness_key ||
-//					wot_prefs.witness_id.length  != WOT_LENGTH_WITNESS_ID ||
-//					wot_prefs.witness_key.length != WOT_LENGTH_WITNESS_KEY) {
+//					wot_prefs.witness_id.length  != VIPRE_LENGTH_WITNESS_ID ||
+//					wot_prefs.witness_key.length != VIPRE_LENGTH_WITNESS_KEY) {
 //				wot_api_register.ready = false;
 //				wot_status.set("error",
 //					wot_util.getstring("description_restart"));
@@ -568,14 +568,14 @@ var wot_core =
 
 			wot_core.hostname = wot_browser.gethostname();
 
-//			if (wot_core.hostname && WOT_MY_TRIGGER.test(wot_core.hostname)) {
+//			if (wot_core.hostname && VIPRE_MY_TRIGGER.test(wot_core.hostname)) {
 //
 //				var url = wot_browser.geturl();
-//				var match = url.match(WOT_PREF_FORWARD);
+//				var match = url.match(VIPRE_PREF_FORWARD);
 //
 //				if (match) {
-//					var section = match[WOT_PREF_FORWARD_TAB_MATCH];
-//                    var base = (match[WOT_PREF_FORWARD_TAB_BASE] + "/settings/") || WOT_PREF_PATH;
+//					var section = match[VIPRE_PREF_FORWARD_TAB_MATCH];
+//                    var base = (match[VIPRE_PREF_FORWARD_TAB_BASE] + "/settings/") || VIPRE_PREF_PATH;
 //
 //                        getBrowser().loadURIWithFlags(wot_url.getprefurl(section, false, base),
 //						Components.interfaces.nsIWebNavigation
@@ -606,7 +606,7 @@ var wot_core =
 				wot_status.set("offline",
 					wot_util.getstring("message_offline"));
 				/* Retry after a timeout */
-				window.setTimeout(wot_core.update, WOT_INTERVAL_UPDATE_OFFLINE);
+				window.setTimeout(wot_core.update, VIPRE_INTERVAL_UPDATE_OFFLINE);
 				return;
 			}
 
@@ -634,7 +634,7 @@ var wot_core =
 			var age = Date.now() - wot_cache.get(wot_core.hostname, "time");
 
 			if (wot_cache.get(wot_core.hostname, "inprogress")) {
-				if (age > WOT_TIMEOUT_QUERY) {
+				if (age > VIPRE_TIMEOUT_QUERY) {
 					/* Done waiting, clear the flag  */
 					wot_cache.set(wot_core.hostname, "inprogress", false);
 				} else {
@@ -647,8 +647,8 @@ var wot_core =
 
 			var status = wot_cache.get(wot_core.hostname, "status");
 
-			if (status == WOT_QUERY_OK) {
-				if (age > WOT_INTERVAL_CACHE_REFRESH) {
+			if (status == VIPRE_QUERY_OK) {
+				if (age > VIPRE_INTERVAL_CACHE_REFRESH) {
 					wot_status.set("inprogress",
 						wot_util.getstring("messages_loading"));
 					wot_api_query.send(wot_core.hostname);
@@ -657,13 +657,13 @@ var wot_core =
 				}
 				return;
 			} else  {
-				if (status == WOT_QUERY_RETRY || status == WOT_QUERY_LINK) {
+				if (status == VIPRE_QUERY_RETRY || status == VIPRE_QUERY_LINK) {
 					/* Retry immediately */
 					wot_status.set("inprogress",
 						wot_util.getstring("messages_loading"));
 					wot_api_query.send(wot_core.hostname);
 					return;
-				} else if (age > WOT_INTERVAL_CACHE_REFRESH_ERROR) {
+				} else if (age > VIPRE_INTERVAL_CACHE_REFRESH_ERROR) {
 					wot_status.set("inprogress",
 						wot_util.getstring("messages_loading"));
 					wot_api_query.send(wot_core.hostname);
@@ -689,7 +689,7 @@ var wot_core =
 
 	clean_search_rules: function () {
 		// removes search rules from preferences
-		wot_prefs.deleteBranch(WOT_SEARCH);
+		wot_prefs.deleteBranch(VIPRE_SEARCH);
 		wot_prefs.clear("update_checked");
 	}
 

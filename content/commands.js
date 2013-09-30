@@ -137,7 +137,7 @@ var wot_commands =
 	{
 		try {
 			if (wot_cache.iscached(wot_core.hostname)) {
-				wot_cache.set(wot_core.hostname, "status", WOT_QUERY_RETRY);
+				wot_cache.set(wot_core.hostname, "status", VIPRE_QUERY_RETRY);
 				wot_core.update();
 			}
 		} catch (e) {
@@ -166,7 +166,7 @@ var wot_commands =
 	my: function()
 	{
 		try {
-			var url = wot_url.getwoturl("", WOT_URL_MENUMY);
+			var url = wot_url.getwoturl("", "");
 			if (url) {
 				getBrowser().loadURI(url);
 			}
@@ -179,7 +179,7 @@ var wot_commands =
 	{
         // Opens scorecard in a new tab for the URL selected via context menu
 		try {
-			wot_browser.openscorecard(wot_commands.getcontexthostname(), null, WOT_URL_CTX);
+			wot_browser.openscorecard(wot_commands.getcontexthostname(), null, VIPRE_URL_CTX);
 		} catch (e) {
 		}
 	}
@@ -194,7 +194,7 @@ var wot_events =
 		try {
 			/* Middle-click takes to scorecard */
 			if (event.button == 1 && wot_core.hostname) {
-				wot_browser.openscorecard(wot_core.hostname, null, WOT_URL_BTN);
+				wot_browser.openscorecard(wot_core.hostname, null, VIPRE_URL_BTN);
 			}
 		} catch (e) {
 			dump("wot_events.click_button: failed with " + e + "\n");

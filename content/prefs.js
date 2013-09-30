@@ -56,7 +56,7 @@ var wot_prefs =
 			/* Add observer */
 			this.pbi = this.pref.QueryInterface(
 							Components.interfaces.nsIPrefBranch2);
-			this.pbi.addObserver(WOT_PREF, this, false);
+			this.pbi.addObserver(VIPRE_PREF, this, false);
 
 			this.updateui = false;
 		} catch (e) {
@@ -77,7 +77,7 @@ var wot_prefs =
 	{
 		try {
 			if (this.pbi) {
-				this.pbi.removeObserver(WOT_PREF, this);
+				this.pbi.removeObserver(VIPRE_PREF, this);
 				this.pbi = null;
 			}
 			this.pref_default = null;
@@ -101,9 +101,9 @@ var wot_prefs =
 	getBool: function(name, default_value)
 	{
 		try {
-			if (this.pref.getPrefType(WOT_PREF +
+			if (this.pref.getPrefType(VIPRE_PREF +
 					name) == this.pref.PREF_BOOL) {
-				return this.pref.getBoolPref(WOT_PREF + name);
+				return this.pref.getBoolPref(VIPRE_PREF + name);
 			}
 		} catch (e) {
 			dump("wot_prefs.getBool(" + name + "): failed with " + e + "\n");
@@ -114,7 +114,7 @@ var wot_prefs =
 	setBool: function(name, value)
 	{
 		try {
-			this.pref.setBoolPref(WOT_PREF + name, value);
+			this.pref.setBoolPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
 			dump("wot_prefs.setBool(" + name + "): failed with " + e + "\n");
@@ -125,7 +125,7 @@ var wot_prefs =
 	setDefaultBool: function(name, value)
 	{
 		try {
-			this.pref_default.setBoolPref(WOT_PREF + name, value);
+			this.pref_default.setBoolPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
 			dump("wot_prefs.setDefaultBool(" + name + "): failed with " +
@@ -137,9 +137,9 @@ var wot_prefs =
 	getInt: function(name, default_value)
 	{
 		try {
-			if (this.pref.getPrefType(WOT_PREF +
+			if (this.pref.getPrefType(VIPRE_PREF +
 					name) == this.pref.PREF_INT) {
-				return this.pref.getIntPref(WOT_PREF + name);
+				return this.pref.getIntPref(VIPRE_PREF + name);
 			}
 		} catch (e) {
 			dump("wot_prefs.getInt(" + name + "): failed with " + e + "\n");
@@ -150,7 +150,7 @@ var wot_prefs =
 	setInt: function(name, value)
 	{
 		try {
-			this.pref.setIntPref(WOT_PREF + name, value);
+			this.pref.setIntPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
 			dump("wot_prefs.setInt(" + name + "): failed with " + e + "\n");
@@ -161,7 +161,7 @@ var wot_prefs =
 	setDefaultInt: function(name, value)
 	{
 		try {
-			this.pref_default.setIntPref(WOT_PREF + name, value);
+			this.pref_default.setIntPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
 			dump("wot_prefs.setDefaultInt(" + name + "): failed with " +
@@ -173,8 +173,8 @@ var wot_prefs =
 	getChar: function(name, default_value, safe_utf8)
 	{
 		try {
-			if (this.pref.getPrefType(WOT_PREF + name) == this.pref.PREF_STRING) {
-				var res = this.pref.getCharPref(WOT_PREF + name);
+			if (this.pref.getPrefType(VIPRE_PREF + name) == this.pref.PREF_STRING) {
+				var res = this.pref.getCharPref(VIPRE_PREF + name);
 
                 return safe_utf8 ? wot_util.decode_utf8(res) : res; // decode from utf8
 			}
@@ -189,7 +189,7 @@ var wot_prefs =
 		try {
             if (this.pref) {
                 value = safe_utf8 ? wot_util.encode_utf8(value) : value; // endode to utf8 if needed
-                this.pref.setCharPref(WOT_PREF + name, value);
+                this.pref.setCharPref(VIPRE_PREF + name, value);
                 return true;
             }
 		} catch (e) {
@@ -201,7 +201,7 @@ var wot_prefs =
 	setDefaultChar: function(name, value)
 	{
 		try {
-			this.pref_default.setCharPref(WOT_PREF + name, value);
+			this.pref_default.setCharPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
 			dump("wot_prefs.setDefaultChar(" + name + "): failed with " +
@@ -213,7 +213,7 @@ var wot_prefs =
 	clear: function(name)
 	{
 		try {
-			this.pref.clearUserPref(WOT_PREF + name);
+			this.pref.clearUserPref(VIPRE_PREF + name);
 		} catch (e) {
 			/* dump("wot_prefs.clear(" + name + "): failed with " + e + "\n"); */
 		}
@@ -222,7 +222,7 @@ var wot_prefs =
 	deleteBranch: function(name)
 	{
 		try {
-			this.pref.deleteBranch(WOT_PREF + name.replace(/\.$/, ''));
+			this.pref.deleteBranch(VIPRE_PREF + name.replace(/\.$/, ''));
 		} catch (e) {
 			dump("wot_prefs.deleteBranch(" + name + "): failed with " + e + "\n");
 		}

@@ -3,7 +3,7 @@
 	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
-const WOT_POPUP_HTML =
+const VIPRE_POPUP_HTML =
     '<div id="wot-logo">{POPUPHEADERTEXT}</div>' +
         '<div id="wot-ratings{ID}" class="wot-ratings">' +
         '<div id="wot-hostname"></div>' +
@@ -35,7 +35,7 @@ const WOT_POPUP_HTML =
         '<div id="wot-pp-cs" class="wot-pp-cs"></div>' +
         '</div>';
 
-const WOT_POPUP_STYLE = "@import \"chrome://vipre/skin/include/popup.css\";";
+const VIPRE_POPUP_STYLE = "@import \"chrome://vipre/skin/include/popup.css\";";
 
 var wot_popup =
 {
@@ -102,7 +102,7 @@ var wot_popup =
             ];
 
 			if (!this.layer) {
-				this.layer = wot_util.processhtml(WOT_POPUP_HTML, replaces);
+				this.layer = wot_util.processhtml(VIPRE_POPUP_HTML, replaces);
 			}
 
 			if (content.getElementById(this.id)) {
@@ -131,7 +131,7 @@ var wot_popup =
 
 			var style = content.createElement("style");
 			style.setAttribute("type", "text/css");
-			style.innerHTML = WOT_POPUP_STYLE;
+			style.innerHTML = VIPRE_POPUP_STYLE;
 
 
 			var head = content.getElementsByTagName("head");
@@ -141,7 +141,7 @@ var wot_popup =
 			}
 
 			layer.addEventListener("click", function() {
-					wot_browser.openscorecard(layer.getAttribute("target"), null, WOT_URL_POPUPVIEWSC);
+					wot_browser.openscorecard(layer.getAttribute("target"), null, "");
 				}, false);
 
 			elem.appendChild(layer);
@@ -160,7 +160,7 @@ var wot_popup =
 			var status = wot_cache.get(target, "status"),
                 tr_t, cs_t, r, c, x, t;
 
-			if (status != WOT_QUERY_OK && status != WOT_QUERY_LINK) {
+			if (status != VIPRE_QUERY_OK && status != VIPRE_QUERY_LINK) {
 				return false;
 			}
 

@@ -62,7 +62,6 @@ var wot_api_link =
             for (var i = 0; i < batch.length; i++) {
                 var target = batch[i],
                     request = this._get_request(target, function (target, status) {
-//                        wdump("api_link: " + target);
                         if (rule) {
                             var obj = {};
                             obj[target] = true;
@@ -97,7 +96,7 @@ var wot_api_link =
 			}
 
 			while (fetch.length > 0) {
-				this.call(rule, content, fetch.splice(0, WOT_MAX_LINK_PARAMS),
+				this.call(rule, content, fetch.splice(0, VIPRE_MAX_LINK_PARAMS),
 					retrycount);
 			}
 		} catch (e) {
@@ -136,10 +135,9 @@ var wot_api_query =
 			wot_cache.create(hostname);
 			wot_cache.set(hostname, "time", Date.now());
 			wot_cache.set(hostname, "inprogress", true);
-			wot_cache.set(hostname, "status", WOT_QUERY_ERROR);
+			wot_cache.set(hostname, "status", VIPRE_QUERY_ERROR);
 
 			var request = wot_api_link._get_request(hostname, function (target, status) {
-                wdump("api_query: " + target);
                 if (typeof(callback) == "function") {
                     callback();
                 }
@@ -150,7 +148,7 @@ var wot_api_query =
 			var timeout =
 				window.setTimeout(function() {
 						wot_api_query.timeout(request, hostname, callback);
-					},	WOT_TIMEOUT_QUERY);
+					},	VIPRE_TIMEOUT_QUERY);
 
 			request.send();
 			return true;
@@ -170,8 +168,11 @@ var wot_api_query =
 			dump("wot_api_query.timeout: for " + hostname + "\n");
 
 			request.abort();
-			wot_cache.set(hostname, "time", Date.now());
+//			wot_cache.set(hostname, "time", Date.now());
 			wot_cache.set(hostname, "inprogress", false);
+			wot_cache.set(hostname, "exists", true);
+            wot_cache.set(hostname, "status", VIPRE_QUERY_OK);
+            wot_cache.add_target(hostname, VIPRE_REPUTATION_UKNOWN);
 			wot_core.update();
 			
 			if (typeof(callback) == "function") {
@@ -191,10 +192,10 @@ var wot_api_update =
 		try {
 			var interval = wot_prefs.update_interval;
 
-			if (interval < WOT_MIN_INTERVAL_UPDATE_CHECK) {
-				interval = WOT_MIN_INTERVAL_UPDATE_CHECK;
-			} else if (interval > WOT_MAX_INTERVAL_UPDATE_CHECK) {
-				interval = WOT_MAX_INTERVAL_UPDATE_CHECK;
+			if (interval < VIPRE_MIN_INTERVAL_UPDATE_CHECK) {
+				interval = VIPRE_MIN_INTERVAL_UPDATE_CHECK;
+			} else if (interval > VIPRE_MAX_INTERVAL_UPDATE_CHECK) {
+				interval = VIPRE_MAX_INTERVAL_UPDATE_CHECK;
 			}
 
 			var last = Date.now() - interval;
@@ -205,7 +206,7 @@ var wot_api_update =
 			}
 
 			/* Increase the last check time a notch */
-			var next = last + WOT_INTERVAL_UPDATE_ERROR;
+			var next = last + VIPRE_INTERVAL_UPDATE_ERROR;
 
 			if (!wot_prefs.setChar("last_version", VIPRE_VERSION) ||
 					!wot_prefs.setChar("update_checked", next)) {
@@ -218,9 +219,9 @@ var wot_api_update =
 			var request = new XMLHttpRequest();
 
 			request.open("GET", REAL_WOT_API_URL +
-				WOT_SERVICE_API_UPDATE +
+				VIPRE_SERVICE_API_UPDATE +
 				"?nonce="	+ wot_crypto.nonce() +
-				"&format="	+ WOT_SERVICE_UPDATE_FORMAT +
+				"&format="	+ VIPRE_SERVICE_UPDATE_FORMAT +
 				wot_url.getapiparams());
 
 			new wot_cookie_remover(request);
@@ -258,18 +259,18 @@ var wot_api_update =
 			if (!update) return;
 
 			/* Attributes */
-			var interval = update.getAttribute(WOT_SERVICE_XML_UPDATE_INTERVAL);
+			var interval = update.getAttribute(VIPRE_SERVICE_XML_UPDATE_INTERVAL);
 
 			if (interval && Number(interval) > 0) {
 				wot_prefs.setInt("update_interval", interval * 1000);
 			}
 
 			/* Search rules */
-			var search = response.getElementsByTagName(WOT_SERVICE_XML_UPDATE_SEARCH);
+			var search = response.getElementsByTagName(VIPRE_SERVICE_XML_UPDATE_SEARCH);
 			if (search) wot_search.parse(search);
 
 			/* Shared domains */
-			var shared = response.getElementsByTagName(WOT_SERVICE_XML_UPDATE_SHARED);
+			var shared = response.getElementsByTagName(VIPRE_SERVICE_XML_UPDATE_SHARED);
 			if (shared) wot_shared.parse(shared);
 
 			wot_prefs.flush();

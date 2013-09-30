@@ -4,7 +4,7 @@
 		<em:id>vipre@threattrack.com</em:id>
 		<em:unpack>true</em:unpack>
 		<em:name>VIPRE Search Guard</em:name>
-		<em:version>%WOT_VERSION%</em:version>
+		<em:version>%VIPRE_VERSION%</em:version>
 		<em:description>VIPRE Search Guard</em:description>
 		<em:creator>ThreatTrack Security</em:creator>
 		<em:homepageURL>http://www.threattracksecurity.com/</em:homepageURL>

@@ -20,7 +20,7 @@
 ## Variables
 
 # short-name, jar and xpi files name. Must be lowercase with no spaces
-APP_NAME=wot
+APP_NAME=vipre
 
 # which chrome providers we have (space-separated list)
 CHROME_PROVIDERS="content locale skin"
@@ -41,7 +41,7 @@ FINAL_DIR=`mktemp -q -p ${BUILD_DIR} -d final.XXXXXX`
 
 ## Find version
 
-VERSION=`grep WOT_VERSION ${APP_CONFIG} 2>/dev/null | cut -d \" -f 2`
+VERSION=`grep VIPRE_VERSION ${APP_CONFIG} 2>/dev/null | cut -d \" -f 2`
 
 if [ -z "${VERSION}" ]; then
 	echo "$0: no version in ${APP_CONFIG}"
@@ -54,7 +54,7 @@ XPI_NAME="${APP_NAME}-${VERSION}.xpi"
 
 echo "$0: updating install.rdf"
 
-S_VERSION="s/%WOT_VERSION%/$VERSION/g"
+S_VERSION="s/%VIPRE_VERSION%/$VERSION/g"
 
 sed -r -e "$S_VERSION" install.rdf.template > install.rdf
 

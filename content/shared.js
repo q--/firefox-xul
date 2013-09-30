@@ -18,7 +18,7 @@
 	along with WOT. If not, see <http://www.gnu.org/licenses/>.
 */
 
-const WOT_PREFIX_SHARED = "wot_shared";
+const VIPRE_PREFIX_SHARED = "wot_shared";
 
 var wot_shared =
 {
@@ -42,7 +42,7 @@ var wot_shared =
 
 			for (i = 0; i < shared.length; ++i) {
 				var attr = shared[i].attributes.getNamedItem(
-								WOT_SERVICE_XML_UPDATE_SHARED_LEVEL);
+								VIPRE_SERVICE_XML_UPDATE_SHARED_LEVEL);
 
 				if (!attr || !attr.value) {
 					return;
@@ -55,7 +55,7 @@ var wot_shared =
 				}
 
 				var attr = shared[i].attributes.getNamedItem(
-								WOT_SERVICE_XML_UPDATE_SHARED_DOMAINS);
+								VIPRE_SERVICE_XML_UPDATE_SHARED_DOMAINS);
 
 				if (!attr || !attr.value) {
 					return;
@@ -81,7 +81,7 @@ var wot_shared =
 	sync: function()
 	{
 		try {
-			var branch = wot_prefs.ps.getBranch(WOT_PREF + "shared.");
+			var branch = wot_prefs.ps.getBranch(VIPRE_PREF + "shared.");
 			var children = branch.getChildList("", {});
 
 			for (var i = 0; i < children.length; ++i) {
@@ -110,7 +110,7 @@ var wot_shared =
 						continue;
 					}
 
-					wot_hashtable.set(WOT_PREFIX_SHARED + ":" + pn, level);
+					wot_hashtable.set(VIPRE_PREFIX_SHARED + ":" + pn, level);
 				}
 			}
 		} catch (e) {
@@ -121,7 +121,7 @@ var wot_shared =
 	isshared: function(host)
 	{
 		try {
-			return wot_hashtable.get(WOT_PREFIX_SHARED + ":" + host);
+			return wot_hashtable.get(VIPRE_PREFIX_SHARED + ":" + host);
 		} catch (e) {
 			dump("wot_shared.isshared: failed with " + e + "\n");
 		}
