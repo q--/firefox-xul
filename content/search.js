@@ -1,9 +1,9 @@
 /*
 	search.js
-	Copyright © 2013  WOT Services Oy <info@mywot.com>
+	Copyright © 2013 WOT Services Oy <info@mywot.com>
 */
 
-var wot_search =
+var vipre_search =
 {
 	attrstr: [
 			VIPRE_SEARCH_DISPLAY,
@@ -26,21 +26,21 @@ var wot_search =
 	{
 		try {
 
-			if (this.rules && !wot_util.isEmpty(this.rules) && wot_search.attribute) {
+			if (this.rules && !vipre_util.isEmpty(this.rules) && vipre_search.attribute) {
 				return;
 			}
-            this.attribute  = wot_crypto.getrandomid();
-            this.processed  = wot_crypto.getrandomid();
-            this.prestyleid = wot_crypto.getrandomid();
+            this.attribute  = vipre_crypto.getrandomid();
+            this.processed  = vipre_crypto.getrandomid();
+            this.prestyleid = vipre_crypto.getrandomid();
 			this.rules = {};
 
 			/* Prefs */
 			this.sync();
-			this.pbi = wot_prefs.pref.QueryInterface(
+			this.pbi = vipre_prefs.pref.QueryInterface(
 							Components.interfaces.nsIPrefBranch2);
 			this.pbi.addObserver(VIPRE_PREF + VIPRE_SEARCH, this, false);
 		} catch (e) {
-			dump("wot_search.load: failed with " + e + "\n");
+			dump("vipre_search.load: failed with " + e + "\n");
 		}
 	},
 
@@ -52,7 +52,7 @@ var wot_search =
 				this.pbi = null;
 			}
 		} catch (e) {
-			dump("wot_search.unload: failed with " + e + "\n");
+			dump("vipre_search.unload: failed with " + e + "\n");
 		}
 	},
 
@@ -62,12 +62,12 @@ var wot_search =
 	{
 		try {
 			if (value != null) {
-				return wot_prefs.setInt(entry, Number(value));
+				return vipre_prefs.setInt(entry, Number(value));
 			} else {
-				wot_prefs.clear(entry);
+				vipre_prefs.clear(entry);
 			}
 		} catch (e) {
-			dump("wot_search.setint: failed with " + e + "\n");
+			dump("vipre_search.setint: failed with " + e + "\n");
 		}
 
 		return false;
@@ -77,12 +77,12 @@ var wot_search =
 	{
 		try {
 			if (value != null) {
-				return wot_prefs.setChar(entry, value);
+				return vipre_prefs.setChar(entry, value);
 			} else {
-				wot_prefs.clear(entry);
+				vipre_prefs.clear(entry);
 			}
 		} catch (e) {
-			dump("wot_search.setchar: failed with " + e + "\n");
+			dump("vipre_search.setchar: failed with " + e + "\n");
 		}
 
 		return false;
@@ -110,7 +110,7 @@ var wot_search =
 							node.getAttribute(VIPRE_SEARCH_CONTENT_RE))) {
 						++attr;
 					} else {
-						wot_prefs.deleteBranch(key);
+						vipre_prefs.deleteBranch(key);
 					}
 				} else if (node.nodeName == VIPRE_SEARCH_CONTENT_VALUE) {
 					/* Value rule */
@@ -125,14 +125,14 @@ var wot_search =
 							node.getAttribute(VIPRE_SEARCH_CONTENT_RE))) {
 						++value;
 					} else {
-						wot_prefs.deleteBranch(key);
+						vipre_prefs.deleteBranch(key);
 					}
 				}
 
 				node = node.nextSibling;
 			}
 		} catch (e) {
-			dump("wot_search.parsecontentrules: failed with " + e + "\n");
+			dump("vipre_search.parsecontentrules: failed with " + e + "\n");
 		}
 	},
 
@@ -174,7 +174,7 @@ var wot_search =
 			/* Content rules */
 			this.parsecontentrules(entry, child);
 		} catch (e) {
-			dump("wot_search.parsematchrule: failed with " + e + "\n");
+			dump("vipre_search.parsematchrule: failed with " + e + "\n");
 		}
 	},
 
@@ -189,10 +189,10 @@ var wot_search =
 					child.getAttribute(VIPRE_SEARCH_PRE_MATCH))) {
 				return true;
 			} else {
-				wot_prefs.deleteBranch(entry);
+				vipre_prefs.deleteBranch(entry);
 			}
 		} catch (e) {
-			dump("wot_search.parseprerule: failed with " + e + "\n");
+			dump("vipre_search.parseprerule: failed with " + e + "\n");
 		}
 
 		return false;
@@ -208,13 +208,13 @@ var wot_search =
 			}
 
 			var base = VIPRE_SEARCH + "." + name + ".";
-			var enabled = wot_prefs.getBool(base + VIPRE_SEARCH_ENABLED, true);
+			var enabled = vipre_prefs.getBool(base + VIPRE_SEARCH_ENABLED, true);
 
-			wot_prefs.deleteBranch(base);
+			vipre_prefs.deleteBranch(base);
 
 			/* Don't forget the enabled status */
 			if (!enabled) {
-				wot_prefs.setBool(base + VIPRE_SEARCH_ENABLED, enabled);
+				vipre_prefs.setBool(base + VIPRE_SEARCH_ENABLED, enabled);
 			}
 
 			var url = node.getAttribute(VIPRE_SEARCH_URL);
@@ -263,7 +263,7 @@ var wot_search =
 				child = child.nextSibling;
 			}
 		} catch (e) {
-			dump("wot_search.parserule: failed with " + e + "\n");
+			dump("vipre_search.parserule: failed with " + e + "\n");
 		}
 	},
 
@@ -278,7 +278,7 @@ var wot_search =
 
 			this.sync();
 		} catch (e) {
-			dump("wot_search.parse: failed with " + e + "\n");
+			dump("vipre_search.parse: failed with " + e + "\n");
 		}
 
 		this.loading = false;
@@ -293,7 +293,7 @@ var wot_search =
 				this.sync();
 			}
 		} catch (e) {
-			dump("wot_search.observe: failed with " + e + "\n");
+			dump("vipre_search.observe: failed with " + e + "\n");
 		}
 	},
 
@@ -310,12 +310,12 @@ var wot_search =
 				node[name][index] =
 					this.loadruletree(node[name][index] || {}, pref, m[4]);
 			} else {
-				node[next] = wot_prefs.getChar(pref, "");
+				node[next] = vipre_prefs.getChar(pref, "");
 			}
 
 			return node;
 		} catch (e) {
-			dump("wot_search.loadmatch: failed with " + e + "\n");
+			dump("vipre_search.loadmatch: failed with " + e + "\n");
 		}
 
 		return null;
@@ -333,7 +333,7 @@ var wot_search =
 				this.loadruletree(this.rules[name][attr].match[index] || {},
 					pref, next);
 		} catch (e) {
-			dump("wot_search.loadmatchrule: failed with " + e + "\n");
+			dump("vipre_search.loadmatchrule: failed with " + e + "\n");
 		}
 	},
 
@@ -344,12 +344,12 @@ var wot_search =
 			this.rules[name].pre[index] = this.rules[name].pre[index] || {};
 
 			if (attr == VIPRE_SEARCH_PRE_MATCH) {
-				this.rules[name].pre[index][attr] = wot_prefs.getInt(pref, 0);
+				this.rules[name].pre[index][attr] = vipre_prefs.getInt(pref, 0);
 			} else if (attr == VIPRE_SEARCH_PRE_RE) {
-				this.rules[name].pre[index][attr] = wot_prefs.getChar(pref, "");
+				this.rules[name].pre[index][attr] = vipre_prefs.getChar(pref, "");
 			}
 		} catch (e) {
-			dump("wot_search.loadprerule: failed with " + e + "\n");
+			dump("vipre_search.loadprerule: failed with " + e + "\n");
 		}
 	},
 
@@ -390,14 +390,14 @@ var wot_search =
 					this.loadruletree(this.rules[name].target || {},
 						pref, next);
 			} else if (this.attrint.indexOf(attr) >= 0) {
-				this.rules[name][attr] = wot_prefs.getInt(pref, 0);
+				this.rules[name][attr] = vipre_prefs.getInt(pref, 0);
 			} else if (this.attrstr.indexOf(attr) >= 0) {
-				this.rules[name][attr] = wot_prefs.getChar(pref, "");
+				this.rules[name][attr] = vipre_prefs.getChar(pref, "");
 			} else {
-				this.rules[name][attr] = wot_prefs.getBool(pref, true);
+				this.rules[name][attr] = vipre_prefs.getBool(pref, true);
 			}
 		} catch (e) {
-			dump("wot_search.loadrule: failed with " + e + "\n");
+			dump("vipre_search.loadrule: failed with " + e + "\n");
 		}
 	},
 
@@ -406,14 +406,14 @@ var wot_search =
 		try {
 			this.rules = {};
 
-			var branch = wot_prefs.ps.getBranch(VIPRE_PREF + VIPRE_SEARCH + ".");
+			var branch = vipre_prefs.ps.getBranch(VIPRE_PREF + VIPRE_SEARCH + ".");
 			var children = branch.getChildList("", {});
 
 			for (var i = 0; i < children.length; ++i) {
 				this.loadrule(children[i]);
 			}
 		} catch (e) {
-			dump("wot_search.sync: failed with " + e + "\n");
+			dump("vipre_search.sync: failed with " + e + "\n");
 		}
 	},
 
@@ -427,22 +427,22 @@ var wot_search =
         } catch (e) { return; } // do nothing
 
 		try {
-			wot_search.watch(event.originalTarget);
+			vipre_search.watch(event.originalTarget);
 		} catch (e) {
-			dump("wot_search.domcontentloaded: failed with " + e + "\n");
+			dump("vipre_search.domcontentloaded: failed with " + e + "\n");
 		}
 	},
 
 	watch: function(content)
 	{
 		try {
-			var rule = wot_search.process(content);
+			var rule = vipre_search.process(content);
 
 			if (rule) {
 				if (!rule.dynamic && !content.defaultView.frameElement) {
 					return;
 				}
-			} else if (!wot_prefs.prefetch) {
+			} else if (!vipre_prefs.prefetch) {
 				return;
 			}
 
@@ -452,7 +452,7 @@ var wot_search =
                     delete(observer);
 
                     window.setTimeout(function() {
-                        wot_search.watch(content);
+                        vipre_search.watch(content);
                     }, 500);
                 });
 
@@ -462,7 +462,7 @@ var wot_search =
             }
 
 		} catch (e) {
-			dump("wot_search.watch: failed with " + e + "\n");
+			dump("vipre_search.watch: failed with " + e + "\n");
 		}
 	},
 
@@ -483,7 +483,7 @@ var wot_search =
 
 					if (m && m[rule.pre[i].match]) {
 						url = decodeURIComponent(m[rule.pre[i].match]);
-						target = wot_idn.utftoidn(wot_url.gethostname(url));
+						target = vipre_idn.utftoidn(vipre_url.gethostname(url));
 						break;
 					}
 				}
@@ -496,7 +496,7 @@ var wot_search =
 
 			/* Find target hostname */
 			if (!target) {
-				target = wot_idn.utftoidn(wot_url.gethostname(url));
+				target = vipre_idn.utftoidn(vipre_url.gethostname(url));
 			}
 
 			/* Match by element if we have a target rule */
@@ -507,7 +507,7 @@ var wot_search =
 
 			return target;
 		} catch (e) {
-			dump("wot_search.processrule: failed with " + e + "\n");
+			dump("vipre_search.processrule: failed with " + e + "\n");
 		}
 
 		return null;
@@ -519,7 +519,7 @@ var wot_search =
 			var elem = content.createElement("div");
 
 			if (elem) {
-				elem.setAttribute(wot_search.attribute, target);
+				elem.setAttribute(vipre_search.attribute, target);
 				elem.setAttribute("style", "cursor: pointer; " +
 					"width: 16px; " +
 					"height: 16px;" +
@@ -535,7 +535,7 @@ var wot_search =
 				}
 			}
 		} catch (e) {
-			dump("wot_search.addrating: failed with " + e + "\n");
+			dump("vipre_search.addrating: failed with " + e + "\n");
 		}
 	},
 
@@ -550,7 +550,7 @@ var wot_search =
 
 			return (flags.indexOf("n") < 0) ? rv : !rv;
 		} catch (e) {
-			dump("wot_search.matchregexp: failed with " + e + "\n");
+			dump("vipre_search.matchregexp: failed with " + e + "\n");
 		}
 
 		return false;
@@ -593,7 +593,7 @@ var wot_search =
 
 			return true;
 		} catch (e) {
-			dump("wot_search.matchelement: failed with " + e + "\n");
+			dump("vipre_search.matchelement: failed with " + e + "\n");
 		}
 
 		return false;
@@ -635,7 +635,7 @@ var wot_search =
 				}
 			}
 		} catch (e) {
-			dump("wot_search.findmatchingelement: failed with " + e + "\n");
+			dump("vipre_search.findmatchingelement: failed with " + e + "\n");
 		}
 
 		return null;
@@ -665,7 +665,7 @@ var wot_search =
 				return true;
 			}
 		} catch (e) {
-			dump("wot_search.matchcontent: failed with " + e + "\n");
+			dump("vipre_search.matchcontent: failed with " + e + "\n");
 		}
 
 		return false;
@@ -694,7 +694,7 @@ var wot_search =
 
 			return rule;
 		} catch (e) {
-			dump("wot_search.matchrule: failed with " + e + "\n");
+			dump("vipre_search.matchrule: failed with " + e + "\n");
 		}
 
 		return null;
@@ -709,7 +709,7 @@ var wot_search =
         }
 
 		try {
-			if (!wot_util.isenabled() || !content || !content.links) {
+			if (!vipre_util.isenabled() || !content || !content.links) {
 				return null;
 			}
 
@@ -733,7 +733,7 @@ var wot_search =
 			/* URL match */
 			var rule = this.matchrule(content, url);
 
-			if (!rule && !wot_prefs.prefetch) {
+			if (!rule && !vipre_prefs.prefetch) {
 				return null; /* If in prefetch mode, continue anyway */
 			}
 
@@ -743,7 +743,7 @@ var wot_search =
 				/* Content match */
 				contentmatch = this.matchcontent(rule.match, content);
 
-				if (!contentmatch && !wot_prefs.prefetch) {
+				if (!contentmatch && !vipre_prefs.prefetch) {
 					/* Return the rule anyway so we can keep an eye on content
 					  	changes */
 					return rule;
@@ -760,18 +760,18 @@ var wot_search =
 									content);
 
 					if (elem) {
-						haspopup = wot_popup.addpopup(content, elem);
+						haspopup = vipre_popup.addpopup(content, elem);
 					}
 				} else {
 					/* Just add to the document */
-					haspopup = wot_popup.addpopup(content);
+					haspopup = vipre_popup.addpopup(content);
 				}
 			}
 
 			/* Walk through each link and fetch ratings */
 			var cache = {};
 			var fetch = {};
-			var offline = wot_browser.isoffline();
+			var offline = vipre_browser.isoffline();
 
 			for (var i = 0; i < content.links.length; ++i) {
 				var link = content.links[i];
@@ -789,19 +789,19 @@ var wot_search =
 
 				if (target) {
 					showrating = true;
-				} else if (wot_prefs.prefetch) {
+				} else if (vipre_prefs.prefetch) {
 					/* Prefetch ratings for all links, not only if ratings are
 						shown */
-					target = wot_idn.utftoidn(
-								wot_url.gethostname(link.href));
+					target = vipre_idn.utftoidn(
+								vipre_url.gethostname(link.href));
 				}
 
 				if (!target) {
 					continue;
 				}
 
-				if (wot_cache.iscached(target) &&
-						wot_cache.get(target, "status") != VIPRE_QUERY_RETRY) {
+				if (vipre_cache.iscached(target) &&
+						vipre_cache.get(target, "status") != VIPRE_QUERY_RETRY) {
 					cache[target] = target;
 				} else {
 					fetch[target] = target;
@@ -830,12 +830,12 @@ var wot_search =
 
 			/* Load missing ratings */
 			if (!offline) {
-				wot_api_link.send(rule, content, fetch);
+				vipre_api_link.send(rule, content, fetch);
 			}
 
 			return rule;
 		} catch (e) {
-			dump("wot_search.process: failed with " + e + "\n");
+			dump("vipre_search.process: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -846,8 +846,8 @@ var wot_search =
 			var style = "";
 
 			for (var target in cache) {
-				if (wot_cache.iscached(target)) {
-					var s = wot_cache.get(target, "status");
+				if (vipre_cache.iscached(target)) {
+					var s = vipre_cache.get(target, "status");
 
 					if (s == VIPRE_QUERY_OK || s == VIPRE_QUERY_LINK) {
 						style += this.getcss(rule, target);
@@ -859,7 +859,7 @@ var wot_search =
 				this.addstyle(content, style);
 			}
 		} catch (e) {
-			dump("wot_search.update: failed with " + e + "\n");
+			dump("vipre_search.update: failed with " + e + "\n");
 		}
 	},
 
@@ -875,10 +875,10 @@ var wot_search =
 //				var request = new XMLHttpRequest();
 //
 //				request.open("GET", url);
-//				new wot_cookie_remover(request);
+//				new vipre_cookie_remover(request);
 //
 //				request.onload = function() {
-//					wot_search.sandboxapi.lastloadedscript = {
+//					vipre_search.sandboxapi.lastloadedscript = {
 //						url: url,
 //						code: request.responseText,
 //						status: request.status,
@@ -894,14 +894,14 @@ var wot_search =
 //						Components.utils.evalInSandbox(request.responseText,
 //							sandbox);
 //					} catch (e) {
-//						dump("wot_search.sandboxapi.loadscript: evalInSandbox " +
+//						dump("vipre_search.sandboxapi.loadscript: evalInSandbox " +
 //							"failed with " + e + "\n");
 //					}
 //				};
 //
 //				request.send(null);
 //			} catch (e) {
-//				dump("wot_search.sandboxapi.loadscript: failed with " + e + "\n");
+//				dump("vipre_search.sandboxapi.loadscript: failed with " + e + "\n");
 //			}
 		},
 
@@ -917,9 +917,9 @@ var wot_search =
 //					return null;
 //				}
 //
-//				var target = wot_idn.utftoidn(wot_url.gethostname(url));
+//				var target = vipre_idn.utftoidn(vipre_url.gethostname(url));
 //
-//				if (wot_cache.isok(target)) {
+//				if (vipre_cache.isok(target)) {
 //					var rv = {
 //						target: target
 //					};
@@ -927,19 +927,19 @@ var wot_search =
 //					for (var i = 0, a = 0; i < VIPRE_COMPONENTS.length; ++i) {
 //                        a = VIPRE_COMPONENTS[i];
 //						rv["reputation_" + a] =
-//							wot_cache.get(target, "reputation_" + a);
+//							vipre_cache.get(target, "reputation_" + a);
 //						rv["confidence_" + a] =
-//							wot_cache.get(target, "confidence_" + a);
+//							vipre_cache.get(target, "confidence_" + a);
 //						rv["testimony_"  + a] =
-//							wot_cache.get(target, "testimony_"  + a);
+//							vipre_cache.get(target, "testimony_"  + a);
 //						rv["excluded_"  + a] =
-//							wot_cache.get(target, "excluded_"  + a);
+//							vipre_cache.get(target, "excluded_"  + a);
 //					}
 //
 //					return rv;
 //				}
 //			} catch (e) {
-//				dump("wot_search.sandboxapi.getratings: failed with " + e +
+//				dump("vipre_search.sandboxapi.getratings: failed with " + e +
 //					"\n");
 //			}
 
@@ -953,18 +953,18 @@ var wot_search =
 					return null;
 				}
 
-				var type = wot_prefs.pref.getPrefType(VIPRE_PREF + name);
+				var type = vipre_prefs.pref.getPrefType(VIPRE_PREF + name);
 
 				switch (type) {
-				case wot_prefs.pref.PREF_STRING:
-					return wot_prefs.getChar(name);
-				case wot_prefs.pref.PREF_INT:
-					return wot_prefs.getInt(name);
-				case wot_prefs.pref.PREF_BOOL:
-					return wot_prefs.getBool(name);
+				case vipre_prefs.pref.PREF_STRING:
+					return vipre_prefs.getChar(name);
+				case vipre_prefs.pref.PREF_INT:
+					return vipre_prefs.getInt(name);
+				case vipre_prefs.pref.PREF_BOOL:
+					return vipre_prefs.getBool(name);
 				}
 			} catch (e) {
-				dump("wot_search.sandboxapi.getpreference: failed with " + e +
+				dump("vipre_search.sandboxapi.getpreference: failed with " + e +
 					"\n");
 			}
 
@@ -982,22 +982,22 @@ var wot_search =
 
 				switch (typeof(value)) {
 				case "string":
-					rv = wot_prefs.setChar(name, value);
+					rv = vipre_prefs.setChar(name, value);
 					break;
 				case "number":
-					rv = wot_prefs.setInt(name, value.toFixed());
+					rv = vipre_prefs.setInt(name, value.toFixed());
 					break;
 				case "boolean":
-					rv = wot_prefs.setBool(name, value);
+					rv = vipre_prefs.setBool(name, value);
 					break;
 				}
 
 				if (rv) {
-					wot_prefs.flush();
+					vipre_prefs.flush();
 					return rv;
 				}
 			} catch (e) {
-				dump("wot_search.sandboxapi.setpreference: failed with " + e +
+				dump("vipre_search.sandboxapi.setpreference: failed with " + e +
 					"\n");
 			}
 
@@ -1007,9 +1007,9 @@ var wot_search =
 		getapiparams: function(sandbox)
 		{
 			try {
-				return wot_url.getapiparams();
+				return vipre_url.getapiparams();
 			} catch (e) {
-				dump("wot_serach.sandboxapi.getapiparams: failed with " + e +
+				dump("vipre_serach.sandboxapi.getapiparams: failed with " + e +
 					"\n");
 			}
 		}
@@ -1017,7 +1017,7 @@ var wot_search =
 
 	getsandboxfunc: function(sandbox, name, obj)
 	{
-		obj = obj || wot_search.sandboxapi;
+		obj = obj || vipre_search.sandboxapi;
 
 		return function() {
 			var args = [ sandbox ];
@@ -1033,7 +1033,7 @@ var wot_search =
 	addscript: function(content, code)
 	{
 //		try {
-//			if (!wot_prefs.search_scripts || !code.length) {
+//			if (!vipre_prefs.search_scripts || !code.length) {
 //				return;
 //			}
 //
@@ -1047,17 +1047,17 @@ var wot_search =
 //				sandbox.document = sandbox.window.document;
 //				sandbox.__proto__ = sandbox.window;
 //
-//				sandbox.wot_loadscript =
+//				sandbox.vipre_loadscript =
 //					this.getsandboxfunc(sandbox, "loadscript");
-//				sandbox.wot_getlastscript =
+//				sandbox.vipre_getlastscript =
 //					this.getsandboxfunc(sandbox, "getlastscript");
-//				sandbox.wot_getratings =
+//				sandbox.vipre_getratings =
 //					this.getsandboxfunc(sandbox, "getratings");
-//				sandbox.wot_getpreference =
+//				sandbox.vipre_getpreference =
 //					this.getsandboxfunc(sandbox, "getpreference");
-//				sandbox.wot_setpreference =
+//				sandbox.vipre_setpreference =
 //					this.getsandboxfunc(sandbox, "setpreference");
-//				sandbox.wot_getapiparams =
+//				sandbox.vipre_getapiparams =
 //					this.getsandboxfunc(sandbox, "getapiparams");
 //
 //				content.wotsandbox = sandbox;
@@ -1066,11 +1066,11 @@ var wot_search =
 //			try {
 //				Components.utils.evalInSandbox(code, sandbox);
 //			} catch (e) {
-//				dump("wot_search.addscript: evalInSandbox failed with " +
+//				dump("vipre_search.addscript: evalInSandbox failed with " +
 //					e + "\n");
 //			}
 //		} catch (e) {
-//			dump("wot_search.addscript: failed with " + e + "\n");
+//			dump("vipre_search.addscript: failed with " + e + "\n");
 //		}
 	},
 
@@ -1095,7 +1095,7 @@ var wot_search =
 				head[0].appendChild(style);
 			}
 		} catch (e) {
-			dump("wot_search.addstyle: failed with " + e + "\n");
+			dump("vipre_search.addstyle: failed with " + e + "\n");
 		}
 	},
 
@@ -1107,15 +1107,15 @@ var wot_search =
 	getreputation: function(name)
 	{
 		try {
-			var status = wot_cache.get(name, "status");
+			var status = vipre_cache.get(name, "status");
 
 			if (status != VIPRE_QUERY_OK && status != VIPRE_QUERY_LINK) {
 				return -1;
 			}
 
-			return wot_cache.get(name, "reputation_0");
+			return vipre_cache.get(name, "reputation_0");
 		} catch (e) {
-			dump("wot_search.getreputation: failed with " + e + "\n");
+			dump("vipre_search.getreputation: failed with " + e + "\n");
 		}
 
 		return -1;
@@ -1130,7 +1130,7 @@ var wot_search =
 
 			var r = this.getreputation(name);
 
-			if ((wot_prefs.use_search_level && r >= wot_prefs.search_level) ||
+			if ((vipre_prefs.use_search_level && r >= vipre_prefs.search_level) ||
 					(rule.searchlevel != null && r >= rule.searchlevel)) {
 				return "";
 			}
@@ -1138,9 +1138,9 @@ var wot_search =
 			var css = this.formatcss(rule.style);
 			css = css.replace(/NAME/g, name);
 
-			return css.replace(/IMAGE/g, wot_ui.geticonurl(r, 16, true));
+			return css.replace(/IMAGE/g, vipre_ui.geticonurl(r, 16, true));
 		} catch (e) {
-			dump("wot_search.getcss: failed with " + e + "\n");
+			dump("vipre_search.getcss: failed with " + e + "\n");
 		}
 
 		return "";
@@ -1149,17 +1149,17 @@ var wot_search =
 	onclick: function(event)
 	{
 		try {
-			var target = event.originalTarget.getAttribute(wot_search.attribute),
-                r0 = wot_search.getreputation(target),
-                verdict = wot_util.get_level(VIPRE_REPUTATIONLEVELS, r0).name;
+			var target = event.originalTarget.getAttribute(vipre_search.attribute),
+                r0 = vipre_search.getreputation(target),
+                verdict = vipre_util.get_level(VIPRE_REPUTATIONLEVELS, r0).name;
 			if (target && verdict) {
-				wot_browser.open_link(verdict, target);
+				vipre_browser.open_link(verdict, target);
 				event.stopPropagation();
 			}
 		} catch (e) {
-			dump("wot_search.onclick: failed with " + e + "\n");
+			dump("vipre_search.onclick: failed with " + e + "\n");
 		}
 	}
 };
 
-wot_modules.push({ name: "wot_search", obj: wot_search });
+vipre_modules.push({ name: "vipre_search", obj: vipre_search });

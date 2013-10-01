@@ -5,4 +5,3 @@ overlay	chrome://browser/content/browser.xul	chrome://vipre/content/overlay.xul
 overlay	chrome://navigator/content/navigatorOverlay.xul	chrome://vipre/content/overlay.xul
 locale	vipre	en-US	locale/en-US/
 skin	vipre	classic/1.0	skin/
-style	chrome://global/content/customizeToolbar.xul	chrome://vipre/skin/toolbar.css

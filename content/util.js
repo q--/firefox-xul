@@ -1,24 +1,9 @@
 /*
 	util.js
-	Copyright © 2005 - 2013  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013 WOT Services Oy <info@mywot.com>
 */
 
-var wot_util =
+var vipre_util =
 {
 	reportError: function(params)
 	{
@@ -28,11 +13,11 @@ var wot_util =
 	isenabled: function()
 	{
 		try {
-			return (wot_prefs.enabled &&
-						(!wot_prefs.private_disable ||
-						 !wot_browser.isprivatemode()));
+			return (vipre_prefs.enabled &&
+						(!vipre_prefs.private_disable ||
+						 !vipre_browser.isprivatemode()));
 		} catch (e) {
-			dump("wot_util.isenabled: failed with " + e + "\n");
+			dump("vipre_util.isenabled: failed with " + e + "\n");
 		}
 
 		return true;
@@ -49,7 +34,7 @@ var wot_util =
 	{
 		try {
 			if (!this.string_bundle) {
-				this.string_bundle = document.getElementById("wot-strings");
+				this.string_bundle = document.getElementById("vipre-strings");
 			}
 			if (arr) {
 				return this.string_bundle.getFormattedString(str, arr);
@@ -57,33 +42,33 @@ var wot_util =
 				return this.string_bundle.getString(str);
 			}
 		} catch (e) {
-			dump("wot_util.getstring: failed with " + e + "\n");
+			dump("vipre_util.getstring: failed with " + e + "\n");
 		}
 
 		return null;
 	},
-
-    get_all_strings: function () {
-        var res = {};
-        try {
-            if (!this.string_bundle) {
-                this.string_bundle = document.getElementById("wot-strings");
-            }
-
-            var strings = this.string_bundle.strings;
-
-            while (strings.hasMoreElements()) {
-                var property = strings.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
-                res[property.key] = property.value;
-            }
-            return res;
-
-        } catch (e) {
-            dump("wot_util.getstring: failed with " + e + "\n");
-        }
-
-        return res;
-    },
+//
+//    get_all_strings: function () {
+//        var res = {};
+//        try {
+//            if (!this.string_bundle) {
+//                this.string_bundle = document.getElementById("vipre-strings");
+//            }
+//
+//            var strings = this.string_bundle.strings;
+//
+//            while (strings.hasMoreElements()) {
+//                var property = strings.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
+//                res[property.key] = property.value;
+//            }
+//            return res;
+//
+//        } catch (e) {
+//            dump("vipre_util.getstring: failed with " + e + "\n");
+//        }
+//
+//        return res;
+//    },
 
     get_level: function (levels, value, next) {
         next = next ? next : false;
@@ -108,7 +93,7 @@ var wot_util =
                 obj[attr.name] = attr.value;
             }
         } else {
-            wdump("wot_utils.copy_attrs() - empty node is provided");
+            wdump("vipre_utils.copy_attrs() - empty node is provided");
         }
         return obj;
     },
@@ -125,7 +110,7 @@ var wot_util =
 	{
 		try {
 			// gives time (in seconds) spent from very first run of the addon.
-			var starttime_str = wot_prefs.getChar("firstrun_time");
+			var starttime_str = vipre_prefs.getChar("firstrun_time");
 			if (starttime_str) {
 				var starttime = new Date(starttime_str);
 				return (new Date() - starttime) / 1000;    // in seconds;
@@ -182,7 +167,7 @@ var wot_util =
     }
 };
 
-var wot_url =
+var vipre_url =
 {
 	gethostname: function(url)
 	{
@@ -211,9 +196,9 @@ var wot_url =
 				host = host.replace(/^[^\.]*\./, "");
 			}
 
-			return wot_shared.encodehostname(host, parsed.path);
+			return vipre_shared.encodehostname(host, parsed.path);
 		} catch (e) {
-			/* dump("wot_url.gethostname: failed with " + e + "\n"); */
+			/* dump("vipre_url.gethostname: failed with " + e + "\n"); */
 		}
 
 		return null;
@@ -224,7 +209,7 @@ var wot_url =
 		try {
 			return /^(https?|ftp|mms|rtsp)$/i.test(scheme);
 		} catch (e) {
-			dump("wot_url.issupportedscheme: failed with " + e + "\n");
+			dump("vipre_url.issupportedscheme: failed with " + e + "\n");
 		}
 
 		return false;
@@ -256,7 +241,7 @@ var wot_url =
 
 			return (domain != tld);
 		} catch (e) {
-			dump("wot_url.isequivalent: failed with " + e + "\n");
+			dump("vipre_url.isequivalent: failed with " + e + "\n");
 		}
 
 		return false;
@@ -269,7 +254,7 @@ var wot_url =
 			   common local and private addresses */
 			return /^(localhost|((10|127)\.\d+|(172\.(1[6-9]|2[0-9]|3[01])|192\.168))\.\d+\.\d+)$/.test(name);
 		} catch (e) {
-			dump("wot_url.isprivate: failed with " + e + "\n");
+			dump("vipre_url.isprivate: failed with " + e + "\n");
 		}
 
 		return false;
@@ -278,12 +263,12 @@ var wot_url =
 	isexcluded: function(name)
 	{
 		try {
-			if (!name || !wot_prefs.norepsfor ||
-					wot_prefs.norepsfor.length == 0) {
+			if (!name || !vipre_prefs.norepsfor ||
+					vipre_prefs.norepsfor.length == 0) {
 				return false;
 			}
 
-			var hosts = wot_prefs.norepsfor.replace(/\s/g, "").split(",");
+			var hosts = vipre_prefs.norepsfor.replace(/\s/g, "").split(",");
 
 			for (var i = 0; i < hosts.length; ++i) {
 				if (hosts[i].length == 0) {
@@ -305,7 +290,7 @@ var wot_url =
 				}
 			}
 		} catch (e) {
-			dump("wot_url.isexcluded: failed with " + e + "\n");
+			dump("vipre_url.isexcluded: failed with " + e + "\n");
 		}
 
 		return false;
@@ -319,7 +304,7 @@ var wot_url =
 			new_path += "utm_source=addon" + (context ? "&utm_content=" + context : "");
 			return has_base ? new_path : VIPRE_MY_URL + new_path;
 		} catch (e) {
-			dump("wot_url.getwoturl: failed with " + e + "\n");
+			dump("vipre_url.getwoturl: failed with " + e + "\n");
 		}
 
 		return null;
@@ -331,7 +316,7 @@ var wot_url =
             var has_base = !!base;
 			base = base || VIPRE_PREF_PATH;
 
-			var path = base + wot_util.getstring("lang") +
+			var path = base + vipre_util.getstring("lang") +
 						"/" + VIPRE_PLATFORM + "/" + VIPRE_VERSION;
 
 			var url = path;
@@ -343,14 +328,14 @@ var wot_url =
 
 				url = this.getwoturl(url, context, has_base);
 
-				if (secure || wot_core.force_https) {
+				if (secure || vipre_core.force_https) {
 					url = url.replace(/^http\:/, "https:");
 				}
 
 				return url;
 			}
 		} catch (e) {
-			dump("wot_url.getprefurl: failed with " + e + "\n");
+			dump("vipre_url.getprefurl: failed with " + e + "\n");
 		}
 
 		return null;
@@ -360,19 +345,19 @@ var wot_url =
 	{
 		try {
 			var params = "&lang=" +
-				(wot_util.getstring("lang") || "en-US");
+				(vipre_util.getstring("lang") || "en-US");
 
 			params += "&version=" + VIPRE_PLATFORM + "-" + VIPRE_VERSION;
 			return params;
 		} catch (e) {
-			dump("wot_url.getapiparams: failed with " + e + "\n");
+			dump("vipre_url.getapiparams: failed with " + e + "\n");
 		}
 
 		return "";
 	}
 };
 
-var wot_browser =
+var vipre_browser =
 {
 	isoffline: function()
 	{
@@ -382,7 +367,7 @@ var wot_browser =
 
 			return ios.offline;
 		} catch (e) {
-			dump("wot_browser.isoffline: failed with " + e + "\n");
+			dump("vipre_browser.isoffline: failed with " + e + "\n");
 		}
 
 		return false;
@@ -414,7 +399,7 @@ var wot_browser =
 
 	gethostname: function()
 	{
-		return wot_url.gethostname(this.geturl());
+		return vipre_url.gethostname(this.geturl());
 	},
 
 	geturl: function()
@@ -432,7 +417,7 @@ var wot_browser =
 		try {
 			return getBrowser().contentDocument.referrer;
 		} catch (e) {
-			dump("wot_browser.getreferrer: failed with " + e + "\n");
+			dump("vipre_browser.getreferrer: failed with " + e + "\n");
 		}
 
 		return null;
@@ -443,7 +428,7 @@ var wot_browser =
 		try {
 			var icon = "chrome://vipre/skin/fusion/";
 
-			if (wot_prefs.accessible) {
+			if (vipre_prefs.accessible) {
 				icon += "accessible/";
 			}
 
@@ -454,7 +439,7 @@ var wot_browser =
 			}
 
 			/* There's a chance the user has already changed the tab */
-			if (hostname != wot_browser.gethostname()) {
+			if (hostname != vipre_browser.gethostname()) {
 				return;
 			}
 
@@ -473,25 +458,25 @@ var wot_browser =
 				}
 
 			    var buttons = [{
-					label: wot_util.getstring("warning_button"),
+					label: vipre_util.getstring("warning_button"),
 					accessKey: null,
 					popup: "wot-popup",
 					callback: null
 				}];
 
 			    nbox.appendNotification(
-					wot_util.getstring("warning", [message]),
+					vipre_util.getstring("warning", [message]),
 					"wot-warning",
 					icon, nbox.PRIORITY_WARNING_HIGH, buttons);
 			} else {
 				browser.hideMessage(browser.selectedBrowser, "both");
 				browser.showMessage(browser.selectedBrowser, icon,
-					wot_util.getstring("warning", [message]),
-					wot_util.getstring("warning_button"),
+					vipre_util.getstring("warning", [message]),
+					vipre_util.getstring("warning_button"),
 					null, null, "wot-popup", "top", true, null);
 			}
 		} catch (e) {
-			dump("wot_browser.show_warning: failed with " + e + "\n");
+			dump("vipre_browser.show_warning: failed with " + e + "\n");
 		}
 	},
 
@@ -522,7 +507,7 @@ var wot_browser =
 				browser.hideMessage(browser.selectedBrowser, "both");
 			}
 		} catch (e) {
-			dump("wot_browser.hide_warning: failed with " + e + "\n");
+			dump("vipre_browser.hide_warning: failed with " + e + "\n");
 		}
 	},
 
@@ -554,7 +539,7 @@ var wot_browser =
                 path += action;
             }
 
-            var url = wot_url.getwoturl(path, context, has_base);
+            var url = vipre_url.getwoturl(path, context, has_base);
 
             if (browser && url) {
                 browser.selectedTab = browser.addTab(url);
@@ -562,7 +547,7 @@ var wot_browser =
             }
 
         } catch (e) {
-            wdump("ERROR: wot_util.wot_browser.open_wotsite() raised an exception. " + e);
+            wdump("ERROR: vipre_util.vipre_browser.open_wotsite() raised an exception. " + e);
         }
 
     },
@@ -574,7 +559,7 @@ var wot_browser =
             return this.open_wotsite(VIPRE_SCORECARD_PATH, hostname, action, context, true, false);
 
 		} catch (e) {
-			dump("wot_browser.openscorecard: failed with " + e + "\n");
+			dump("vipre_browser.openscorecard: failed with " + e + "\n");
 		}
 
 		return false;
@@ -583,13 +568,13 @@ var wot_browser =
 //	installsearch: function()
 //	{
 //		try {
-//			wot_prefs.setBool("install_search", false);
+//			vipre_prefs.setBool("install_search", false);
 //
 //			var bss = Components.classes["@mozilla.org/browser/search-service;1"]
 //						.getService(Components.interfaces.nsIBrowserSearchService);
 //
 //			var url = VIPRE_SAFESEARCH_OSD_URL;
-//			var lang = wot_util.getstring("lang");
+//			var lang = vipre_util.getstring("lang");
 //
 //			if (lang) {
 //				url = url.replace("/en-US", "/" + lang);
@@ -597,7 +582,7 @@ var wot_browser =
 //
 //			bss.addEngine(url, 1, null, false);
 //		} catch (e) {
-//			dump("wot_browser.installsearch: failed with " + e + "\n");
+//			dump("vipre_browser.installsearch: failed with " + e + "\n");
 //		}
 //	},
 
@@ -608,7 +593,7 @@ var wot_browser =
 			var framed_document = frame.document || frame.contentDocument;
 			return framed_document;
 		} catch (e) {
-			dump("wot_browser.get_document failed with " + e + "\n");
+			dump("vipre_browser.get_document failed with " + e + "\n");
 			return null;
 		}
 	},
@@ -628,7 +613,7 @@ var wot_browser =
 
 			return elem;
 		} catch (e) {
-			dump("wot_browser.get_or_create_element failed with " + e + "\n");
+			dump("vipre_browser.get_or_create_element failed with " + e + "\n");
 			return null;
 		}
 	},
@@ -652,14 +637,14 @@ var wot_browser =
 			}
 
 		} catch (e) {
-			dump("wot_browser.attach_element failed with " + e + "\n");
+			dump("vipre_browser.attach_element failed with " + e + "\n");
 			return null;
 		}
 	}
 };
 
 /* Provides a simple wrapper for nsICryptoHash */
-var wot_hash =
+var vipre_hash =
 {
 	load_delayed: function()
 	{
@@ -671,10 +656,10 @@ var wot_hash =
 	                        getService(Components.interfaces.nsICryptoHash);
 
 			window.addEventListener("unload", function(e) {
-					wot_hash.unload();
+					vipre_hash.unload();
 				}, false);
 		} catch (e) {
-			dump("wot_hash.load: failed with " + e + "\n");
+			dump("vipre_hash.load: failed with " + e + "\n");
 		}
 	},
 
@@ -695,7 +680,7 @@ var wot_hash =
 			}
 			return bin;
 		} catch (e) {
-			dump("wot_hash.strtobin: failed with " + e + "\n");
+			dump("vipre_hash.strtobin: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -712,7 +697,7 @@ var wot_hash =
 
 			return str;
 		} catch (e) {
-			dump("wot_hash.bintostr: failed with " + e + "\n");
+			dump("vipre_hash.bintostr: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -740,7 +725,7 @@ var wot_hash =
 			}
 			return bin;
 		} catch (e) {
-			dump("wot_hash.hextobin: failed with " + e + "\n");
+			dump("vipre_hash.hextobin: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -758,7 +743,7 @@ var wot_hash =
 			}
 			return str;
 		} catch (e) {
-			dump("wot_hash.bintohex: failed with " + e + "\n");
+			dump("vipre_hash.bintohex: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -776,7 +761,7 @@ var wot_hash =
 			return this.strtobin(this.handle.finish(false));
 
 		} catch (e) {
-			dump("wot_hash.sha1bin: failed with " + e + "\n");
+			dump("vipre_hash.sha1bin: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -820,15 +805,15 @@ var wot_hash =
 			var inner = this.sha1bin(ipad.concat(this.strtobin(str)));
 			return this.sha1bin(opad.concat(inner));
 		} catch (e) {
-			dump("wot_hash.hmac_sha1hex: failed with " + e + "\n");
+			dump("vipre_hash.hmac_sha1hex: failed with " + e + "\n");
 			return null;
 		}
 	}
 };
 
-wot_modules.push({ name: "wot_hash", obj: wot_hash });
+vipre_modules.push({ name: "vipre_hash", obj: vipre_hash });
 
-var wot_arc4 =
+var vipre_arc4 =
 {
 	/* Takes a key as an array of bytes, returns a context */
 	create: function(key)
@@ -887,38 +872,38 @@ var wot_arc4 =
 	}
 };
 
-const VIPRE_CRYPTO_COUNTER = "wot_crypto_counter";
+const VIPRE_CRYPTO_COUNTER = "vipre_crypto_counter";
 
-var wot_crypto =
+var vipre_crypto =
 {
 	load_delayed: function()
 	{
 		try {
-			wot_hashtable.set(VIPRE_CRYPTO_COUNTER, Number(Date.now()));
+			vipre_hashtable.set(VIPRE_CRYPTO_COUNTER, Number(Date.now()));
 		} catch (e) {
-			dump("wot_crypto.load: failed with " + e + "\n");
+			dump("vipre_crypto.load: failed with " + e + "\n");
 		}
 	},
 
 	nonce: function()
 	{
 		try {
-			var counter = wot_hashtable.get(VIPRE_CRYPTO_COUNTER);
+			var counter = vipre_hashtable.get(VIPRE_CRYPTO_COUNTER);
 
-			wot_hashtable.set(VIPRE_CRYPTO_COUNTER,
+			vipre_hashtable.set(VIPRE_CRYPTO_COUNTER,
 				Number(counter) + 1);
 
-			return wot_hash.bintohex(wot_hash.sha1str(
-//						wot_prefs.witness_id +
-						wot_prefs.update_checked +
-//						wot_prefs.cookie_updated +
+			return vipre_hash.bintohex(vipre_hash.sha1str(
+//						vipre_prefs.witness_id +
+						vipre_prefs.update_checked +
+//						vipre_prefs.cookie_updated +
 						VIPRE_VERSION +
-						wot_browser.geturl() +
-						wot_browser.getreferrer() +
+						vipre_browser.geturl() +
+						vipre_browser.getreferrer() +
 						counter +
 						Date.now()));
 		} catch (e) {
-			dump("wot_crypto.nonce: failed with " + e + "\n");
+			dump("vipre_crypto.nonce: failed with " + e + "\n");
 		}
 
 		return Date.now().toString();
@@ -937,7 +922,7 @@ var wot_crypto =
 
 			return id.substr(0, Math.floor(Math.random() * 13 + 8));
 		} catch (e) {
-			dump("wot_crypto.nonce: failed with " + e + "\n");
+			dump("vipre_crypto.nonce: failed with " + e + "\n");
 		}
 
 		return null;
@@ -946,10 +931,10 @@ var wot_crypto =
 //	authenticate: function(str)
 //	{
 //		try {
-//			return wot_hash.bintohex(
-//				wot_hash.hmac_sha1hex(wot_prefs.witness_key, str));
+//			return vipre_hash.bintohex(
+//				vipre_hash.hmac_sha1hex(vipre_prefs.witness_key, str));
 //		} catch (e) {
-//			dump("wot_crypto.authenticate: failed with " + e + "\n");
+//			dump("vipre_crypto.authenticate: failed with " + e + "\n");
 //		}
 //		return null;
 //	},
@@ -962,18 +947,18 @@ var wot_crypto =
 //	islevel: function(level)
 //	{
 //		try {
-//			var l = wot_prefs.status_level;
+//			var l = vipre_prefs.status_level;
 //
 //			if (!l || l.length != 40) {
 //				return false;
 //			}
 //
-//			var h = wot_hash.bintohex(wot_hash.hmac_sha1hex(
-//						wot_prefs.witness_key, "level=" + level));
+//			var h = vipre_hash.bintohex(vipre_hash.hmac_sha1hex(
+//						vipre_prefs.witness_key, "level=" + level));
 //
 //			return (l == h);
 //		} catch (e) {
-//			wdump("wot_crypto.islevel: failed with " + e);
+//			wdump("vipre_crypto.islevel: failed with " + e);
 //		}
 //		return false;
 //	},
@@ -982,12 +967,12 @@ var wot_crypto =
 //    {
 //        try {
 //            if (data && nonce) {
-//                var key = wot_prefs.witness_key;
+//                var key = vipre_prefs.witness_key;
 //
 //                if (key) {
-//                    return btoa(wot_hash.bintostr(wot_arc4.crypt(
-//                        wot_arc4.create(wot_hash.hmac_sha1hex(key, nonce)),
-//                        wot_hash.strtobin(data))));
+//                    return btoa(vipre_hash.bintostr(vipre_arc4.crypt(
+//                        vipre_arc4.create(vipre_hash.hmac_sha1hex(key, nonce)),
+//                        vipre_hash.strtobin(data))));
 //                }
 //            }
 //        } catch (e) {
@@ -1001,7 +986,7 @@ var wot_crypto =
 //    {
 //        try {
 //            if (data && nonce) {
-//                var key = wot_prefs.witness_key;
+//                var key = vipre_prefs.witness_key;
 //
 //                if (index == null || index < 0) {
 //                    index = "";
@@ -1010,24 +995,24 @@ var wot_crypto =
 //                }
 //
 //                if (key) {
-//                    return wot_hash.bintostr(wot_arc4.crypt(
-//                        wot_arc4.create(wot_hash.hmac_sha1hex(key,
+//                    return vipre_hash.bintostr(vipre_arc4.crypt(
+//                        vipre_arc4.create(vipre_hash.hmac_sha1hex(key,
 //                            "response-" + nonce + index)),
-//                        wot_hash.strtobin(atob(data))));
+//                        vipre_hash.strtobin(atob(data))));
 //                }
 //            }
 //        } catch (e) {
-//            wdump("wot_crypto.decrypt(): failed with " + e);
+//            wdump("vipre_crypto.decrypt(): failed with " + e);
 //        }
 //
 //        return null;
 //    }
 };
 
-wot_modules.push({ name: "wot_crypto", obj: wot_crypto });
+vipre_modules.push({ name: "vipre_crypto", obj: vipre_crypto });
 
 /* Provides a simple wrapper for nsIIDNService */
-var wot_idn =
+var vipre_idn =
 {
 	load: function()
 	{
@@ -1039,7 +1024,7 @@ var wot_idn =
 				Components.classes["@mozilla.org/network/idn-service;1"].
 					getService(Components.interfaces.nsIIDNService);
 		} catch (e) {
-			dump("wot_idn.load: failed with " + e + "\n");
+			dump("vipre_idn.load: failed with " + e + "\n");
 		}
 	},
 
@@ -1053,7 +1038,7 @@ var wot_idn =
 		try {
 			return this.handle ? this.handle.isACE(str) : null;
 		} catch (e) {
-			dump("wot_idn.isidn: failed with " + e + "\n");
+			dump("vipre_idn.isidn: failed with " + e + "\n");
 		}
 		return false;
 	},
@@ -1063,7 +1048,7 @@ var wot_idn =
 		try {
 			return this.handle ? this.handle.convertUTF8toACE(utf) : null;
 		} catch (e) {
-			dump("wot_idn.utftoidn: failed with " + e + "\n");
+			dump("vipre_idn.utftoidn: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -1073,15 +1058,15 @@ var wot_idn =
 		try {
 			return this.handle ? this.handle.convertACEtoUTF8(idn) : null;
 		} catch (e) {
-			dump("wot_idn.idntoutf: failed with " + e + "\n");
+			dump("vipre_idn.idntoutf: failed with " + e + "\n");
 		}
 		return null;
 	}
 };
 
-wot_modules.push({ name: "wot_idn", obj: wot_idn });
+vipre_modules.push({ name: "vipre_idn", obj: vipre_idn });
 
-var wot_css =
+var vipre_css =
 {
 	cache: {},
 
@@ -1117,7 +1102,7 @@ var wot_css =
 				break;
 			}
 		} catch (e) {
-			dump("wot_css.getstyle: failed with " + e + "\n");
+			dump("vipre_css.getstyle: failed with " + e + "\n");
 		}
 
 		return null;
@@ -1139,7 +1124,7 @@ var wot_css =
 				}
 			}
 		} catch (e) {
-			dump("wot_css.getstyle_numeric: failed with " + e + "\n");
+			dump("vipre_css.getstyle_numeric: failed with " + e + "\n");
 		}
 
 		return null;
@@ -1151,7 +1136,7 @@ var wot_css =
 		try {
 			style[parameter] = value + unit;
 		} catch (e) {
-			dump("wot_css.setstyle_numeric: failed with " + e + "\n");
+			dump("vipre_css.setstyle_numeric: failed with " + e + "\n");
 		}
 	},
 
@@ -1173,7 +1158,7 @@ var wot_css =
 				}
 			}
 		} catch (e) {
-			dump("wot_css.getstyle_rect: failed with " + e + "\n");
+			dump("vipre_css.getstyle_rect: failed with " + e + "\n");
 		}
 
 		return null;
@@ -1187,14 +1172,14 @@ var wot_css =
 				rect[0].toFixed() + "px, " + rect[1].toFixed() + "px, " +
 				rect[2].toFixed() + "px, " + rect[3].toFixed() + "px)";
 		} catch (e) {
-			dump("wot_css.setstyle_rect: failed with " + e + "\n");
+			dump("vipre_css.setstyle_rect: failed with " + e + "\n");
 		}
 	}
 };
 
-//var wot_file = {
+//var vipre_file = {
 //
-//	wot_dir: "WOT",
+//	vipre_dir: "WOT",
 //
 //	import_libs: function()
 //	{
@@ -1206,10 +1191,10 @@ var wot_css =
 //
 //		try {
 //
-//			wot_file.import_libs();
+//			vipre_file.import_libs();
 //
-//			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
-//			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
+//			var dir = FileUtils.getDir("ProfD", [vipre_file.vipre_dir], true); // to make sure the Dir exists
+//			var file = FileUtils.getFile("ProfD", [vipre_file.vipre_dir, filename]);
 //
 //			NetUtil.asyncFetch(file, function(inputStream, status) {
 //
@@ -1231,7 +1216,7 @@ var wot_css =
 //					callback({});   // whether no data is loaded call it anyway to finish the load process
 //
 //				} catch (e) {
-//					dump("utils.wot_file.read_json() is failed with " + e + "\n");
+//					dump("utils.vipre_file.read_json() is failed with " + e + "\n");
 //					callback({});   // anyway, provide empty object
 //					return;
 //				}
@@ -1239,7 +1224,7 @@ var wot_css =
 //			});
 //
 //		} catch (e) {
-//			dump("wot_file.read_json() failed with " + e + "\n");
+//			dump("vipre_file.read_json() failed with " + e + "\n");
 //			callback({});   // anyway, provide empty object
 //		}
 //
@@ -1250,10 +1235,10 @@ var wot_css =
 //		callback = callback || function(status){};
 //
 //		try {
-//			wot_file.import_libs();
+//			vipre_file.import_libs();
 //
-//			var dir = FileUtils.getDir("ProfD", [wot_file.wot_dir], true); // to make sure the Dir exists
-//			var file = FileUtils.getFile("ProfD", [wot_file.wot_dir, filename]);
+//			var dir = FileUtils.getDir("ProfD", [vipre_file.vipre_dir], true); // to make sure the Dir exists
+//			var file = FileUtils.getFile("ProfD", [vipre_file.vipre_dir, filename]);
 //
 //			// You can also optionally pass a flags parameter here. It defaults to
 //			// FileUtils.MODE_WRONLY | FileUtils.MODE_CREATE | FileUtils.MODE_TRUNCATE;
@@ -1278,7 +1263,7 @@ var wot_css =
 //			});
 //
 //		} catch (e) {
-//			dump("wot_file.save_json() failed with " + e + "\n");
+//			dump("vipre_file.save_json() failed with " + e + "\n");
 //			callback(false);   // report about failed attempt to save
 //		}
 //	}

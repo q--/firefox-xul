@@ -1,26 +1,11 @@
 /*
 	shared.js
-	Copyright © 2008-2011  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
-const VIPRE_PREFIX_SHARED = "wot_shared";
+const VIPRE_PREFIX_SHARED = "vipre_shared";
 
-var wot_shared =
+var vipre_shared =
 {
 	set: "abcdefghijklmnopqrstuvwxyz234567",
 	rev: null,
@@ -30,7 +15,7 @@ var wot_shared =
 		try {
 			this.sync();
 		} catch (e) {
-			dump("wot_shared.load: failed with " + e + "\n");
+			dump("vipre_shared.load: failed with " + e + "\n");
 		}
 	},
 
@@ -69,19 +54,19 @@ var wot_shared =
 			}
 
 			for (i in data) {
-				wot_prefs.setChar("shared." + i, data[i].join(","));
+				vipre_prefs.setChar("shared." + i, data[i].join(","));
 			}
 
 			this.sync();
 		} catch (e) {
-			dump("wot_shared.parse: failed with " + e + "\n");
+			dump("vipre_shared.parse: failed with " + e + "\n");
 		}
 	},
 
 	sync: function()
 	{
 		try {
-			var branch = wot_prefs.ps.getBranch(VIPRE_PREF + "shared.");
+			var branch = vipre_prefs.ps.getBranch(VIPRE_PREF + "shared.");
 			var children = branch.getChildList("", {});
 
 			for (var i = 0; i < children.length; ++i) {
@@ -91,7 +76,7 @@ var wot_shared =
 					continue;
 				}
 
-				var data = wot_prefs.getChar("shared." + children[i]);
+				var data = vipre_prefs.getChar("shared." + children[i]);
 
 				if (!data || !data.length) {
 					continue;
@@ -104,26 +89,26 @@ var wot_shared =
 						continue;
 					}
 
-					var pn = wot_idn.utftoidn(domains[j]);
+					var pn = vipre_idn.utftoidn(domains[j]);
 
 					if (!pn) {
 						continue;
 					}
 
-					wot_hashtable.set(VIPRE_PREFIX_SHARED + ":" + pn, level);
+					vipre_hashtable.set(VIPRE_PREFIX_SHARED + ":" + pn, level);
 				}
 			}
 		} catch (e) {
-			dump("wot_shared.load: failed with " + e + "\n");
+			dump("vipre_shared.load: failed with " + e + "\n");
 		}
 	},
 
 	isshared: function(host)
 	{
 		try {
-			return wot_hashtable.get(VIPRE_PREFIX_SHARED + ":" + host);
+			return vipre_hashtable.get(VIPRE_PREFIX_SHARED + ":" + host);
 		} catch (e) {
-			dump("wot_shared.isshared: failed with " + e + "\n");
+			dump("vipre_shared.isshared: failed with " + e + "\n");
 		}
 
 		return null;
@@ -156,7 +141,7 @@ var wot_shared =
 				return host;
 			}
 
-			var h = wot_idn.utftoidn(host);
+			var h = vipre_idn.utftoidn(host);
 
 			if (!h) {
 				return host;
@@ -198,7 +183,7 @@ var wot_shared =
 
 			return "_p_" + encoded + "." + host;
 		} catch (e) {
-			dump("wot_shared.encodehostname: failed with " + e + "\n");
+			dump("vipre_shared.encodehostname: failed with " + e + "\n");
 		}
 
 		return host;
@@ -221,7 +206,7 @@ var wot_shared =
 
 			return m[2] + "/" + decoded;
 		} catch (e) {
-			dump("wot_shared.decodehostname: failed with " + e + "\n");
+			dump("vipre_shared.decodehostname: failed with " + e + "\n");
 		}
 
 		return host;
@@ -259,7 +244,7 @@ var wot_shared =
 
 			return r;
 		} catch (e) {
-			dump("wot_shared.base32encode: failed with " + e + "\n");
+			dump("vipre_shared.base32encode: failed with " + e + "\n");
 		}
 		
 		return null;
@@ -304,11 +289,11 @@ var wot_shared =
 			/* UTF-8 to Unicode */
 			return decodeURIComponent(escape(r));
 		} catch (e) {
-			dump("wot_shared.base32decode: failed with " + e + "\n");
+			dump("vipre_shared.base32decode: failed with " + e + "\n");
 		}
 
 		return null;
-	},
+	}
 };
 
-wot_modules.push({ name: "wot_shared", obj: wot_shared });
+vipre_modules.push({ name: "vipre_shared", obj: vipre_shared });

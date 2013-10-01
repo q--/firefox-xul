@@ -3,7 +3,7 @@
 	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
-var wot_hashtable =
+var vipre_hashtable =
 {
 	load_delayed: function()
 	{
@@ -14,7 +14,7 @@ var wot_hashtable =
 			this.bag = Components.classes["@mozilla.org/hash-property-bag;1"].
 						getService(Components.interfaces.nsIWritablePropertyBag);
 		} catch (e) {
-			wdump("wot_hashtable.init: failed with: " + e);
+			wdump("vipre_hashtable.init: failed with: " + e);
 		}
 	},
 
@@ -29,7 +29,7 @@ var wot_hashtable =
             if (!this.bag) this.load_delayed();
 			this.bag.setProperty(name, value);
 		} catch (e) {
-			dump("wot_hashtable.set: failed with " + e + "\n");
+			dump("vipre_hashtable.set: failed with " + e + "\n");
             wdump(name + " = " + value);
 		}
 	},
@@ -59,13 +59,13 @@ var wot_hashtable =
             if (!this.bag) this.load_delayed();
 			return this.bag.enumerator;
 		} catch (e) {
-			dump("wot_hashtable.get_enumerator: failed with " + e + "\n");
+			dump("vipre_hashtable.get_enumerator: failed with " + e + "\n");
 		}
 		return null;
 	}
 };
 
-wot_modules.push({ name: "wot_hashtable", obj: wot_hashtable });
+vipre_modules.push({ name: "vipre_hashtable", obj: vipre_hashtable });
 
 /* Cache status */
 const VIPRE_QUERY_ERROR = 0;	/* Failed */
@@ -73,61 +73,18 @@ const VIPRE_QUERY_OK    = 1;	/* Successful */
 const VIPRE_QUERY_RETRY = 2;	/* Request or cache timed out, retry */
 const VIPRE_QUERY_LINK  = 3;	/* Incomplete for a query use, retry */
 
-const VIPRE_PREFIX_CACHE = "wot_cache";
-const VIPRE_PREFIX_NONCE = "wot_nonce";
+const VIPRE_PREFIX_CACHE = "vipre_cache";
 const VIPRE_CNRE = RegExp(VIPRE_PREFIX_CACHE + "\:(.+)\:exists");
 
-var wot_cache =
+var vipre_cache =
 {
-	get_nonce_name: function(nonce)
-	{
-		if (!nonce) {
-			return null;
-		}
-
-		return VIPRE_PREFIX_NONCE + ":" + nonce;
-	},
-
-	add_nonce: function(nonce, name)
-	{
-		var nn = this.get_nonce_name(nonce);
-
-		if (!nn) {
-			return;
-		}
-
-		wot_hashtable.set(nn, name);
-	},
-
-	resolve_nonce: function(nonce)
-	{
-		var nn = this.get_nonce_name(nonce);
-
-		if (!nn) {
-			return null;
-		}
-
-		return wot_hashtable.get(nn);
-	},
-
-	remove_nonce: function(nonce)
-	{
-		var nn = this.get_nonce_name(nonce);
-
-		if (!nn) {
-			return;
-		}
-
-		wot_hashtable.remove(nn);
-	},
-
 	get_property_name: function(name, property)
 	{
 		if (!name || !property) {
 			return null;
 		}
 
-		var cn = wot_idn.utftoidn(name);
+		var cn = vipre_idn.utftoidn(name);
 
 		if (!cn) {
 			return null;
@@ -138,7 +95,7 @@ var wot_cache =
 
 	get: function(name, property)
 	{
-		if (!wot_util.isenabled()) {
+		if (!vipre_util.isenabled()) {
 			return null;
 		}
 
@@ -148,7 +105,7 @@ var wot_cache =
 			return null;
 		}
 
-		return wot_hashtable.get(pn);
+		return vipre_hashtable.get(pn);
 	},
 
 	set: function(name, property, value)
@@ -159,8 +116,7 @@ var wot_cache =
 			return;
 		}
 
-//		wdump(name + ", " + property + ", " + value);
-        wot_hashtable.set(pn, value);
+        vipre_hashtable.set(pn, value);
 	},
 
 	remove: function(name, property)
@@ -171,7 +127,7 @@ var wot_cache =
 			return;
 		}
 
-		wot_hashtable.remove(pn);
+		vipre_hashtable.remove(pn);
 	},
 
 	iscached: function(name)
@@ -184,14 +140,14 @@ var wot_cache =
 		if (this.iscached(name)) {
 			var s = this.get(name, "status");
  			return (s == VIPRE_QUERY_OK ||
-						(wot_prefs.prefetch && s == VIPRE_QUERY_LINK));
+						(vipre_prefs.prefetch && s == VIPRE_QUERY_LINK));
 		}
 		return false;
 	},
 
 	get_enumerator: function()
 	{
-		return wot_hashtable.get_enumerator();
+		return vipre_hashtable.get_enumerator();
 	},
 
 	get_name_from_element: function(element)
@@ -220,7 +176,7 @@ var wot_cache =
 
 			return match[1];
 		} catch (e) {
-			dump("wot_cache.get_name_from_element: failed with " + e + "\n");
+			dump("vipre_cache.get_name_from_element: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -244,7 +200,7 @@ var wot_cache =
 
             this.set(name, "reputation_0", -1);
 		} catch (e) {
-			wdump("wot_cache.create: failed with " + e);
+			wdump("vipre_cache.create: failed with " + e);
 		}
 	},
 
@@ -262,7 +218,7 @@ var wot_cache =
 			this.remove(name, "time");
             this.remove(name, "reputation_0");
 		} catch (e) {
-			wdump("wot_cache.destroy: failed with " + e);
+			wdump("vipre_cache.destroy: failed with " + e);
 		}
 	},
 
@@ -277,7 +233,7 @@ var wot_cache =
             this.set(target, "status", VIPRE_QUERY_OK);
 
         } catch (e) {
-			wdump("ERROR: wot_cache.add_target: failed with " + e);
+			wdump("ERROR: vipre_cache.add_target: failed with " + e);
 		}
 	}
 };

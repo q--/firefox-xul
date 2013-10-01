@@ -35,7 +35,6 @@ const VIPRE_SERVICE_UPDATE_FORMAT	= 4;
 const VIPRE_SERVICE_API_UPDATE    = VIPRE_SERVICE_API_VERSION + "update";
 
 /* API XML tags and attributes */
-const VIPRE_SERVICE_XML_QUERY_MSG_ID_MAINT		= "downtime";
 const VIPRE_SERVICE_XML_UPDATE_INTERVAL			= "interval";
 const VIPRE_SERVICE_XML_UPDATE_SEARCH				= "search";
 const VIPRE_SERVICE_XML_UPDATE_SEARCH_NAME		= "name";
@@ -95,7 +94,7 @@ const VIPRE_UPDATE_PATH = "update";
 
 
 /* Preferences and defaults */
-const wot_prefs_bool = [
+const vipre_prefs_bool = [
 	[ "show_welcome_page",		    false ],
 	[ "accessible",					false ],
 	[ "button_created",				false ],
@@ -108,16 +107,15 @@ const wot_prefs_bool = [
 	[ "search_scripts",				false ],
 	[ "show_application_0",			true  ],
 	[ "show_search_popup",			false ],
-	[ "use_search_level",			false ],
+	[ "use_search_level",			true ],
 	[ "warning_unknown_0",			false ]
 ];
 
-const wot_prefs_char = [
+const vipre_prefs_char = [
 	[ "cookie_updated",				"0"	],
 	[ "extension_id",				""	],
 	[ "firstrun_guide",				"0"	],
 	[ "firstrun_time",				""	],
-	[ "last_message",				""	],
 	[ "last_version",				""	],
 	[ "norepsfor",					""	],
 	[ "status_level",				""	],
@@ -125,7 +123,7 @@ const wot_prefs_char = [
 	[ "warning_opacity",			"0.7" ]
 ];
 
-const wot_prefs_int = [
+const vipre_prefs_int = [
 	[ "popup_hide_delay",			1000 ],
 	[ "popup_show_delay",			200 ],
 	[ "activity_score",			    0 ],
@@ -165,13 +163,11 @@ const VIPRE_SEARCH_TARGET			= "target";
 const VIPRE_SEARCH_POPUP			= "popup";
 
 /* contexts for opening WOT links */
-const VIPRE_URL_POPUPVIEWSC =  "popup";
-const VIPRE_URL_MENUMY =       "menu-my";
 const VIPRE_URL_BTN =          "button";
 const VIPRE_URL_CTX =          "contextmenu";
 
 
-var wot_modules = [];
+var vipre_modules = [];
 
 // This function should be moved to other place
 function wdump (str) {

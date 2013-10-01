@@ -3,7 +3,7 @@
 	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
-.wot-popup-layer {
+.vipre-popup-layer {
     position: absolute;
     top: -9999px;
     z-index: 2147483647;

@@ -1,6 +1,0 @@
-/* toolbar menu */
-#wot-url-menu > menuitem[visible="false"],
-#wot-url-menu > menuseparator[visible="false"]
-{
-	display: none !important;
-}

@@ -1,0 +1,5 @@
+<!-- Menu items -->
+<!ENTITY vipreEnabled.label			"Enabled">
+<!ENTITY vipreRefresh.label         "Refresh">
+<!ENTITY vipreContent.label			"VIPRE">
+<!ENTITY vipreCheckUpdates.label    "Check for updates…">

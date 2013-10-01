@@ -1,25 +1,10 @@
 /*
 	prefs.js
-	Copyright © 2005-2012  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013  WOT Services Oy <info@mywot.com>
 */
 
 /* Observes extension preferences */
-var wot_prefs =
+var vipre_prefs =
 {
 	load: function()
 	{
@@ -35,22 +20,22 @@ var wot_prefs =
 			this.pref_default = this.ps.getDefaultBranch(null);
 
 			/* Default values */
-			for (var i = 0; i < wot_prefs_bool.length; ++i) {
-				this.setDefaultBool(wot_prefs_bool[i][0],
-					wot_prefs_bool[i][1]);
-				this[wot_prefs_bool[i][0]] = wot_prefs_bool[i][1];
+			for (var i = 0; i < vipre_prefs_bool.length; ++i) {
+				this.setDefaultBool(vipre_prefs_bool[i][0],
+					vipre_prefs_bool[i][1]);
+				this[vipre_prefs_bool[i][0]] = vipre_prefs_bool[i][1];
 			}
 
-			for (var i = 0; i < wot_prefs_char.length; ++i) {
-				this.setDefaultChar(wot_prefs_char[i][0],
-					wot_prefs_char[i][1]);
-				this[wot_prefs_char[i][0]] = wot_prefs_char[i][1];
+			for (var i = 0; i < vipre_prefs_char.length; ++i) {
+				this.setDefaultChar(vipre_prefs_char[i][0],
+					vipre_prefs_char[i][1]);
+				this[vipre_prefs_char[i][0]] = vipre_prefs_char[i][1];
 			}
 
-			for (var i = 0; i < wot_prefs_int.length; ++i) {
-				this.setDefaultInt(wot_prefs_int[i][0],
-					wot_prefs_int[i][1]);
-				this[wot_prefs_int[i][0]] = wot_prefs_int[i][1];
+			for (var i = 0; i < vipre_prefs_int.length; ++i) {
+				this.setDefaultInt(vipre_prefs_int[i][0],
+					vipre_prefs_int[i][1]);
+				this[vipre_prefs_int[i][0]] = vipre_prefs_int[i][1];
 			}
 
 			/* Add observer */
@@ -60,7 +45,7 @@ var wot_prefs =
 
 			this.updateui = false;
 		} catch (e) {
-			dump("wot_prefs.load: failed with " + e + "\n");
+			dump("vipre_prefs.load: failed with " + e + "\n");
 		}
 	},
 
@@ -69,7 +54,7 @@ var wot_prefs =
 		try {
 			this.sync();
 		} catch (e) {
-			dump("wot_prefs.load: failed with " + e + "\n");
+			dump("vipre_prefs.load: failed with " + e + "\n");
 		}
 	},
 
@@ -84,7 +69,7 @@ var wot_prefs =
 			this.pref = null;
 			this.ps = null;
 		} catch (e) {
-			dump("wot_prefs.unload: failed with " + e + "\n");
+			dump("vipre_prefs.unload: failed with " + e + "\n");
 		}
 	},
 
@@ -94,7 +79,7 @@ var wot_prefs =
 			this.updateui = true;
 			this.sync();
 		} catch (e) {
-			dump("wot_prefs.setupdateui: failed with " + e + "\n");
+			dump("vipre_prefs.setupdateui: failed with " + e + "\n");
 		}
 	},
 
@@ -106,7 +91,7 @@ var wot_prefs =
 				return this.pref.getBoolPref(VIPRE_PREF + name);
 			}
 		} catch (e) {
-			dump("wot_prefs.getBool(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.getBool(" + name + "): failed with " + e + "\n");
 		}
 		return default_value;
 	},
@@ -117,7 +102,7 @@ var wot_prefs =
 			this.pref.setBoolPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
-			dump("wot_prefs.setBool(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.setBool(" + name + "): failed with " + e + "\n");
 		}
 		return false;
 	},
@@ -128,7 +113,7 @@ var wot_prefs =
 			this.pref_default.setBoolPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
-			dump("wot_prefs.setDefaultBool(" + name + "): failed with " +
+			dump("vipre_prefs.setDefaultBool(" + name + "): failed with " +
 				e + "\n");
 		}
 		return false;
@@ -142,7 +127,7 @@ var wot_prefs =
 				return this.pref.getIntPref(VIPRE_PREF + name);
 			}
 		} catch (e) {
-			dump("wot_prefs.getInt(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.getInt(" + name + "): failed with " + e + "\n");
 		}
 		return default_value;
 	},
@@ -153,7 +138,7 @@ var wot_prefs =
 			this.pref.setIntPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
-			dump("wot_prefs.setInt(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.setInt(" + name + "): failed with " + e + "\n");
 		}
 		return false;
 	},
@@ -164,7 +149,7 @@ var wot_prefs =
 			this.pref_default.setIntPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
-			dump("wot_prefs.setDefaultInt(" + name + "): failed with " +
+			dump("vipre_prefs.setDefaultInt(" + name + "): failed with " +
 				e + "\n");
 		}
 		return false;
@@ -176,10 +161,10 @@ var wot_prefs =
 			if (this.pref.getPrefType(VIPRE_PREF + name) == this.pref.PREF_STRING) {
 				var res = this.pref.getCharPref(VIPRE_PREF + name);
 
-                return safe_utf8 ? wot_util.decode_utf8(res) : res; // decode from utf8
+                return safe_utf8 ? vipre_util.decode_utf8(res) : res; // decode from utf8
 			}
 		} catch (e) {
-			dump("wot_prefs.getChar(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.getChar(" + name + "): failed with " + e + "\n");
 		}
 		return default_value;
 	},
@@ -188,12 +173,12 @@ var wot_prefs =
 	{
 		try {
             if (this.pref) {
-                value = safe_utf8 ? wot_util.encode_utf8(value) : value; // endode to utf8 if needed
+                value = safe_utf8 ? vipre_util.encode_utf8(value) : value; // endode to utf8 if needed
                 this.pref.setCharPref(VIPRE_PREF + name, value);
                 return true;
             }
 		} catch (e) {
-			dump("wot_prefs.setChar(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.setChar(" + name + "): failed with " + e + "\n");
 		}
 		return false;
 	},
@@ -204,7 +189,7 @@ var wot_prefs =
 			this.pref_default.setCharPref(VIPRE_PREF + name, value);
 			return true;
 		} catch (e) {
-			dump("wot_prefs.setDefaultChar(" + name + "): failed with " +
+			dump("vipre_prefs.setDefaultChar(" + name + "): failed with " +
 				e + "\n");
 		}
 		return false;
@@ -215,7 +200,7 @@ var wot_prefs =
 		try {
 			this.pref.clearUserPref(VIPRE_PREF + name);
 		} catch (e) {
-			/* dump("wot_prefs.clear(" + name + "): failed with " + e + "\n"); */
+			/* dump("vipre_prefs.clear(" + name + "): failed with " + e + "\n"); */
 		}
 	},
 
@@ -224,7 +209,7 @@ var wot_prefs =
 		try {
 			this.pref.deleteBranch(VIPRE_PREF + name.replace(/\.$/, ''));
 		} catch (e) {
-			dump("wot_prefs.deleteBranch(" + name + "): failed with " + e + "\n");
+			dump("vipre_prefs.deleteBranch(" + name + "): failed with " + e + "\n");
 		}
 	},
 
@@ -233,16 +218,16 @@ var wot_prefs =
 		try {
 			this.ps.savePrefFile(null);
 		} catch (e) {
-			dump("wot_prefs.flush: failed with " + e + "\n");
+			dump("vipre_prefs.flush: failed with " + e + "\n");
 		}
 	},
 
     setSmart: function (name, value) {
         // Looks up through preferences names and call the proper function to set the value of the named preference
         var prefs_sets = [
-            [wot_prefs_char, wot_prefs.setChar],
-            [wot_prefs_int, wot_prefs.setInt ],
-            [wot_prefs_bool, wot_prefs.setBool]
+            [vipre_prefs_char, vipre_prefs.setChar],
+            [vipre_prefs_int, vipre_prefs.setInt ],
+            [vipre_prefs_bool, vipre_prefs.setBool]
         ];
 
         for (var s = 0; s < prefs_sets.length; s++) {
@@ -250,7 +235,7 @@ var wot_prefs =
             for (var i = 0; i < pset.length; ++i) {
                 if (pset[i][0] === name) {
                     var func = prefs_sets[s][1];
-                    func.call(wot_prefs, name, value);
+                    func.call(vipre_prefs, name, value);
                     return;
                 }
             }
@@ -262,40 +247,40 @@ var wot_prefs =
 		try {
 			var was_enabled = this.enabled;
 
-			for (var i = 0; i < wot_prefs_bool.length; ++i) {
-				this[wot_prefs_bool[i][0]] =
-					this.getBool(wot_prefs_bool[i][0], wot_prefs_bool[i][1]);
+			for (var i = 0; i < vipre_prefs_bool.length; ++i) {
+				this[vipre_prefs_bool[i][0]] =
+					this.getBool(vipre_prefs_bool[i][0], vipre_prefs_bool[i][1]);
 			}
 
-			for (var i = 0; i < wot_prefs_char.length; ++i) {
-				this[wot_prefs_char[i][0]] =
-					this.getChar(wot_prefs_char[i][0], wot_prefs_char[i][1]);
+			for (var i = 0; i < vipre_prefs_char.length; ++i) {
+				this[vipre_prefs_char[i][0]] =
+					this.getChar(vipre_prefs_char[i][0], vipre_prefs_char[i][1]);
 			}
 
-			for (var i = 0; i < wot_prefs_int.length; ++i) {
-				this[wot_prefs_int[i][0]] =
-					this.getInt(wot_prefs_int[i][0], wot_prefs_int[i][1]);
+			for (var i = 0; i < vipre_prefs_int.length; ++i) {
+				this[vipre_prefs_int[i][0]] =
+					this.getInt(vipre_prefs_int[i][0], vipre_prefs_int[i][1]);
 			}
 
 			/* Do stuff */
 			if (this.updateui) {
-				wot_ui.update();
+				vipre_ui.update();
 
 				if (was_enabled != this.enabled) {
-					wot_core.update();
+					vipre_core.update();
 				}
 
 //				if (this.install_search) {
-//					wot_browser.installsearch();
+//					vipre_browser.installsearch();
 //				}
 
 				/* Always use prefetching when blocking is enabled */
-				if (wot_warning.isblocking()) {
+				if (vipre_warning.isblocking()) {
 					this.prefetch = true;
 				}
 			}
 		} catch (e) {
-			dump("wot_prefs.sync: failed with " + e + "\n");
+			dump("vipre_prefs.sync: failed with " + e + "\n");
 		}
 	},
 
@@ -306,9 +291,9 @@ var wot_prefs =
 				this.sync();
 			}
 		} catch (e) {
-			dump("wot_prefs.observe: failed with " + e + "\n");
+			dump("vipre_prefs.observe: failed with " + e + "\n");
 		}
 	}
 };
 
-wot_modules.push({ name: "wot_prefs", obj: wot_prefs });
+vipre_modules.push({ name: "vipre_prefs", obj: vipre_prefs });

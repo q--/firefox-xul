@@ -1,24 +1,9 @@
 /*
 	warning.js
-	Copyright © 2006 - 2012  WOT Services Oy <info@mywot.com>
-
-	This file is part of WOT.
-
-	WOT is free software: you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	WOT is distributed in the hope that it will be useful, but WITHOUT
-	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
-	License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WOT. If not, see <http://www.gnu.org/licenses/>.
+	Copyright © 2013 WOT Services Oy <info@mywot.com>
 */
 
-var wot_warning =
+var vipre_warning =
 {
 	exit_mode: "back",
 	is_blocked: false,
@@ -26,7 +11,7 @@ var wot_warning =
     blocked: {},
 
     register_blocked: function (url) {
-        var nonce = wot_crypto.getrandomid();
+        var nonce = vipre_crypto.getrandomid();
         this.blocked[nonce] = url;
         return nonce;
     },
@@ -50,7 +35,7 @@ var wot_warning =
 
 			this.warned = {};
 		} catch (e) {
-			wdump("wot_warning.load: failed with " + e);
+			wdump("vipre_warning.load: failed with " + e);
 		}
 	},
 
@@ -65,7 +50,7 @@ var wot_warning =
 
 			return html;
 		} catch (e) {
-			dump("wot_warning.processhtml: failed with " + e + "\n");
+			dump("vipre_warning.processhtml: failed with " + e + "\n");
 		}
 
 		return null;
@@ -74,23 +59,23 @@ var wot_warning =
 	isblocking: function()
 	{
 		// decides whether we must block page or just warn
-		return (wot_prefs["warning_type_0"] == VIPRE_WARNING_BLOCK);
+		return (vipre_prefs["warning_type_0"] == VIPRE_WARNING_BLOCK);
 	},
 
 	getwarningtype: function(hostname, app, reason)
 	{
 		try {
-			if (!wot_prefs["show_application_" + app]) {
+			if (!vipre_prefs["show_application_" + app]) {
 				return VIPRE_WARNING_NONE;
 			}
 
-			var type = wot_prefs["warning_type_" + app];
+			var type = vipre_prefs["warning_type_" + app];
 
 			if (type == VIPRE_WARNING_NONE) {
 				return VIPRE_WARNING_NONE;
 			}
 
-			var r = wot_cache.get(hostname, "reputation_" + app);
+			var r = vipre_cache.get(hostname, "reputation_" + app);
 
 			if (r < 100 && r >= 0) {
 					return (reason) ? VIPRE_REASON_RATING : type;
@@ -98,7 +83,7 @@ var wot_warning =
                 return VIPRE_WARNING_NONE;
             }
 		} catch (e) {
-			dump("wot_warning.getwarningtype: failed with " + e + "\n");
+			dump("vipre_warning.getwarningtype: failed with " + e + "\n");
 		}
 
 		return VIPRE_WARNING_NONE;
@@ -108,11 +93,11 @@ var wot_warning =
 	{
 		var result = VIPRE_WARNING_NONE;
 		try {
-			if (!wot_cache.isok(hostname)) {
+			if (!vipre_cache.isok(hostname)) {
 				return result;
 			}
 
-            var type = wot_warning.getwarningtype(hostname, 0, false);
+            var type = vipre_warning.getwarningtype(hostname, 0, false);
 
             if (type > result) {
                 result = type;
@@ -123,7 +108,7 @@ var wot_warning =
             }
 
 		} catch (e) {
-			dump("wot_warning.isdangerous: failed with " + e + "\n");
+			dump("vipre_warning.isdangerous: failed with " + e + "\n");
 		}
 		return result;
 	},
@@ -133,18 +118,18 @@ var wot_warning =
 		var window = content.defaultView;
 		var steps_back = this.is_blocked ? 1 : 1; // when mode is Blocking, there are at least 2 steps in history
 		if(window.history.length > steps_back) {
-			wot_warning.exit_mode = "back"; // note: don't change this string, there are code dependent on it
+			vipre_warning.exit_mode = "back"; // note: don't change this string, there are code dependent on it
 		} else {
-			wot_warning.exit_mode = "leave";
+			vipre_warning.exit_mode = "leave";
 		}
-		return wot_warning.exit_mode;
+		return vipre_warning.exit_mode;
 	},
 
 	add: function(hostname, content, type, forced_reason)
 	{
 		try {
 			if (!hostname || !content ||
-					content.getElementById("wotwarning")) {
+					content.getElementById("viprewarning")) {
 				return false;
 			}
 
@@ -163,7 +148,7 @@ var wot_warning =
 
 			return true;
 		} catch (e) {
-			dump("wot_warning.add: failed with " + e + "\n");
+			dump("vipre_warning.add: failed with " + e + "\n");
 		}
 
 		return false;
@@ -181,11 +166,11 @@ var wot_warning =
 
 			if (!content) return;
 
-			var wot_blocked = content.getElementById("wotblocked"), // Important to have element with this ID
-			    is_blocked = !!wot_blocked;
+			var vipre_blocked = content.getElementById("vipreblocked"), // Important to have element with this ID
+			    is_blocked = !!vipre_blocked;
 
 			if(is_blocked) {
-				wot_warning.set_exitmode(content);
+				vipre_warning.set_exitmode(content);
 			}
 
 			var node = event.originalTarget;
@@ -208,14 +193,14 @@ var wot_warning =
 
 			switch (node_id) {
                 case "vipre-bypass":
-                    var blocked_id = String(wot_blocked.getAttribute("vipre_blocked_id")),
-                        blocked_target = wot_blocked.getAttribute("vipre_blocked_target");
-                    wot_core.bypass_blocking(blocked_id, blocked_target, content.defaultView);
+                    var blocked_id = String(vipre_blocked.getAttribute("vipre_blocked_id")),
+                        blocked_target = vipre_blocked.getAttribute("vipre_blocked_target");
+                    vipre_core.bypass_blocking(blocked_id, blocked_target, content.defaultView);
 					break;
 
 				case "vipre-back":
 					var window = content.defaultView;
-					if(wot_warning.exit_mode == "leave") {
+					if(vipre_warning.exit_mode == "leave") {
 						// close tab
 						window.close();
 					} else {
@@ -235,9 +220,9 @@ var wot_warning =
 			}
 
 		} catch (e) {
-			dump("wot_warning.click: failed with " + e + "\n");
+			dump("vipre_warning.click: failed with " + e + "\n");
 		}
 	}
 };
 
-wot_modules.push({ name: "wot_warning", obj: wot_warning });
+vipre_modules.push({ name: "vipre_warning", obj: vipre_warning });

@@ -1,0 +1,6 @@
+/* toolbar menu */
+#vipre-url-menu > menuitem[visible="false"],
+#vipre-url-menu > menuseparator[visible="false"]
+{
+	display: none !important;
+}

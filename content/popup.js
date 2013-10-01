@@ -4,51 +4,24 @@
 */
 
 const VIPRE_POPUP_HTML =
-    '<div id="wot-logo">{POPUPHEADERTEXT}</div>' +
-        '<div id="wot-ratings{ID}" class="wot-ratings">' +
-        '<div id="wot-hostname"></div>' +
-        '<div id="wot-r0-stack{ID}" class="wot-stack wot-stack-left">' +
-        '<div id="wot-r0-header{ID}" class="wot-header">{POPUPTEXT0}</div>' +
-        '<div id="wot-r0-rep{ID}" class="wot-rep"></div>' +
-        '<div id="wot-r0-cnf{ID}" class="wot-cnf"></div>' +
-        '<div class="rating-legend-wrapper">' +
-            '<div class="rating-legend">{REPTEXT0}</div>' +
+    '<div id="vipre-logo">{POPUPHEADERTEXT}</div>' +
+        '<div id="vipre-ratings{ID}" class="vipre-ratings">' +
+        '<div id="vipre-hostname"></div>' +
         '</div>' +
-
-        '</div>' +
-        '<div id="wot-r4-stack{ID}" class="wot-stack wot-stack-right">' +
-        '<div id="wot-r4-header{ID}" class="wot-header">{POPUPTEXT4}</div>' +
-        '<div id="wot-r4-rep{ID}" class="wot-rep"></div>' +
-        '<div id="wot-r4-cnf{ID}" class="wot-cnf"></div>' +
-        '<div class="rating-legend-wrapper">' +
-            '<div class="rating-legend">{REPTEXT4}</div>' +
-        '</div>' +
-
-        '</div>' +
-        '</div>' +
-        '<div id="wot-categories">' +
-        '<div id="wot-cat-text">{POPUPNOCAT}</div>' +
-        '<ul id="wot-cat-list"></ul>' +
-        '</div>' +
-        '<div class="wot-corners-wrapper">' +
-        '<div id="wot-pp-tr" class="wot-pp-tr"></div>' +
-        '<div id="wot-pp-cs" class="wot-pp-cs"></div>' +
         '</div>';
 
 const VIPRE_POPUP_STYLE = "@import \"chrome://vipre/skin/include/popup.css\";";
 
-var wot_popup =
+var vipre_popup =
 {
 	offsety:		-15,
 	offsetx:		4,
 	height:			220,
 	width:			300,
-//	ratingheight:	52,
-//	areaheight:		214,
 	barsize:		20,
 	offsetheight:	0,
 	postfix:		"-" + Date.now(),
-	id:				"wot-popup-layer",
+	id:				"vipre-popup-layer",
 	onpopup:		false,
     layer:          null,
     MAX_CATEGORIES: 3,
@@ -66,10 +39,10 @@ var wot_popup =
 
 			if (this.browser) {
 				this.browser.addEventListener("mouseover",
-					wot_popup.onmouseover, false);
+					vipre_popup.onmouseover, false);
 			}
 		} catch (e) {
-			dump("wot_popup.load: failed with " + e + "\n");
+			dump("vipre_popup.load: failed with " + e + "\n");
 		}
 	},
 
@@ -78,31 +51,28 @@ var wot_popup =
 		try {
 			if (this.browser) {
 				this.browser.removeEventListener("mouseover",
-						wot_popup.onmouseover, false);
+						vipre_popup.onmouseover, false);
 				this.browser = null;
 			}
 		} catch (e) {
-			dump("wot_popup.unload: failed with " + e + "\n");
+			dump("vipre_popup.unload: failed with " + e + "\n");
 		}
 	},
 
 	addpopup: function(content, elem)
 	{
 		try {
-			if (!wot_prefs.show_search_popup) {
+			if (!vipre_prefs.show_search_popup) {
                 return false;
             }
 
             var replaces = [
                 { from: "ID", to: this.postfix },
-                { from: "POPUPTEXT0", to: wot_util.getstring("components_0") },
-                { from: "POPUPTEXT4", to: wot_util.getstring("components_4") },
-                { from: "POPUPHEADERTEXT", to: wot_util.getstring("popup_headertext") },
-                { from: "POPUPNOCAT", to: wot_util.getstring("popup_nocattext") }
+                { from: "POPUPHEADERTEXT", to: vipre_util.getstring("popup_headertext") }
             ];
 
 			if (!this.layer) {
-				this.layer = wot_util.processhtml(VIPRE_POPUP_HTML, replaces);
+				this.layer = vipre_util.processhtml(VIPRE_POPUP_HTML, replaces);
 			}
 
 			if (content.getElementById(this.id)) {
@@ -122,10 +92,8 @@ var wot_popup =
             if (elem.isContentEditable) return false;
 
             var layer = content.createElement("div");
-            var accessible_cls = wot_prefs.accessible ? " wot-popup-layer-accessible" : "";
-
 			layer.setAttribute("id", this.id);
-			layer.setAttribute("class", "wot-popup-layer" + accessible_cls);
+			layer.setAttribute("class", "vipre-popup-layer");
 			layer.setAttribute("style", "visibility: hidden;");
 			layer.innerHTML = this.layer;
 
@@ -141,7 +109,7 @@ var wot_popup =
 			}
 
 			layer.addEventListener("click", function() {
-					wot_browser.openscorecard(layer.getAttribute("target"), null, "");
+					vipre_browser.openscorecard(layer.getAttribute("target"), null, "");
 				}, false);
 
 			elem.appendChild(layer);
@@ -149,7 +117,7 @@ var wot_popup =
 
 			return true;
 		} catch (e) {
-			dump("wot_popup.addpopup: failed with " + e + "\n");
+			dump("vipre_popup.addpopup: failed with " + e + "\n");
 		}
 		return false;
 	},
@@ -157,47 +125,28 @@ var wot_popup =
 	loadlayer: function(content, layer, target)
 	{
 		try {
-			var status = wot_cache.get(target, "status"),
-                tr_t, cs_t, r, c, x, t;
+			var status = vipre_cache.get(target, "status");
 
 			if (status != VIPRE_QUERY_OK && status != VIPRE_QUERY_LINK) {
 				return false;
 			}
 
             // set target name
-            var normalized_target = wot_cache.get(target, "normalized") || null;
+            var normalized_target = vipre_cache.get(target, "normalized") || null;
 
-            var hostname_elem = content.getElementById("wot-hostname");
+            var hostname_elem = content.getElementById("vipre-hostname");
             if (hostname_elem) {
                 var display_target = normalized_target && normalized_target.length ? normalized_target : target;
-                hostname_elem.textContent = wot_util.htmlescape(wot_shared.decodehostname(display_target));
+                hostname_elem.textContent = vipre_util.htmlescape(vipre_shared.decodehostname(display_target));
             }
-
-            // Update categories in the popup
-            wot_popup.toggle_categories(false, content); // hide categories list
 
 			return true;
 
 		} catch (e) {
-			wdump("wot_popup.loadlayer: failed with " + e);
+			wdump("vipre_popup.loadlayer: failed with " + e);
 		}
 		return false;
 	},
-
-    toggle_categories: function (show, content) {
-        var cat_list = content.getElementById("wot-cat-list"),
-            cat_text = content.getElementById("wot-cat-text");
-        if (cat_list && cat_text) {
-            if (show) {
-                cat_text.style.display = "none";
-                cat_list.style.display = "block";
-            }
-            else {
-                cat_text.style.display = "block";
-                cat_list.style.display = "none";
-            }
-        }
-    },
 
 	hidelayer: function(content, appearance)
 	{
@@ -210,7 +159,7 @@ var wot_popup =
 				layer.style.visibility = "hidden";
 			}
 		} catch (e) {
-			/* dump("wot_popup.hidelayer: failed with " + e + "\n"); */
+			/* dump("vipre_popup.hidelayer: failed with " + e + "\n"); */
 		}
 	},
 
@@ -223,7 +172,7 @@ var wot_popup =
 
 			while (elem) {
 				if (elem.attributes) {
-					attr = elem.attributes.getNamedItem(wot_search.attribute);
+					attr = elem.attributes.getNamedItem(vipre_search.attribute);
 					if (attr && attr.value) {
 						break;
 					}
@@ -243,7 +192,7 @@ var wot_popup =
 
 			return elem;
 		} catch (e) {
-			dump("wot_popup.findelem: failed with " + e + "\n");
+			dump("vipre_popup.findelem: failed with " + e + "\n");
 		}
 		return null;
 	},
@@ -254,7 +203,7 @@ var wot_popup =
 
             var event_view = event.view; // workaround for FF Nightly 22.0a1 (when this object is accessed second time, it is null)
 
-			if (!wot_util.isenabled() || !wot_prefs.show_search_popup || !event_view) {
+			if (!vipre_util.isenabled() || !vipre_prefs.show_search_popup || !event_view) {
 				return;
 			}
 
@@ -262,23 +211,23 @@ var wot_popup =
 
 			if (!content) return;
 
-			var layer = content.getElementById(wot_popup.id);
+			var layer = content.getElementById(vipre_popup.id);
 
 			if (!layer) return;
 
-			wot_popup.target = wot_popup.findelem(event);
+			vipre_popup.target = vipre_popup.findelem(event);
 
-			if (!wot_popup.target) {
-				var appearance = wot_popup.appearance;
+			if (!vipre_popup.target) {
+				var appearance = vipre_popup.appearance;
 
 				window.setTimeout(function() {
-						wot_popup.hidelayer(content, appearance);
-					}, wot_prefs.popup_hide_delay);
+						vipre_popup.hidelayer(content, appearance);
+					}, vipre_prefs.popup_hide_delay);
 
 				return;
 			}
 
-			var attr = wot_popup.target.attributes.getNamedItem(wot_search.attribute),
+			var attr = vipre_popup.target.attributes.getNamedItem(vipre_search.attribute),
 			    target = attr.value;
 
 			if (layer.style.visibility == "visible" &&
@@ -288,20 +237,20 @@ var wot_popup =
 
 			layer.setAttribute("target", target);
 
-			if (!wot_popup.loadlayer(content, layer, target)) {
-				wot_popup.hidelayer(content);
+			if (!vipre_popup.loadlayer(content, layer, target)) {
+				vipre_popup.hidelayer(content);
 				return;
 			}
 
             var style = event_view.getComputedStyle(layer),
-                popupheight = Math.max(isNaN(style.height) ? 0 : style.height , wot_popup.height),
-                popupwidth = style.width || wot_popup.width;
+                popupheight = Math.max(isNaN(style.height) ? 0 : style.height , vipre_popup.height),
+                popupwidth = style.width || vipre_popup.width;
 			
-			var height = parseInt(event_view.innerHeight - wot_popup.barsize);
-			var width  = 0 + event_view.innerWidth  - wot_popup.barsize;
+			var height = parseInt(event_view.innerHeight - vipre_popup.barsize);
+			var width  = 0 + event_view.innerWidth  - vipre_popup.barsize;
 
 			if (height < popupheight ||	width < popupwidth) {
-				wot_popup.hidelayer(content);
+				vipre_popup.hidelayer(content);
 				return;
 			}
 
@@ -310,7 +259,7 @@ var wot_popup =
 
 			// more accurate way to calc position
 			// got from http://javascript.ru/ui/offset
-			var elem = wot_popup.target;
+			var elem = vipre_popup.target;
 			var box = elem.getBoundingClientRect();
 
 			var docElem = content.documentElement;
@@ -325,8 +274,8 @@ var wot_popup =
 			var y  = box.top +  scrollTop - clientTop;
 			var x = box.left + scrollLeft - clientLeft;
 
-			var posy = wot_popup.offsety + y;// + wot_popup.target.offsetHeight;
-			var posx = wot_popup.offsetx + x + wot_popup.target.offsetWidth;
+			var posy = vipre_popup.offsety + y;// + vipre_popup.target.offsetHeight;
+			var posx = vipre_popup.offsetx + x + vipre_popup.target.offsetWidth;
 
             if (posy < vscroll) {
                 // if placeholder's top doesn't fit into view, align it to the view
@@ -337,34 +286,34 @@ var wot_popup =
                 if (posy < height + vscroll) {
                     y_offset = height + vscroll - y;
                 }
-                posy = (y - popupheight + height + vscroll + wot_popup.offsety)/2;
+                posy = (y - popupheight + height + vscroll + vipre_popup.offsety)/2;
 			}
 
 			if (posx - hscroll < 0) {
 				posx = hscroll;
-			} else if ((posx + wot_popup.width) > (width + hscroll)) {
-				posx = width - wot_popup.width + hscroll;
+			} else if ((posx + vipre_popup.width) > (width + hscroll)) {
+				posx = width - vipre_popup.width + hscroll;
 			}
 			
-			var appearance = ++wot_popup.appearance;
+			var appearance = ++vipre_popup.appearance;
 
 			if (layer.style.visibility != "hidden") {
 				layer.style.top  = posy + "px";
 				layer.style.left = posx + "px";
 			} else {
 				window.setTimeout(function() {
-						if (wot_popup.target &&
-								appearance == wot_popup.appearance) {
+						if (vipre_popup.target &&
+								appearance == vipre_popup.appearance) {
 							layer.style.top  = posy + "px";
 							layer.style.left = posx + "px";
 							layer.style.visibility = "visible";
 						}
-					}, wot_prefs.popup_show_delay);
+					}, vipre_prefs.popup_show_delay);
 			}
 		} catch (e) {
-			wdump("wot_popup.onmouseover: failed with " + e);
+			wdump("vipre_popup.onmouseover: failed with " + e);
 		}
 	}
 };
 
-wot_modules.push({ name: "wot_popup", obj: wot_popup });
+vipre_modules.push({ name: "vipre_popup", obj: vipre_popup });

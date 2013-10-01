@@ -8,10 +8,10 @@ var VIPRE_QUERY_OK = 1;
 var blocked_target = null;
 
 var l10n = {};
-var wot_modules = [];
+var vipre_modules = [];
 
 // Implementation of core's module
-var wot_categories = {
+var vipre_categories = {
 
     select_identified: function (target) {
         // TODO: implement extracting categories info from URL
@@ -33,7 +33,7 @@ function load_l10n(callback) {
 	// loads locale stings for add-on, parse them and store in l10n object
 	try {
 		xhr = new XMLHttpRequest();
-		xhr.open("GET", "chrome://vipre/locale/wot.properties", true);
+		xhr.open("GET", "chrome://vipre/locale/vipre.properties", true);
 
 		xhr.onload = function(e) {
 			var text = xhr.responseText;
@@ -60,8 +60,8 @@ function load_l10n(callback) {
 	}
 }
 
-// emulation of original wot_util module
-var wot_util = {
+// emulation of original vipre_util module
+var vipre_util = {
 	getstring: function(str) {
 		return l10n[str] || "?!";
 	},
@@ -91,34 +91,34 @@ var wot_util = {
 };
 
 // stub
-var wot_prefs = {
+var vipre_prefs = {
 	accessible: false,
 	warning_opacity: 1,
 	min_confidence_level: 1
 };
 
 // stub
-var wot_shared = {
+var vipre_shared = {
 	decodehostname: function(s)
 	{
 		return s;
 	}
 };
 
-var wot_cache = {
+var vipre_cache = {
 	data: {},
 	get: function(name, property)
 	{
-		return wot_cache.data[property];
+		return vipre_cache.data[property];
 	}
 };
 
-var wot_browser = {
+var vipre_browser = {
 	show_warning: function(){}  // pure stub. Does nothing.
 };
 
 // copy-pasted from core.js - not a best way, I know.
-var wot_core = {
+var vipre_core = {
 	get_level: function(r) {
 		if (r >= VIPRE_MAX_REPUTATION) {
 			return 5;
@@ -153,8 +153,8 @@ function blocked_action() {
 		reason: VIPRE_REASON_RATING     // will be set to reason of showing warning
 	};
 
-    wot_prefs["warning_type_0"] = VIPRE_WARNING_BLOCK;
-    wot_prefs["warning_level_0"] = 40;
+    vipre_prefs["warning_type_0"] = VIPRE_WARNING_BLOCK;
+    vipre_prefs["warning_level_0"] = 40;
 
     m = RegExp("id=([^&]*)").exec(query);
 
@@ -162,15 +162,15 @@ function blocked_action() {
         blocked_id = m[1];
     }
 
-	var el_wotblocked = document.getElementById("wotblocked");
+	var el_wotblocked = document.getElementById("vipreblocked");
 
 	if (el_wotblocked) {
         el_wotblocked.setAttribute("vipre_blocked_id", blocked_id);
         el_wotblocked.setAttribute("vipre_blocked_target", blocked_target);
-		wot_warning.is_blocked = true;
-		el_wotblocked.setAttribute("exit_mode", wot_warning.set_exitmode(document));
-		wot_warning.load_delayed(true); // init warning with blocked=true flag to hide "Goto the site" button
-		wot_warning.add(blocked_target, document, VIPRE_WARNING_DOM, reasons.reason);
+		vipre_warning.is_blocked = true;
+		el_wotblocked.setAttribute("exit_mode", vipre_warning.set_exitmode(document));
+		vipre_warning.load_delayed(true); // init warning with blocked=true flag to hide "Goto the site" button
+		vipre_warning.add(blocked_target, document, VIPRE_WARNING_DOM, reasons.reason);
 	}
 }
 
