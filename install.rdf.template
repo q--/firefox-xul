@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>vipre@threattrack.com</em:id>
+	    <em:type>2</em:type>
+		<em:id>vipresg@threattrack.com</em:id>
 		<em:unpack>true</em:unpack>
 		<em:name>VIPRE Search Guard</em:name>
 		<em:version>%VIPRE_VERSION%</em:version>
 		<em:description>VIPRE Search Guard</em:description>
 		<em:creator>ThreatTrack Security</em:creator>
 		<em:homepageURL>http://www.threattracksecurity.com/</em:homepageURL>
-		<em:iconURL>chrome://vipre/skin/fusion/32_32/new_r5.png</em:iconURL>
-		<!--<em:optionsURL>chrome://vipre/content/settings.xul</em:optionsURL>-->
+		<em:iconURL>chrome://vipre/skin/vipre/vipre_48.png</em:iconURL>
 
 		<!-- Firefox -->
 		<em:targetApplication>
