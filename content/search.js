@@ -17,7 +17,8 @@ var vipre_search =
 
 	attrint: [
 			VIPRE_SEARCH_DYNAMIC,
-			VIPRE_SEARCH_SEARCHLEVEL
+			VIPRE_SEARCH_SEARCHLEVEL,
+            VIPRE_SEARCH_VIPRE
 		],
 
     VIPRE_VERDICT_ATTR: "vipre_status",
@@ -671,13 +672,17 @@ var vipre_search =
 		return false;
 	},
 
+    is_disallowed_vipre: function (vipre_attr) {
+        return vipre_attr !== undefined && vipre_attr !== 1;
+    },
+
 	matchrule: function(content, url)
 	{
 		try {
 			var rule = null;
 
 			for (var i in this.rules) {
-				if (!this.rules[i].enabled || !this.rules[i].url) {
+				if (!this.rules[i].enabled || !this.rules[i].url || this.is_disallowed_vipre(this.rules[i].vipre)) {
 					continue;
 				}
 

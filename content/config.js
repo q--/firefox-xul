@@ -139,6 +139,7 @@ const VIPRE_SEARCH				= "search";
 const VIPRE_SEARCH_DISPLAY		= "display";
 const VIPRE_SEARCH_DYNAMIC		= "dynamic";
 const VIPRE_SEARCH_ENABLED		= "enabled";
+const VIPRE_SEARCH_VIPRE		= "vipre";  // this allows WOT to tell VIPRE not to use the search rule
 const VIPRE_SEARCH_IGN			= "ign";
 const VIPRE_SEARCH_PRE			= "pre";
 const VIPRE_SEARCH_PRE_MATCH		= "match";
