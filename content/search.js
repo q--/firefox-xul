@@ -1136,7 +1136,7 @@ var vipre_search =
 			var r = this.getreputation(name);
 
 			if ((vipre_prefs.use_search_level && r >= vipre_prefs.search_level) ||
-					(rule.searchlevel != null && r >= rule.searchlevel)) {
+					(rule.searchlevel != null && (r >= rule.searchlevel || r == VIPRE_REPUTATION_UKNOWN))) {
 				return "";
 			}
 
