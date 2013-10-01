@@ -47,28 +47,6 @@ var vipre_util =
 
 		return null;
 	},
-//
-//    get_all_strings: function () {
-//        var res = {};
-//        try {
-//            if (!this.string_bundle) {
-//                this.string_bundle = document.getElementById("vipre-strings");
-//            }
-//
-//            var strings = this.string_bundle.strings;
-//
-//            while (strings.hasMoreElements()) {
-//                var property = strings.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
-//                res[property.key] = property.value;
-//            }
-//            return res;
-//
-//        } catch (e) {
-//            dump("vipre_util.getstring: failed with " + e + "\n");
-//        }
-//
-//        return res;
-//    },
 
     get_level: function (levels, value, next) {
         next = next ? next : false;
@@ -83,19 +61,6 @@ var vipre_util =
         }
 
         return levels[1];
-    },
-
-    copy_attrs: function (node) {
-        var obj = {};
-        if (node) {
-            for (var a in node.attributes) {
-                var attr = node.attributes[a];
-                obj[attr.name] = attr.value;
-            }
-        } else {
-            wdump("vipre_utils.copy_attrs() - empty node is provided");
-        }
-        return obj;
     },
 
     encode_utf8: function (s) {
@@ -894,9 +859,7 @@ var vipre_crypto =
 				Number(counter) + 1);
 
 			return vipre_hash.bintohex(vipre_hash.sha1str(
-//						vipre_prefs.witness_id +
 						vipre_prefs.update_checked +
-//						vipre_prefs.cookie_updated +
 						VIPRE_VERSION +
 						vipre_browser.geturl() +
 						vipre_browser.getreferrer() +
@@ -927,86 +890,6 @@ var vipre_crypto =
 
 		return null;
 	}
-
-//	authenticate: function(str)
-//	{
-//		try {
-//			return vipre_hash.bintohex(
-//				vipre_hash.hmac_sha1hex(vipre_prefs.witness_key, str));
-//		} catch (e) {
-//			dump("vipre_crypto.authenticate: failed with " + e + "\n");
-//		}
-//		return null;
-//	},
-
-//	authenticate_query: function(str)
-//	{
-//		return str + "&auth=" + this.authenticate(str);
-//	},
-
-//	islevel: function(level)
-//	{
-//		try {
-//			var l = vipre_prefs.status_level;
-//
-//			if (!l || l.length != 40) {
-//				return false;
-//			}
-//
-//			var h = vipre_hash.bintohex(vipre_hash.hmac_sha1hex(
-//						vipre_prefs.witness_key, "level=" + level));
-//
-//			return (l == h);
-//		} catch (e) {
-//			wdump("vipre_crypto.islevel: failed with " + e);
-//		}
-//		return false;
-//	},
-
-//    encrypt: function(data, nonce)
-//    {
-//        try {
-//            if (data && nonce) {
-//                var key = vipre_prefs.witness_key;
-//
-//                if (key) {
-//                    return btoa(vipre_hash.bintostr(vipre_arc4.crypt(
-//                        vipre_arc4.create(vipre_hash.hmac_sha1hex(key, nonce)),
-//                        vipre_hash.strtobin(data))));
-//                }
-//            }
-//        } catch (e) {
-//            wdump("crypto.encrypt: failed with " + e);
-//        }
-//
-//        return null;
-//    },
-
-//    decrypt: function(data, nonce, index)
-//    {
-//        try {
-//            if (data && nonce) {
-//                var key = vipre_prefs.witness_key;
-//
-//                if (index == null || index < 0) {
-//                    index = "";
-//                } else {
-//                    index = "-" + index;
-//                }
-//
-//                if (key) {
-//                    return vipre_hash.bintostr(vipre_arc4.crypt(
-//                        vipre_arc4.create(vipre_hash.hmac_sha1hex(key,
-//                            "response-" + nonce + index)),
-//                        vipre_hash.strtobin(atob(data))));
-//                }
-//            }
-//        } catch (e) {
-//            wdump("vipre_crypto.decrypt(): failed with " + e);
-//        }
-//
-//        return null;
-//    }
 };
 
 vipre_modules.push({ name: "vipre_crypto", obj: vipre_crypto });
@@ -1176,95 +1059,3 @@ var vipre_css =
 		}
 	}
 };
-
-//var vipre_file = {
-//
-//	vipre_dir: "WOT",
-//
-//	import_libs: function()
-//	{
-//		Components.utils.import("resource://gre/modules/NetUtil.jsm");
-//		Components.utils.import("resource://gre/modules/FileUtils.jsm");
-//	},
-//
-//	read_json: function (filename, callback) {
-//
-//		try {
-//
-//			vipre_file.import_libs();
-//
-//			var dir = FileUtils.getDir("ProfD", [vipre_file.vipre_dir], true); // to make sure the Dir exists
-//			var file = FileUtils.getFile("ProfD", [vipre_file.vipre_dir, filename]);
-//
-//			NetUtil.asyncFetch(file, function(inputStream, status) {
-//
-//				if (!Components.isSuccessCode(status)) {
-//					// Handle error!
-//					callback({});
-//					return;
-//				}
-//
-//				try {
-//					var data = NetUtil.readInputStreamToString(inputStream, inputStream.available());
-//
-//					if (data) {
-//						var res = JSON.parse(data);
-//						if (res instanceof Object) {
-//							callback(res);
-//						}
-//					}
-//					callback({});   // whether no data is loaded call it anyway to finish the load process
-//
-//				} catch (e) {
-//					dump("utils.vipre_file.read_json() is failed with " + e + "\n");
-//					callback({});   // anyway, provide empty object
-//					return;
-//				}
-//
-//			});
-//
-//		} catch (e) {
-//			dump("vipre_file.read_json() failed with " + e + "\n");
-//			callback({});   // anyway, provide empty object
-//		}
-//
-//	},
-//
-//	save_json: function (filename, obj, callback) {
-//
-//		callback = callback || function(status){};
-//
-//		try {
-//			vipre_file.import_libs();
-//
-//			var dir = FileUtils.getDir("ProfD", [vipre_file.vipre_dir], true); // to make sure the Dir exists
-//			var file = FileUtils.getFile("ProfD", [vipre_file.vipre_dir, filename]);
-//
-//			// You can also optionally pass a flags parameter here. It defaults to
-//			// FileUtils.MODE_WRONLY | FileUtils.MODE_CREATE | FileUtils.MODE_TRUNCATE;
-//			var ostream = FileUtils.openSafeFileOutputStream(file);
-//
-//			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
-//				createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-//			converter.charset = "UTF-8";
-//
-//			var data = JSON.stringify(obj);
-//			var istream = converter.convertToInputStream(data);
-//
-//			NetUtil.asyncCopy(istream, ostream, function(status) {
-//				if (!Components.isSuccessCode(status)) {
-//					// Handle error!
-//					callback(false);
-//					return;
-//				}
-//
-//				// Data has been written to the file.
-//				callback(true);
-//			});
-//
-//		} catch (e) {
-//			dump("vipre_file.save_json() failed with " + e + "\n");
-//			callback(false);   // report about failed attempt to save
-//		}
-//	}
-//};

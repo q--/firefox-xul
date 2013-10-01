@@ -31,27 +31,15 @@
 
     <commandset id="mainCommandSet">
         <command id="vipre-command-enabled" oncommand="vipre_commands.enabled();"/>
-        <command id="vipre-command-refresh" oncommand="vipre_commands.refresh();"/>
         <command id="vipre-command-checkupdates" oncommand="vipre_commands.checkupdates();"/>
     </commandset>
-
-    <popupset id="mainPopupSet">
-        <!-- Indicator menu -->
-        <!-- XXX: shouldn't need onpopupshowing, but checkmarks aren't shown otherwise -->
-        <menupopup id="vipre-context-indicator"
-                   onpopupshowing="vipre_commands.update('indicator');">
-            <menuitem id="vipre-indicator-refresh" label="&vipreRefresh.label;" command="vipre-command-refresh"/>
-            <menuitem label="&vipreCheckUpdates.label;" command="vipre-command-checkupdates"/>
-            <menuseparator/>
-            <menuitem id="vipre-indicator-enabled" label="&vipreEnabled.label;" type="checkbox" command="vipre-command-enabled"/>
-        </menupopup>
-    </popupset>
 
     <!-- Tools menu -->
     <menupopup id="menu_ToolsPopup">
         <menu id="vipre-context-tools" insertbefore="devToolsSeparator" label="&vipreContent.label;">
             <menupopup id="vipre-tools-popup">
                 <menuitem label="&vipreEnabled.label;" type="checkbox" command="vipre-command-enabled"/>
+                <menuitem label="&vipreCheckUpdates.label;" command="vipre-command-checkupdates"/>
             </menupopup>
         </menu>
     </menupopup>

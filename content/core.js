@@ -104,7 +104,6 @@ var vipre_core =
 	init: function()
 	{
 		try {
-            wdump("init()");
 			this.detect_environment();
 			window.addEventListener("load", function(e) {
 					window.removeEventListener("load", arguments.callee, true);
