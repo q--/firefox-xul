@@ -284,23 +284,25 @@ var vipre_core =
 		}
 	},
 
-	showloading: function(pl, request, url, hostname)
+	showloading: function(pl, request, url)
 	{
 		try {
 			var stream = null;
 
 			if (request) {
 				if (request.QueryInterface) {
-					var channel = request.QueryInterface(
-									Components.interfaces.nsIHttpChannel);
+					try {
+						var channel = request.QueryInterface(Components.interfaces.nsIHttpChannel);
 
-					if (channel && channel.requestMethod == "POST") {
-						var upload = request.QueryInterface(
-										Components.interfaces.nsIUploadChannel);
+						if (channel && channel.requestMethod == "POST") {
+							var upload = request.QueryInterface(Components.interfaces.nsIUploadChannel);
 
-						if (upload) {
-							stream = upload.uploadStream;
+							if (upload) {
+								stream = upload.uploadStream;
+							}
 						}
+					} catch (e) {
+						// just do nothing
 					}
 				}
 				
@@ -317,13 +319,13 @@ var vipre_core =
 				Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY,
 				null, null);
 
-			vipre_api_query.send(hostname);
+			vipre_api_query.send(url);
 		} catch (e) {
 			dump("vipre_core.showloading: failed with " + e + "\n");
 		}
 	},
 
-	showblocked: function(pl, request, url, hostname, blocked_id)
+	showblocked: function(pl, request, url, blocked_id)
 	{
 		try {
 			if (request) {
@@ -331,7 +333,7 @@ var vipre_core =
 			}
 
 			var blocked_urlquery = [
-                "target=" + encodeURIComponent(hostname),
+                "target=" + encodeURIComponent(url),
                 "id="+String(blocked_id)].join("&");
 
             blocked_urlquery = "?" + encodeURIComponent(btoa(blocked_urlquery));
@@ -346,10 +348,10 @@ var vipre_core =
 		}
 	},
 
-	block: function(pl, request, url)
+	block: function(pl, request, target)
 	{
 		try {
-			if (!vipre_util.isenabled() || !pl || !pl.browser || !url) {
+			if (!vipre_util.isenabled() || !pl || !pl.browser || !target) {
 				return;
 			}
 			
@@ -357,24 +359,25 @@ var vipre_core =
 				return;
 			}
 
-			var hostname = vipre_url.gethostname(url);
+			var hostname = vipre_url.gethostname(target);
 
-			if (!hostname || vipre_url.isprivate(hostname) ||
+			if (!target || vipre_url.isprivate(hostname) || vipre_url.isprivate(target) ||
 					vipre_url.isexcluded(hostname)) {
 				return;
 			}
 
-			if (vipre_cache.isok(hostname)) {
-				if (vipre_warning.isdangerous(hostname, false) == VIPRE_WARNING_BLOCK && !vipre_warning.warned[hostname]) {
-                    var blocked_id = vipre_warning.register_blocked(url);
-					this.showblocked(pl, request, url, hostname, blocked_id);
+			if (vipre_cache.isok(target)) {
+				if (vipre_warning.isdangerous(target, false) == VIPRE_WARNING_BLOCK && !vipre_warning.warned[target]) {
+                    var blocked_id = vipre_warning.register_blocked(target);
+					this.showblocked(pl, request, target, blocked_id);
 				}
 
-				if (this.blockedstreams[url]) {
-					delete this.blockedstreams[url];
+				if (this.blockedstreams[target]) {
+					delete this.blockedstreams[target];
 				}
 			} else {
-				this.showloading(pl, request, url, hostname);
+				// allow user to go to a website if we don't know anything about it's safety
+//				this.showloading(pl, request, target);
 			}
 		} catch (e) {
 			dump("vipre_core.block: failed with " + e + "\n");
@@ -389,7 +392,7 @@ var vipre_core =
             if (!target_url) {
                 target_url = target;
             } else {
-                target = vipre_url.gethostname(target_url);   // override target by computed one from url
+                target = target_url;   // override target by computed one from url
             }
         } else {
             if (target) {
@@ -426,19 +429,13 @@ var vipre_core =
 
 				var url = this.isredirect(tab.currentURI.spec);
 
-				if (!url) {
-					continue;
-				}
-
-				var hostname = vipre_url.gethostname(url);
-
-				if (!hostname || !vipre_cache.iscached(hostname)) {
+				if (!url || !vipre_cache.iscached(url)) {
 					continue;
 				}
 				
-				var age = Date.now() - vipre_cache.get(hostname, "time");
+				var age = Date.now() - vipre_cache.get(url, "time");
 
-				if (vipre_cache.get(hostname, "status") == VIPRE_QUERY_ERROR &&
+				if (vipre_cache.get(url, "status") == VIPRE_QUERY_ERROR &&
 						age < VIPRE_INTERVAL_BLOCK_ERROR) {
 					continue;
 				}
@@ -531,7 +528,7 @@ var vipre_core =
 	update: function()
 	{
 		try {
-			vipre_core.hostname = vipre_browser.gethostname();
+			vipre_core.hostname = vipre_browser.geturl();
 
 			if (!vipre_util.isenabled()) {
 				vipre_status.set("disabled",
@@ -545,7 +542,7 @@ var vipre_core =
 			/* Recover the original hostname */
 			var redirected = vipre_core.isredirect(vipre_browser.geturl());
 			if (redirected) {
-				vipre_core.hostname = vipre_url.gethostname(redirected);
+				vipre_core.hostname = redirected;
 			}
 
 			/* Purge expired cache entries */

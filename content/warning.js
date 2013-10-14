@@ -62,7 +62,7 @@ var vipre_warning =
 		return (vipre_prefs["warning_type_0"] == VIPRE_WARNING_BLOCK);
 	},
 
-	getwarningtype: function(hostname, app, reason)
+	getwarningtype: function(target, app, reason)
 	{
 		try {
 			if (!vipre_prefs["show_application_" + app]) {
@@ -75,7 +75,7 @@ var vipre_warning =
 				return VIPRE_WARNING_NONE;
 			}
 
-			var r = vipre_cache.get(hostname, "reputation_" + app);
+			var r = vipre_cache.get(target, "reputation_" + app);
 
 			if (r < 100 && r >= 0) {
 					return (reason) ? VIPRE_REASON_RATING : type;
@@ -89,15 +89,15 @@ var vipre_warning =
 		return VIPRE_WARNING_NONE;
 	},
 
-	isdangerous: function(hostname, increase)
+	isdangerous: function(target, increase)
 	{
 		var result = VIPRE_WARNING_NONE;
 		try {
-			if (!vipre_cache.isok(hostname)) {
+			if (!vipre_cache.isok(target)) {
 				return result;
 			}
 
-            var type = vipre_warning.getwarningtype(hostname, 0, false);
+            var type = vipre_warning.getwarningtype(target, 0, false);
 
             if (type > result) {
                 result = type;

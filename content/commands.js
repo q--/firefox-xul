@@ -5,19 +5,6 @@
 
 var vipre_commands =
 {
-	getcontexthostname: function()
-	{
-		try {
-			if (gContextMenu.onLink && gContextMenu.linkURL) {
-				return vipre_url.gethostname(gContextMenu.linkURL);
-			}
-		} catch (e) {
-			dump("vipre_commands.getcontexthostname:: failed with " + e + "\n");
-		}
-
-		return null;
-	},
-
 	update: function(what)
 	{
 		try {

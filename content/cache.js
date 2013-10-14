@@ -84,7 +84,8 @@ var vipre_cache =
 			return null;
 		}
 
-		var cn = vipre_idn.utftoidn(name);
+//		var cn = vipre_idn.utftoidn(name);
+		var cn = encodeURIComponent(name);
 
 		if (!cn) {
 			return null;
@@ -139,8 +140,7 @@ var vipre_cache =
 	{
 		if (this.iscached(name)) {
 			var s = this.get(name, "status");
- 			return (s == VIPRE_QUERY_OK ||
-						(vipre_prefs.prefetch && s == VIPRE_QUERY_LINK));
+ 			return (s == VIPRE_QUERY_OK || s == VIPRE_QUERY_LINK);
 		}
 		return false;
 	},
@@ -174,7 +174,7 @@ var vipre_cache =
 				return null;
 			}
 
-			return match[1];
+			return decodeURIComponent(match[1]);
 		} catch (e) {
 			dump("vipre_cache.get_name_from_element: failed with " + e + "\n");
 		}

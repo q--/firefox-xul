@@ -5,6 +5,7 @@
 
 const VIPRE_PLATFORM = "firefox";
 const VIPRE_VERSION  = "20130917";
+const VIPRE_PARTNER  = "vipresg";
 
 /*
  * Constants
@@ -75,9 +76,6 @@ const VIPRE_BLOCK_BLOCKED = "chrome://vipre/locale/blocked.html";
  */
 
 const VIPRE_PREF_PATH = "settings/";
-const VIPRE_PREF_TRIGGER = /^(http(s)?\:\/\/(.+\.)?mywot\.com)\/([^\/]{2}(-[^\/]+)?\/)?(settings)\/.+/;
-
-
 const VIPRE_PREF = "vipre.";
 
 /* Values */
@@ -86,12 +84,6 @@ const VIPRE_WARNING_DOM			= 2;
 const VIPRE_WARNING_BLOCK			= 3;
 const VIPRE_REASON_RATING			= 3;
 const VIPRE_SEARCH_TYPE_OPTIMIZED	= 0;
-
-/* First run */
-const VIPRE_FIRSTRUN_WELCOME = 1;
-const VIPRE_FIRSTRUN_CURRENT = 3;
-const VIPRE_UPDATE_PATH = "update";
-
 
 /* Preferences and defaults */
 const vipre_prefs_bool = [

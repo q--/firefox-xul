@@ -484,7 +484,7 @@ var vipre_search =
 
 					if (m && m[rule.pre[i].match]) {
 						url = decodeURIComponent(m[rule.pre[i].match]);
-						target = vipre_idn.utftoidn(vipre_url.gethostname(url));
+						target = url;
 						break;
 					}
 				}
@@ -497,7 +497,7 @@ var vipre_search =
 
 			/* Find target hostname */
 			if (!target) {
-				target = vipre_idn.utftoidn(vipre_url.gethostname(url));
+				target = url;
 			}
 
 			/* Match by element if we have a target rule */
@@ -520,7 +520,7 @@ var vipre_search =
 			var elem = content.createElement("div");
 
 			if (elem) {
-				elem.setAttribute(vipre_search.attribute, target);
+				elem.setAttribute(vipre_search.attribute, encodeURIComponent(target));
 				elem.setAttribute("style", "cursor: pointer; " +
 					"width: 16px; " +
 					"height: 16px;" +
@@ -797,8 +797,7 @@ var vipre_search =
 				} else if (vipre_prefs.prefetch) {
 					/* Prefetch ratings for all links, not only if ratings are
 						shown */
-					target = vipre_idn.utftoidn(
-								vipre_url.gethostname(link.href));
+					target = link.href;
 				}
 
 				if (!target) {
@@ -1141,7 +1140,7 @@ var vipre_search =
 			}
 
 			var css = this.formatcss(rule.style);
-			css = css.replace(/NAME/g, name);
+			css = css.replace(/NAME/g, encodeURIComponent(name));
 
 			return css.replace(/IMAGE/g, vipre_ui.geticonurl(r, 16, true));
 		} catch (e) {
@@ -1154,7 +1153,8 @@ var vipre_search =
 	onclick: function(event)
 	{
 		try {
-			var target = event.originalTarget.getAttribute(vipre_search.attribute),
+			var target_encoded = event.originalTarget.getAttribute(vipre_search.attribute),
+				target = decodeURIComponent(target_encoded),
                 r0 = vipre_search.getreputation(target),
                 verdict = vipre_util.get_level(VIPRE_REPUTATIONLEVELS, r0).name;
 			if (target && verdict) {

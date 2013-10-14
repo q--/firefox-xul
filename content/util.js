@@ -217,7 +217,18 @@ var vipre_url =
 		try {
 			/* This isn't meant to be a comprehensive check, just notice the most
 			   common local and private addresses */
-			return /^(localhost|((10|127)\.\d+|(172\.(1[6-9]|2[0-9]|3[01])|192\.168))\.\d+\.\d+)$/.test(name);
+			var res = /^(localhost|((10|127)\.\d+|(172\.(1[6-9]|2[0-9]|3[01])|192\.168))\.\d+\.\d+)$/.test(name);
+
+			if (name) {
+				res = res || name.indexOf("chrome://") == 0;
+				res = res || name.indexOf("resource://") == 0;
+				res = res || name.indexOf("file://") == 0;
+				res = res || name.indexOf("about:") == 0;
+				res = res || name.indexOf("jar:") == 0;
+			}
+
+			return res;
+
 		} catch (e) {
 			dump("vipre_url.isprivate: failed with " + e + "\n");
 		}
@@ -309,10 +320,10 @@ var vipre_url =
 	getapiparams: function()
 	{
 		try {
-			var params = "&lang=" +
-				(vipre_util.getstring("lang") || "en-US");
+			var params = "&lang=" + (vipre_util.getstring("lang") || "en-US");
 
 			params += "&version=" + VIPRE_PLATFORM + "-" + VIPRE_VERSION;
+			params += "&partner=" + VIPRE_PARTNER;
 			return params;
 		} catch (e) {
 			dump("vipre_url.getapiparams: failed with " + e + "\n");
@@ -388,7 +399,7 @@ var vipre_browser =
 		return null;
 	},
 
-	show_warning: function(hostname, message, known)
+	show_warning: function(target, message, known)
 	{
 		try {
 			var icon = "chrome://vipre/skin/fusion/";
@@ -404,7 +415,7 @@ var vipre_browser =
 			}
 
 			/* There's a chance the user has already changed the tab */
-			if (hostname != vipre_browser.gethostname()) {
+			if (target != vipre_browser.geturl()) {
 				return;
 			}
 

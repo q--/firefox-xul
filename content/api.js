@@ -93,25 +93,25 @@ var vipre_api_link =
 var vipre_api_query =
 {
 	/* Methods */
-    send: function(hostname, callback)
+    send: function(target, callback)
 	{
 		try {
 			if (!vipre_util.isenabled()) {
 				return false;
 			}
 
-			if (vipre_cache.iscached(hostname) &&
-					(vipre_cache.get(hostname, "pending") ||
-						vipre_cache.get(hostname, "inprogress"))) {
+			if (vipre_cache.iscached(target) &&
+					(vipre_cache.get(target, "pending") ||
+						vipre_cache.get(target, "inprogress"))) {
 				return false;
 			}
 
-			vipre_cache.create(hostname);
-			vipre_cache.set(hostname, "time", Date.now());
-			vipre_cache.set(hostname, "inprogress", true);
-			vipre_cache.set(hostname, "status", VIPRE_QUERY_ERROR);
+			vipre_cache.create(target);
+			vipre_cache.set(target, "time", Date.now());
+			vipre_cache.set(target, "inprogress", true);
+			vipre_cache.set(target, "status", VIPRE_QUERY_ERROR);
 
-			var request = vipre_api_link._get_request(hostname, function (target, status) {
+			var request = vipre_api_link._get_request(target, function (target, status) {
                 if (typeof(callback) == "function") {
                     callback();
                 }
@@ -121,7 +121,7 @@ var vipre_api_query =
 			/* If we don't receive data reasonably soon, retry */
 			var timeout =
 				window.setTimeout(function() {
-						vipre_api_query.timeout(request, hostname, callback);
+						vipre_api_query.timeout(request, target, callback);
 					},	VIPRE_TIMEOUT_QUERY);
 
 			request.send();
