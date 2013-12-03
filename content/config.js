@@ -4,7 +4,7 @@
 */
 
 const VIPRE_PLATFORM = "firefox";
-const VIPRE_VERSION  = "20130917";
+const VIPRE_VERSION  = "20131203";
 const VIPRE_PARTNER  = "vipresg";
 
 /*
