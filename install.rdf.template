@@ -10,6 +10,7 @@
 		<em:creator>ThreatTrack Security</em:creator>
 		<em:homepageURL>http://www.threattracksecurity.com/</em:homepageURL>
 		<em:iconURL>chrome://vipre/skin/vipre/vipre_48.png</em:iconURL>
+		<em:icon64URL>chrome://vipre/skin/vipre/vipre_64.png</em:icon64URL>
 
 		<!-- Firefox -->
 		<em:targetApplication>
@@ -18,6 +19,6 @@
 				<em:minVersion>14.0</em:minVersion>
 				<em:maxVersion>27.0</em:maxVersion>
 			</Description>
-		</em:targetApplication>	
+		</em:targetApplication>
 	</Description>
 </RDF>
